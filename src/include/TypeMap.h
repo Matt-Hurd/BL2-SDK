@@ -48,7 +48,6 @@ static std::map<std::string, const std::type_info *> uobject_type_map{
 	{"Struct", &typeid(UStruct)},
 	{"StructProperty", &typeid(UStructProperty)},
 	{"Subsystem", &typeid(USubsystem)},
-	{"System", &typeid(USystem)},
 	{"TextBuffer", &typeid(UTextBuffer)},
 	{"TextBufferFactory", &typeid(UTextBufferFactory)}
 };

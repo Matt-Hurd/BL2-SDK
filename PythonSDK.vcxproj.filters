@@ -12,17 +12,11 @@
     <Filter Include="Source Files\Pydefs">
       <UniqueIdentifier>{0241dca9-df47-4dfc-a299-6736b999e9c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\detours">
-      <UniqueIdentifier>{4cb6112d-4243-443f-ac29-227e7f2aee8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\pybind11">
       <UniqueIdentifier>{4743287b-5d52-4c1a-9a74-1fe28a8f731e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\pybind11\detail">
       <UniqueIdentifier>{9050e9b0-3811-4e57-849b-003612c464a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\detours">
-      <UniqueIdentifier>{98795b3c-cdd8-4e5a-b1f7-e589dae14fe2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\UnrealEngine">
       <UniqueIdentifier>{7bf7198c-b867-4f19-8dd0-9d0c5b3dd967}</UniqueIdentifier>
@@ -36,18 +30,24 @@
     <Filter Include="Header Files\UnrealEngine\Engine">
       <UniqueIdentifier>{14d8a551-59e4-49f9-9701-b7a3b9dad928}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\minhook">
+      <UniqueIdentifier>{1a7051f8-dda4-4008-a721-d1d981d18640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\minhook\hde">
+      <UniqueIdentifier>{c5eb54d4-1dc7-4337-a0eb-f83831633364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\minhook">
+      <UniqueIdentifier>{8532794f-64df-46d5-9762-eb2cfc219726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\minhook\hde">
+      <UniqueIdentifier>{5744815d-9755-4d79-8933-1e15d83fa7e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\AntiDebug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\CPythonInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include\CSigScan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\CSimpleDetour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include\Exceptions.h">
@@ -158,16 +158,7 @@
     <ClInclude Include="src\include\TypeMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\include\detours\detours.h">
-      <Filter>Header Files\detours</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\detours\detver.h">
-      <Filter>Header Files\detours</Filter>
-    </ClInclude>
     <ClInclude Include="src\include\CHookManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\include\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\include\UnrealSDK.h">
@@ -194,6 +185,30 @@
     <ClInclude Include="src\include\Games.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\include\MinHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\hde\table32.h">
+      <Filter>Header Files\minhook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\hde\table64.h">
+      <Filter>Header Files\minhook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\hde\hde32.h">
+      <Filter>Header Files\minhook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\hde\hde64.h">
+      <Filter>Header Files\minhook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\hde\pstdint.h">
+      <Filter>Header Files\minhook\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\trampoline.h">
+      <Filter>Header Files\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\minhook\buffer.h">
+      <Filter>Header Files\minhook</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pydefs\_TArray.cpp">
@@ -208,16 +223,10 @@
     <ClCompile Include="src\pydefs\gamedefines.cpp">
       <Filter>Source Files\Pydefs</Filter>
     </ClCompile>
-    <ClCompile Include="src\AntiDebug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CPythonInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CSigScan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSimpleDetour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Logging.cpp">
@@ -235,15 +244,6 @@
     <ClCompile Include="src\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\include\detours\detours.cpp">
-      <Filter>Source Files\detours</Filter>
-    </ClCompile>
-    <ClCompile Include="src\include\detours\disasm.cpp">
-      <Filter>Source Files\detours</Filter>
-    </ClCompile>
-    <ClCompile Include="src\include\detours\modules.cpp">
-      <Filter>Source Files\detours</Filter>
-    </ClCompile>
     <ClCompile Include="src\CHookManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -258,6 +258,21 @@
     </ClCompile>
     <ClCompile Include="src\UnrealEngine\Engine_functions.cpp">
       <Filter>Source Files\UnrealEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\minhook\hde\hde64.cpp">
+      <Filter>Source Files\minhook\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\minhook\hde\hde32.cpp">
+      <Filter>Source Files\minhook\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\minhook\buffer.cpp">
+      <Filter>Source Files\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\minhook\hook.cpp">
+      <Filter>Source Files\minhook</Filter>
+    </ClCompile>
+    <ClCompile Include="src\include\minhook\trampoline.cpp">
+      <Filter>Source Files\minhook</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

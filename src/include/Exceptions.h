@@ -3,7 +3,7 @@
 #define EXCEPTIONS_H
 
 #include <string>
-#include <stdexcpt.h>
+#include <stdexcept>
 
 class FatalSDKException : public std::runtime_error
 {

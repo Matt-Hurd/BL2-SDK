@@ -1,11 +1,29 @@
 #pragma once
 
 #define VERSION_MAJOR	0
-#define VERSION_MINOR	7
-#define VERSION_PATCH	4
+#define VERSION_MINOR	8
+#define VERSION_PATCH	0
+
+// Check windows
+#if _WIN32 || _WIN64
+#if _WIN64
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
+// Check GCC
+#if __GNUC__
+#if __x86_64__ || __ppc64__
+#define ENVIRONMENT64
+#else
+#define ENVIRONMENT32
+#endif
+#endif
+
 
 #include <SDKDDKVer.h>
-#define WIN32_LEAN_AND_MEAN
 #include <pybind11/pybind11.h>
 #include <pybind11/embed.h>
 #include <pybind11/stl.h>

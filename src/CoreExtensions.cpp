@@ -5,7 +5,7 @@
 
 UObject* UObject::Load(UClass* ClassToLoad, const char* ObjectFullName)
 {
-	return UObject::GObjects()->Data[0]->DynamicLoadObject(FString(ObjectFullName), ClassToLoad, true);
+	return UObject::GObjects()->Get(0)->DynamicLoadObject(FString(ObjectFullName), ClassToLoad, true);
 }
 
 UObject* UObject::Load(const char* ClassName, const char* ObjectFullName)
@@ -44,7 +44,7 @@ std::vector<UObject*> UObject::FindObjectsRegex(const std::string& RegexString)
 		Sleep(100);
 	for (size_t i = 0; i < GObjects()->Count; ++i)
 	{
-		UObject* object = GObjects()->Data[i];
+		UObject* object = GObjects()->Get(i);
 		if (object && std::regex_match(object->GetFullName(), re))
 			ret.push_back(object);
 	}
@@ -60,7 +60,7 @@ std::vector<UObject*> UObject::FindObjectsContaining(const std::string& StringLo
 		Sleep(100);
 	for (size_t i = 0; i < GObjects()->Count; ++i)
 	{
-		UObject* object = GObjects()->Data[i];
+		UObject* object = GObjects()->Get(i);
 		if (object && object->GetFullName().find(StringLookup) != std::string::npos)
 			ret.push_back(object);
 	}
@@ -81,7 +81,7 @@ class UPackage* UObject::GetPackageObject() const
 
 UClass* UObject::StaticClass()
 {
-	static auto ptr = static_cast<UClass*>(GObjects()->Data[2]);
+	static auto ptr = static_cast<UClass*>(GObjects()->Get(2));
 	return ptr;
 };
 
@@ -93,7 +93,7 @@ std::vector<UObject*> UObject::FindAll(char* InStr)
 	std::vector<UObject*> ret;
 	for (size_t i = 0; i < GObjects()->Count; ++i)
 	{
-		UObject* object = GObjects()->Data[i];
+		UObject* object = GObjects()->Get(i);
 		if (object && object->Class == inClass)
 			ret.push_back(object);
 	}
@@ -385,11 +385,19 @@ void FHelper::SetProperty(class UProperty* Prop, const py::object& val)
 		                                  Prop->GetFullName().c_str()).c_str());
 }
 
+#ifdef ENVIRONMENT64
+FChunkedFixedUObjectArray* UObject::GObjects()
+{
+	const auto objectArray = static_cast<FChunkedFixedUObjectArray*>(UnrealSDK::pGObjects);
+	return objectArray;
+}
+#else
 TArray<UObject*>* UObject::GObjects()
 {
 	const auto objectArray = static_cast<TArray<UObject*>*>(UnrealSDK::pGObjects);
 	return objectArray;
 }
+#endif
 
 const char* UObject::GetName() const
 {
@@ -415,14 +423,20 @@ std::string UObject::GetObjectName()
 {
 	std::stack<UObject*> parents{};
 
-	for (auto current = this; current; current = current->Outer)
+	Logging::LogF("Getting parents\n");
+	for (auto current = this; current; current = current->Outer) {
+		Logging::LogF("Got parent %p\n", current);
 		parents.push(current);
+	}
+	Logging::LogF("Got Parents\n");
 
 	std::string output{};
 
 	while (!parents.empty())
 	{
+		Logging::LogF("Getting Name\n");
 		output += parents.top()->GetName();
+		Logging::LogF("Current output: %s\n", output);
 		parents.pop();
 		if (!parents.empty())
 			output += '.';
@@ -454,7 +468,7 @@ UClass* UObject::FindClass(const char* ClassName, const bool Lookup)
 
 	for (size_t i = 0; i < GObjects()->Count; ++i)
 	{
-		const auto object = GObjects()->Data[i];
+		const auto object = GObjects()->Get(i);
 
 		if (!object || !object->Class)
 			continue;
@@ -600,11 +614,7 @@ py::object FFunction::Call(py::args args, py::kwargs kwargs)
 	Logging::LogD("made params\n");
 	auto flags = func->FunctionFlags;
 	func->FunctionFlags |= 0x400;
-	void* returnObj = nullptr;
-	for (UProperty* Child = (UProperty*)func->Children; Child; Child = (UProperty*)Child->Next)
-		if (Child->PropertyFlags & 0x400)
-			returnObj = params + Child->Offset_Internal;
-	UnrealSDK::pProcessEvent(obj, func, params, returnObj);
+	UnrealSDK::pProcessEvent(obj, func, params);
 	func->FunctionFlags = flags;
 	Logging::LogD("Called ProcessEvent\n");
 	py::object ret = GetReturn((FHelper*)params);
@@ -696,9 +706,9 @@ void FArray::SetItem(unsigned int I, py::object Obj) const
 	((FHelper*)(arr->Data + type->ElementSize * I))->SetProperty(type, std::move(Obj));
 }
 
-int FArray::GetAddress() const
+long FArray::GetAddress() const
 {
-	return (int)arr->Data;
+	return (long)arr->Data;
 }
 
 FArray* FArray::Iter()

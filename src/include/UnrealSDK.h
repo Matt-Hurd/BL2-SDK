@@ -23,7 +23,7 @@ struct FStruct;
 
 namespace UnrealSDK
 {
-	typedef void (__thiscall *tProcessEvent)(UObject*, UFunction*, void*, void*);
+	typedef void (__thiscall *tProcessEvent)(UObject*, UFunction*, void*);
 	typedef int (tUnrealEH)(unsigned int, struct _EXCEPTION_POINTERS*);
 	typedef void (__thiscall *tCallFunction)(UObject*, FFrame&, void*, UFunction*);
 	typedef void (__thiscall *tFrameStep)(FFrame*, UObject*, void*);

@@ -2,7 +2,6 @@
 #define GAMEDEFINES_H
 
 #pragma once
-#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <stdlib.h>
 #include <string>
@@ -51,17 +50,77 @@ public:
 		return this->Data[i];
 	}
 
+
+	T& Get(size_t i)
+	{
+		return this->Data[i];
+	}
+
 	const T& operator()(int i) const
 	{
 		return this->Data[i];
 	}
 };
 
-struct FNameEntry
+class FNameEntry
 {
-	unsigned char UnknownData00[0x10];
-	char Name[1024];
+public:
+	static const auto NAME_WIDE_MASK = 0x1;
+	static const auto NAME_INDEX_SHIFT = 1;
+
+	int32_t Index;
+	char UnknownData00[0x04];
+	FNameEntry* HashNext;
+	union
+	{
+		char AnsiName[1024];
+		wchar_t WideName[1024];
+	};
+
+	inline const int32_t GetIndex() const
+	{
+		return Index >> NAME_INDEX_SHIFT;
+	}
+
+	inline bool IsWide() const
+	{
+		return Index & NAME_WIDE_MASK;
+	}
+
+	inline const char* GetAnsiName() const
+	{
+		return AnsiName;
+	}
+
+	inline const wchar_t* GetWideName() const
+	{
+		return WideName;
+	}
 };
+
+
+struct FChunkedFNameEntryArray
+{
+	enum
+	{
+		NumElementsPerChunk = 0x4000,
+		MaxChunkCount = 0x80
+	};
+
+	FNameEntry*** Objects;
+	int Count;
+	int ChunksCount;
+
+	FNameEntry* Get(size_t index) {
+		return Objects[index / NumElementsPerChunk][index % NumElementsPerChunk];
+	}
+
+	FNameEntry* operator()(size_t index)
+	{
+		return Get(index);
+	}
+};
+
 
 struct FName
 {
@@ -78,6 +137,8 @@ public:
 public:
 	FName(const std::string& FindName)
 	{
+		Index = 0;
+		Number = 0;
 		if (UnrealSDK::EngineVersion <= 8630)
 			((UnrealSDK::tFNameInitOld)(UnrealSDK::pFNameInit))(this, (wchar_t *)Util::Widen(FindName).c_str(), 0, 1, 1, 0);
 		else
@@ -87,6 +148,8 @@ public:
 
 	FName(const std::string& FindName, int number)
 	{
+		Index = 0;
+		Number = 0;
 		if (UnrealSDK::EngineVersion <= 8630)
 			((UnrealSDK::tFNameInitOld)(UnrealSDK::pFNameInit))(this, (wchar_t *)Util::Widen(FindName).c_str(), number, 1, 1,
 			                                              0);
@@ -94,16 +157,23 @@ public:
 			((UnrealSDK::tFNameInitNew)(UnrealSDK::pFNameInit))(this, (wchar_t *)Util::Widen(FindName).c_str(), number, 1, 1);
 	}
 
+#ifdef ENVIRONMENT64
+	static FChunkedFNameEntryArray* Names()
+	{
+		return (FChunkedFNameEntryArray*)UnrealSDK::pGNames;
+	}
+#else
 	static TArray<FNameEntry*>* Names()
 	{
 		return (TArray<FNameEntry*>*)UnrealSDK::pGNames;
 	}
+#endif
 
 	const char* GetName() const
 	{
-		if (Index < 0 || Index > Names()->Num())
+		if (Index < 0 || Index > Names()->Count)
 			return "UnknownName";
-		return Names()->Data[Index]->Name;
+		return Names()->Get(Index)->GetAnsiName();
 	};
 
 	bool operator ==(const FName& A) const
@@ -123,7 +193,7 @@ struct FString : public TArray<wchar_t>
 		this->Max = this->Count = Other ? (wcslen(Other) + 1) : 0;
 		this->Data = (wchar_t *)calloc(this->Count, sizeof(wchar_t));
 
-		if (this->Count)
+		if (this->Count && this->Data != 0)
 			wcscpy(this->Data, Other);
 	};
 

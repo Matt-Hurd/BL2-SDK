@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "CSimpleDetour.h"
+#include "MinHook.h"
 #include "CSigScan.h"
 #include "Exceptions.h"
 #include "Signatures.h"
 #include "CHookManager.h"
-#include "AntiDebug.h"
 #include "Util.h"
 #include "UnrealSdk.h"
 #include <utility>
@@ -12,8 +11,6 @@
 #include "Settings.h"
 #include "Exports.h"
 #include "gamedefines.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 namespace UnrealSDK
 {
@@ -45,46 +42,53 @@ namespace UnrealSDK
 	int ChangelistNumber = -1;
 
 
+	tProcessEvent oProcessEvent = nullptr;
+	tCallFunction oCallFunction = nullptr;
+
 	std::map<std::string, std::string> ObjectMap = {};
 
-	std::map<std::string, UClass *> ClassMap = {};
+	std::map<std::string, UClass*> ClassMap = {};
 
-	void __stdcall hkProcessEvent(UFunction* Function, void* Params, void* Result)
+	void __fastcall hkProcessEvent(UObject* caller, UFunction* Function, void* Params)
 	{
-		// Get "this"
-		UObject* caller;
-		_asm mov caller, ecx;
-
-		std::string functionName = Function->GetObjectName();
+		Logging::LogF("ProcessEvent\n");
+		Logging::LogF("0x%p\n", caller);
+		Logging::LogF("0x%p\n", Function);
+		Logging::LogF("0x%p\n", Params);
+		Logging::LogF("0x%p\n", oProcessEvent);
 		if (gInjectedCallNext)
 		{
 			gInjectedCallNext = false;
-			pProcessEvent(caller, Function, Params, Result);
+			oProcessEvent(caller, Function, Params);
 			return;
 		}
+		Logging::LogF("1\n");
 
+		std::string functionName = Function->GetObjectName();
+		Logging::LogF("2\n");
 		if (logAllCalls)
 		{
 			std::string callerName = caller->GetFullName();
 
 			Logging::LogF("===== ProcessEvent called =====\npCaller Name = %s\npFunction Name = %s\n",
-			              callerName.c_str(), functionName.c_str());
+				callerName.c_str(), functionName.c_str());
 		}
 
 		if (gHookManager->HasHook(caller, Function) && !gHookManager->ProcessHooks(
-			functionName, caller, Function, &FStruct{Function, Params}))
+			functionName, caller, Function, &FStruct{ Function, Params }))
 		{
 			// The engine hook manager told us not to pass this function to the engine
 			return;
 		}
+		Logging::LogF("3\n");
 
-		pProcessEvent(caller, Function, Params, Result);
+		oProcessEvent(caller, Function, Params);
 	}
 
 	void LogOutParams(FFrame* Stack)
 	{
 		Logging::LogF("Logging stack, %s, %s\n", Stack->Object->GetFullName().c_str(),
-		              Stack->Node->GetFullName().c_str());
+			Stack->Node->GetFullName().c_str());
 		Logging::LogF("0x%p\n", Stack->Node);
 		Logging::LogF("0x%p\n", Stack->Object);
 		Logging::LogF("0x%p\n", Stack->Code);
@@ -97,12 +101,9 @@ namespace UnrealSDK
 		}
 	}
 
-	void __stdcall hkCallFunction(FFrame& Stack, void* const Result, UFunction* Function)
+	void __fastcall hkCallFunction(UObject* caller, void* edx, FFrame& Stack, void* const Result, UFunction* Function)
 	{
-		// Get "this"
-		UObject* caller;
-		_asm mov caller, ecx;
-
+		Logging::LogF("CallFunction\n");
 		if (logAllCalls)
 		{
 			std::string callerName = caller->GetFullName();
@@ -112,7 +113,7 @@ namespace UnrealSDK
 			if (functionName != "Function Engine.Console.OutputText" && functionName !=
 				"Function Engine.Console.OutputTextLine")
 				Logging::LogF("===== CallFunction called =====\npCaller Name = %s\npFunction Name = %s\n",
-				              callerName.c_str(), functionName.c_str());
+					callerName.c_str(), functionName.c_str());
 		}
 
 		unsigned char* code = Stack.Code;
@@ -123,7 +124,7 @@ namespace UnrealSDK
 			return;
 		}
 		Stack.Code = code;
-		pCallFunction(caller, Stack, Result, Function);
+		oCallFunction(caller, Stack, Result, Function);
 	}
 
 	void DoInjectedCallNext()
@@ -140,6 +141,7 @@ namespace UnrealSDK
 	{
 		TCHAR szExePath[2048];
 		char actualPath[2048];
+		memset(actualPath, 0, 2048);
 		GetModuleFileName(nullptr, szExePath, 2048);
 		for (int j = 0; szExePath[j] != 0; j++)
 			actualPath[j] = (char)szExePath[j];
@@ -148,16 +150,33 @@ namespace UnrealSDK
 		std::size_t dot = str.find_last_of('.');
 		std::string exeName = str.substr(slash, dot - slash);
 		Logging::LogF("Found EXE name as '%s.exe'\n", exeName.c_str());
-		ObjectMap = game_object_map[str.substr(slash, dot - slash)];
-		CSigScan sigscan(Util::Widen(str.substr(slash, dot - slash) + ".exe").c_str());
-
+		ObjectMap = game_object_map[exeName];
+		Logging::LogF("Loaded object map\n");
+		CSigScan sigscan(Util::Widen(exeName + ".exe").c_str());
+		Logging::LogF("Loading sigs\n");
 		Signatures::InitSignatures(exeName);
+		Logging::LogF("Sigs loaded\n");
 
-		pGObjects = *(void**)sigscan.Scan(Signatures::GObjects);
-		Logging::LogF("[Internal] GObjects = 0x%p\n", pGObjects);
+		void*** tempGObjects = (void***)sigscan.Scan(Signatures::GObjects);
+		if (tempGObjects != nullptr) {
+#ifdef ENVIRONMENT64
+			pGObjects = tempGObjects;
+#else
+			pGObjects = *tempGObjects;
+#endif
+			Logging::LogF("[Internal] GObjects = 0x%p\n", pGObjects);
+		}
 
-		pGNames = *(void**)sigscan.Scan(Signatures::GNames);
-		Logging::LogF("[Internal] GNames = 0x%p\n", pGNames);
+		void*** tempGNames = (void***)sigscan.Scan(Signatures::GNames);
+		if (tempGNames != nullptr) {
+
+#ifdef ENVIRONMENT64
+			pGNames = tempGNames;
+#else
+			pGNames = *tempGNames;
+#endif
+			Logging::LogF("[Internal] GNames = 0x%p\n", pGNames);
+		}
 
 		pProcessEvent = reinterpret_cast<tProcessEvent>(sigscan.Scan(Signatures::ProcessEvent));
 		Logging::LogF("[Internal] UObject::ProcessEvent() = 0x%p\n", pProcessEvent);
@@ -174,8 +193,13 @@ namespace UnrealSDK
 		pLoadPackage = reinterpret_cast<tLoadPackage>(sigscan.Scan(Signatures::LoadPackage));
 		Logging::LogF("[Internal] UObject::LoadPackage() = 0x%p\n", pLoadPackage);
 
-		pGMalloc = *static_cast<void*****>(sigscan.Scan(Signatures::GMalloc));
-		Logging::LogF("[Internal] GMalloc = 0x%p\n", pGMalloc);
+		void* gm = sigscan.Scan(Signatures::GMalloc);
+		if (gm != nullptr) {
+			pGMalloc = *static_cast<void*****>(sigscan.Scan(Signatures::GMalloc));
+			Logging::LogF("[Internal] GMalloc = 0x%p\n", pGMalloc);
+		} else {
+			pGMalloc = nullptr;
+		}
 
 		pFNameInit = reinterpret_cast<tFNameInitOld>(sigscan.Scan(Signatures::FNameInit));
 		Logging::LogF("[Internal] FindOrCreateFName = 0x%p\n", pFNameInit);
@@ -193,23 +217,33 @@ namespace UnrealSDK
 			}
 			else
 			{
-				static_cast<unsigned char *>(SetCommand)[5] = 0xFF;
+				static_cast<unsigned char*>(SetCommand)[5] = 0xFF;
 			}
 		}
 		catch (std::exception e)
 		{
 			Logging::LogF("Exception when enabling 'SET' commands: %d\n", e.what());
 		}
+		Logging::LogF("Enabled SET commands\n");
 
-		// Detour UObject::ProcessEvent()
-		//SETUP_SIMPLE_DETOUR(detProcessEvent, pProcessEvent, hkProcessEvent);
-		CSimpleDetour detProcessEvent(&(PVOID&)pProcessEvent, hkProcessEvent);
-		detProcessEvent.Attach();
+		MH_Initialize();
 
-		// Detour UObject::CallFunction()
-		//SETUP_SIMPLE_DETOUR(detCallFunction, pCallFunction, hkCallFunction);
-		CSimpleDetour detCallFunction(&(PVOID&)pCallFunction, hkCallFunction);
-		detCallFunction.Attach();
+		if (pProcessEvent != nullptr) {
+			// Detour UObject::ProcessEvent()
+			//SETUP_SIMPLE_DETOUR(detProcessEvent, pProcessEvent, hkProcessEvent);
+			MH_CreateHook((PVOID&)pProcessEvent, &hkProcessEvent, &(PVOID&)oProcessEvent);
+			MH_EnableHook((PVOID&)pProcessEvent);
+			Logging::LogF("Hooked ProcessEvent\n");
+		}
+
+		Logging::LogF("Detour created\n");
+
+		if (pCallFunction != nullptr) {
+			// Detour UObject::CallFunction()
+			MH_CreateHook((PVOID&)pCallFunction, &hkCallFunction, &(PVOID&)oCallFunction);
+			MH_EnableHook((PVOID&)pCallFunction);
+			Logging::LogF("Hooked CallFunction\n");
+		}
 	}
 
 	void InitializePython()
@@ -259,7 +293,7 @@ namespace UnrealSDK
 
 		for (size_t i = 0; i < UObject::GObjects()->Count; ++i)
 		{
-			UObject* Object = UObject::GObjects()->Data[i];
+			UObject* Object = UObject::GObjects()->Get(i);
 
 			if (!Object || !Object->Class)
 				continue;
@@ -286,15 +320,23 @@ namespace UnrealSDK
 
 	void Initialize()
 	{
-		HookAntiDebug();
-		//Logging::SetLoggingLevel("DEBUG");
+		Logging::SetLoggingLevel("DEBUG");
 		gHookManager = new CHookManager("EngineHooks");
 		hookGame();
 
-		LogAllCalls(false);
+		//for (int x = 0; x < UObject::GObjects()->Count; x++) {
+		//	if (UObject::GObjects()->Get(x) != nullptr && UObject::GObjects()->Get(x)->Class != nullptr && !strcmp(UObject::GObjects()->Get(x)->Class->GetName(), "Class")) {
+		//		UClass* obj = (UClass *)UObject::GObjects()->Get(x);
+		//		Logging::LogF("%d %s\n", x, obj->GetFullName().c_str());
+		//		for (auto superClass = obj->SuperField; superClass; superClass = static_cast<UClass*>(superClass->SuperField)) {
+		//			Logging::LogF("\t%s\n", superClass->GetFullName().c_str());
+
+		//		}
+		//	}
+		//	//Logging::LogF("%x\n", UObject::GObjects()->Get(x));
+		//}
 
 		gHookManager->Register("Engine.Console.Initialized", "StartupSDK", GameReady);
-		//GameHooks::UnrealScriptHookManager->Register("Engine.Interaction.NotifyGameSessionEnded", "ExitGame", &cleanup);
 	}
 
 	// This is called when the process is closing
@@ -315,9 +357,9 @@ namespace UnrealSDK
 		{
 			for (size_t i = 0; i < UObject::GObjects()->Count; ++i)
 			{
-				UObject* Object = UObject::GObjects()->Data[i];
+				UObject* Object = UObject::GObjects()->Get(i);
 				if (Object->GetPackageObject() == result)
-					Object->ObjectFlags.A = Object->ObjectFlags.A | 0x4000;
+					Object->ObjectFlags.A |= 0x4000;
 			}
 		}
 	};
@@ -361,40 +403,4 @@ namespace UnrealSDK
 	{
 		return gHookManager->Remove(FuncName, HookName);
 	}
-
-	//UObject *LoadTexture(char *Filename, char *TextureName) {
-	//	UTexture2D *NewTexture = (UTexture2D *)UObject::Find("Texture2D", std::string("Transient.") + TextureName);
-	//	if (NewTexture)
-	//		return NewTexture;
-	//	int x, y, n;
-	//	unsigned char *data = stbi_load(Filename, &x, &y, &n, 4);
-	//	if (!data)
-	//		throw std::exception("Unable to parse image file");
-	//	NewTexture = (UTexture2D *)ConstructObject(UObject::FindClass("Texture2D"), GetEngine()->Outer, FName(TextureName), 0x83, 0, nullptr, nullptr, nullptr, false);
-	//	UTexture2D *DefaultTexture = (UTexture2D *)UObject::Find("Texture2D", "Engine.Default__Texture2D ");
-	//	if (!NewTexture)
-	//		return nullptr;
-	//	NewTexture->ObjectFlags.A |= 0x4000;
-	//	NewTexture->SizeX = x;
-	//	NewTexture->OriginalSizeX = x;
-	//	NewTexture->SizeY = y;
-	//	NewTexture->OriginalSizeY = y;
-	//	NewTexture->Format = 2;
-	//	FTexture2DMipMap *MipsData = (FTexture2DMipMap *)calloc(1, sizeof(FTexture2DMipMap));
-	//	MipsData->SizeX = x;
-	//	MipsData->SizeY = y;
-	//	memcpy(&MipsData->Data, &DefaultTexture->Mips.Data[0]->Data, sizeof(FUntypedBulkData_Mirror));
-	//	MipsData->Data.bShouldFreeOnEmpty = 0;
-	//	MipsData->Data.BulkData.Dummy = (int)data;
-	//	NewTexture->Mips.Data = (FTexture2DMipMap **)malloc(sizeof(FTexture2DMipMap *));
-	//	NewTexture->Mips.Data[0] = MipsData;
-	//	NewTexture->Mips.Count = 1;
-	//	NewTexture->Mips.Max = 1;
-	//	NewTexture->ResidentMips = 1;
-	//	FPropertyChangedEvent ChangeEvent {};
-	//	ChangeEvent.Property = (UProperty *)UObject::Find("BoolProperty", "Engine.Texture.SRGB");
-	//	ChangeEvent.ChangeType = 1;
-	//	NewTexture->PostEditChangeProperty(&ChangeEvent);
-	//	return (UObject *)NewTexture;
-	//}
 }

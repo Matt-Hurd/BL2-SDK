@@ -8,11 +8,11 @@
 
 CSigScan::CSigScan(const wchar_t* moduleName)
 {
-	m_moduleHandle = GetModuleHandle(moduleName);
+	m_moduleHandle = GetModuleHandle(NULL);
 	if (m_moduleHandle == nullptr)
 	{
 		throw FatalSDKException(3000, Util::Format("Sigscan failed (GetModuleHandle returned NULL, Error = %d)",
-		                                           GetLastError()));
+			GetLastError()));
 	}
 
 	void* pAddr = m_moduleHandle;
@@ -22,7 +22,7 @@ CSigScan::CSigScan(const wchar_t* moduleName)
 	if (!VirtualQuery(pAddr, &mem, sizeof(mem)))
 	{
 		throw FatalSDKException(3001, Util::Format("Sigscan failed (VirtualQuery returned NULL, Error = %d)",
-		                                           GetLastError()));
+			GetLastError()));
 	}
 
 	m_pModuleBase = (char*)mem.AllocationBase;
@@ -34,12 +34,20 @@ CSigScan::CSigScan(const wchar_t* moduleName)
 	IMAGE_DOS_HEADER* dos = (IMAGE_DOS_HEADER*)mem.AllocationBase;
 	IMAGE_NT_HEADERS* pe = (IMAGE_NT_HEADERS*)((unsigned long)dos + (unsigned long)dos->e_lfanew);
 
-	if (pe->Signature != IMAGE_NT_SIGNATURE)
-	{
-		throw FatalSDKException(3003, "Sigscan failed (pe points to a bad location)");
-	}
+	Logging::LogF("m_moduleHandle: %x\n", m_moduleHandle);
+	Logging::LogF("baseAddress: %x\n", mem.BaseAddress);
+	Logging::LogF("%x\n", dos);
+	Logging::LogF("%x\n", dos->e_lfanew);
+	Logging::LogF("%x\n", (IMAGE_NT_HEADERS*)((unsigned long)dos + (unsigned long)dos->e_lfanew));
+	Logging::LogF("Module base %x\n", m_pModuleBase);
 
+#ifdef ENVIRONMENT64
+	m_moduleLen = 0x21000000;
+	Logging::LogF("Module len %x\n", m_moduleLen);
+#else
 	m_moduleLen = (size_t)pe->OptionalHeader.SizeOfImage;
+	Logging::LogF("Module len %x\n", m_moduleLen);
+#endif
 }
 
 void* CSigScan::Scan(const MemorySignature& sigStruct)
@@ -75,6 +83,6 @@ void* CSigScan::Scan(const char* sig, const char* mask, int sigLength)
 
 		pData++;
 	}
-	Logging::LogF("Sigscan failed (Signature not found, Mask = %s)", Util::StringToHex(sig, sigLength).c_str());
+	Logging::LogF("Sigscan failed (Signature not found, Mask = %s)\n", Util::StringToHex(sig, sigLength).c_str());
 	return nullptr;
 }

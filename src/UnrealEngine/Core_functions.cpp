@@ -43,7 +43,7 @@
 
 bool UObject::IsRelevantForDebugging(class UObject* Source)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsRelevantForDebugging");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsRelevantForDebugging");
 
 	UObject_IsRelevantForDebugging_Params params;
 	params.Source = Source;
@@ -51,7 +51,7 @@ bool UObject::IsRelevantForDebugging(class UObject* Source)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -66,14 +66,14 @@ bool UObject::IsRelevantForDebugging(class UObject* Source)
 
 class UObject* UObject::GetGlobalDebugTarget()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetGlobalDebugTarget");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetGlobalDebugTarget");
 
 	UObject_GetGlobalDebugTarget_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -88,7 +88,7 @@ class UObject* UObject::GetGlobalDebugTarget()
 
 void UObject::SetGlobalDebugTarget(class UObject* Target)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SetGlobalDebugTarget");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SetGlobalDebugTarget");
 
 	UObject_SetGlobalDebugTarget_Params params;
 	params.Target = Target;
@@ -96,7 +96,7 @@ void UObject::SetGlobalDebugTarget(class UObject* Target)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -109,7 +109,7 @@ void UObject::SetGlobalDebugTarget(class UObject* Target)
 
 void UObject::LogContentDebug(const struct FString& Message)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LogContentDebug");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LogContentDebug");
 
 	UObject_LogContentDebug_Params params;
 	params.Message = Message;
@@ -117,7 +117,7 @@ void UObject::LogContentDebug(const struct FString& Message)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -130,7 +130,7 @@ void UObject::LogContentDebug(const struct FString& Message)
 
 struct FString UObject::GetLanguage()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetLanguage");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetLanguage");
 
 	UObject_GetLanguage_Params params;
 
@@ -138,7 +138,7 @@ struct FString UObject::GetLanguage()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -154,18 +154,18 @@ struct FString UObject::GetLanguage()
 
 int UObject::GetRandomOptionSumFrequency(TArray<float>* FreqList)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetRandomOptionSumFrequency");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetRandomOptionSumFrequency");
 
 	UObject_GetRandomOptionSumFrequency_Params params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (FreqList != nullptr)
-		*FreqList = params.FreqList;
+		* FreqList = params.FreqList;
 
 	return params.ReturnValue;
 }
@@ -178,7 +178,7 @@ int UObject::GetRandomOptionSumFrequency(TArray<float>* FreqList)
 
 int UObject::GetBuildChangelistNumber()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetBuildChangelistNumber");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetBuildChangelistNumber");
 
 	UObject_GetBuildChangelistNumber_Params params;
 
@@ -186,7 +186,7 @@ int UObject::GetBuildChangelistNumber()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -201,14 +201,14 @@ int UObject::GetBuildChangelistNumber()
 
 int UObject::GetEngineVersion()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetEngineVersion");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetEngineVersion");
 	UObject_GetEngineVersion_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -230,33 +230,33 @@ int UObject::GetEngineVersion()
 
 void UObject::GetSystemTime(int* Year, int* Month, int* DayOfWeek, int* Day, int* Hour, int* Min, int* Sec, int* MSec)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetSystemTime");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetSystemTime");
 
 	UObject_GetSystemTime_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (Year != nullptr)
-		*Year = params.Year;
+		* Year = params.Year;
 	if (Month != nullptr)
-		*Month = params.Month;
+		* Month = params.Month;
 	if (DayOfWeek != nullptr)
-		*DayOfWeek = params.DayOfWeek;
+		* DayOfWeek = params.DayOfWeek;
 	if (Day != nullptr)
-		*Day = params.Day;
+		* Day = params.Day;
 	if (Hour != nullptr)
-		*Hour = params.Hour;
+		* Hour = params.Hour;
 	if (Min != nullptr)
-		*Min = params.Min;
+		* Min = params.Min;
 	if (Sec != nullptr)
-		*Sec = params.Sec;
+		* Sec = params.Sec;
 	if (MSec != nullptr)
-		*MSec = params.MSec;
+		* MSec = params.MSec;
 }
 
 
@@ -267,14 +267,14 @@ void UObject::GetSystemTime(int* Year, int* Month, int* DayOfWeek, int* Day, int
 
 struct FString UObject::TimeStamp()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.TimeStamp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.TimeStamp");
 
 	UObject_TimeStamp_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -292,7 +292,7 @@ struct FString UObject::TimeStamp()
 
 struct FVector UObject::TransformVectorByRotation(const struct FRotator& SourceRotation, const struct FVector& SourceVector, bool bInverse)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.TransformVectorByRotation");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.TransformVectorByRotation");
 
 	UObject_TransformVectorByRotation_Params params;
 	params.SourceRotation = SourceRotation;
@@ -302,7 +302,7 @@ struct FVector UObject::TransformVectorByRotation(const struct FRotator& SourceR
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -317,14 +317,14 @@ struct FVector UObject::TransformVectorByRotation(const struct FRotator& SourceR
 
 struct FName UObject::GetPackageName()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetPackageName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetPackageName");
 
 	UObject_GetPackageName_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -339,14 +339,14 @@ struct FName UObject::GetPackageName()
 
 bool UObject::IsPendingKill()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsPendingKill");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsPendingKill");
 
 	UObject_IsPendingKill_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -363,7 +363,7 @@ bool UObject::IsPendingKill()
 
 float UObject::ByteToFloat(unsigned char inputByte, bool bSigned)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ByteToFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ByteToFloat");
 
 	UObject_ByteToFloat_Params params;
 	params.inputByte = inputByte;
@@ -371,7 +371,7 @@ float UObject::ByteToFloat(unsigned char inputByte, bool bSigned)
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -388,7 +388,7 @@ float UObject::ByteToFloat(unsigned char inputByte, bool bSigned)
 
 unsigned char UObject::FloatToByte(float inputFloat, bool bSigned)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FloatToByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FloatToByte");
 
 	UObject_FloatToByte_Params params;
 	params.inputFloat = inputFloat;
@@ -396,7 +396,7 @@ unsigned char UObject::FloatToByte(float inputFloat, bool bSigned)
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -412,7 +412,7 @@ unsigned char UObject::FloatToByte(float inputFloat, bool bSigned)
 
 float UObject::UnwindHeading(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.UnwindHeading");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.UnwindHeading");
 
 	UObject_UnwindHeading_Params params;
 	params.A = A;
@@ -420,7 +420,7 @@ float UObject::UnwindHeading(float A)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -437,7 +437,7 @@ float UObject::UnwindHeading(float A)
 
 float UObject::FindDeltaAngle(float A1, float A2)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FindDeltaAngle");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FindDeltaAngle");
 
 	UObject_FindDeltaAngle_Params params;
 	params.A1 = A1;
@@ -446,7 +446,7 @@ float UObject::FindDeltaAngle(float A1, float A2)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -462,7 +462,7 @@ float UObject::FindDeltaAngle(float A1, float A2)
 
 float UObject::GetHeadingAngle(const struct FVector& Dir)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetHeadingAngle");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetHeadingAngle");
 
 	UObject_GetHeadingAngle_Params params;
 	params.Dir = Dir;
@@ -470,7 +470,7 @@ float UObject::GetHeadingAngle(const struct FVector& Dir)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -485,19 +485,19 @@ float UObject::GetHeadingAngle(const struct FVector& Dir)
 
 void UObject::GetAngularDegreesFromRadians(struct FVector2D* OutFOV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAngularDegreesFromRadians");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAngularDegreesFromRadians");
 
 	UObject_GetAngularDegreesFromRadians_Params params;
 
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutFOV != nullptr)
-		*OutFOV = params.OutFOV;
+		* OutFOV = params.OutFOV;
 }
 
 
@@ -509,7 +509,7 @@ void UObject::GetAngularDegreesFromRadians(struct FVector2D* OutFOV)
 
 void UObject::GetAngularFromDotDist(const struct FVector2D& DotDist, struct FVector2D* OutAngDist)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAngularFromDotDist");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAngularFromDotDist");
 
 	UObject_GetAngularFromDotDist_Params params;
 	params.DotDist = DotDist;
@@ -518,12 +518,12 @@ void UObject::GetAngularFromDotDist(const struct FVector2D& DotDist, struct FVec
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutAngDist != nullptr)
-		*OutAngDist = params.OutAngDist;
+		* OutAngDist = params.OutAngDist;
 }
 
 
@@ -539,7 +539,7 @@ void UObject::GetAngularFromDotDist(const struct FVector2D& DotDist, struct FVec
 
 bool UObject::GetAngularDistance(const struct FVector& Direction, const struct FVector& AxisX, const struct FVector& AxisY, const struct FVector& AxisZ, struct FVector2D* OutAngularDist)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAngularDistance");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAngularDistance");
 
 	UObject_GetAngularDistance_Params params;
 	params.Direction = Direction;
@@ -551,12 +551,12 @@ bool UObject::GetAngularDistance(const struct FVector& Direction, const struct F
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutAngularDist != nullptr)
-		*OutAngularDist = params.OutAngularDist;
+		* OutAngularDist = params.OutAngularDist;
 
 	return params.ReturnValue;
 }
@@ -574,7 +574,7 @@ bool UObject::GetAngularDistance(const struct FVector& Direction, const struct F
 
 bool UObject::GetDotDistance(const struct FVector& Direction, const struct FVector& AxisX, const struct FVector& AxisY, const struct FVector& AxisZ, struct FVector2D* OutDotDist)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetDotDistance");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetDotDistance");
 
 	UObject_GetDotDistance_Params params;
 	params.Direction = Direction;
@@ -586,12 +586,12 @@ bool UObject::GetDotDistance(const struct FVector& Direction, const struct FVect
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutDotDist != nullptr)
-		*OutDotDist = params.OutDotDist;
+		* OutDotDist = params.OutDotDist;
 
 	return params.ReturnValue;
 }
@@ -608,7 +608,7 @@ bool UObject::GetDotDistance(const struct FVector& Direction, const struct FVect
 
 struct FVector UObject::PointProjectToPlane(const struct FVector& Point, const struct FVector& A, const struct FVector& B, const struct FVector& C)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PointProjectToPlane");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PointProjectToPlane");
 
 	UObject_PointProjectToPlane_Params params;
 	params.Point = Point;
@@ -620,7 +620,7 @@ struct FVector UObject::PointProjectToPlane(const struct FVector& Point, const s
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -639,7 +639,7 @@ struct FVector UObject::PointProjectToPlane(const struct FVector& Point, const s
 
 float UObject::PointDistToPlane(const struct FVector& Point, const struct FRotator& Orientation, const struct FVector& Origin, struct FVector* out_ClosestPoint)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PointDistToPlane");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PointDistToPlane");
 
 	UObject_PointDistToPlane_Params params;
 	params.Point = Point;
@@ -648,12 +648,12 @@ float UObject::PointDistToPlane(const struct FVector& Point, const struct FRotat
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (out_ClosestPoint != nullptr)
-		*out_ClosestPoint = params.out_ClosestPoint;
+		* out_ClosestPoint = params.out_ClosestPoint;
 
 	return params.ReturnValue;
 }
@@ -670,7 +670,7 @@ float UObject::PointDistToPlane(const struct FVector& Point, const struct FRotat
 
 float UObject::PointDistToSegment(const struct FVector& Point, const struct FVector& StartPoint, const struct FVector& EndPoint, struct FVector* OutClosestPoint)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PointDistToSegment");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PointDistToSegment");
 
 	UObject_PointDistToSegment_Params params;
 	params.Point = Point;
@@ -680,12 +680,12 @@ float UObject::PointDistToSegment(const struct FVector& Point, const struct FVec
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutClosestPoint != nullptr)
-		*OutClosestPoint = params.OutClosestPoint;
+		* OutClosestPoint = params.OutClosestPoint;
 
 	return params.ReturnValue;
 }
@@ -702,7 +702,7 @@ float UObject::PointDistToSegment(const struct FVector& Point, const struct FVec
 
 float UObject::PointDistToLine(const struct FVector& Point, const struct FVector& Line, const struct FVector& Origin, struct FVector* OutClosestPoint)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PointDistToLine");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PointDistToLine");
 
 	UObject_PointDistToLine_Params params;
 	params.Point = Point;
@@ -712,12 +712,12 @@ float UObject::PointDistToLine(const struct FVector& Point, const struct FVector
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (OutClosestPoint != nullptr)
-		*OutClosestPoint = params.OutClosestPoint;
+		* OutClosestPoint = params.OutClosestPoint;
 
 	return params.ReturnValue;
 }
@@ -734,7 +734,7 @@ float UObject::PointDistToLine(const struct FVector& Point, const struct FVector
 
 bool UObject::GetPerObjectConfigSections(class UClass* SearchClass, class UObject* ObjectOuter, int MaxResults, TArray<struct FString>* out_SectionNames)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetPerObjectConfigSections");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetPerObjectConfigSections");
 
 	UObject_GetPerObjectConfigSections_Params params;
 	params.SearchClass = SearchClass;
@@ -745,12 +745,12 @@ bool UObject::GetPerObjectConfigSections(class UClass* SearchClass, class UObjec
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (out_SectionNames != nullptr)
-		*out_SectionNames = params.out_SectionNames;
+		* out_SectionNames = params.out_SectionNames;
 
 	return params.ReturnValue;
 }
@@ -761,7 +761,7 @@ bool UObject::GetPerObjectConfigSections(class UClass* SearchClass, class UObjec
 
 void UObject::StaticSaveConfig()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.StaticSaveConfig");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.StaticSaveConfig");
 
 	UObject_StaticSaveConfig_Params params;
 
@@ -769,7 +769,7 @@ void UObject::StaticSaveConfig()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -780,14 +780,14 @@ void UObject::StaticSaveConfig()
 
 void UObject::SaveConfig()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SaveConfig");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SaveConfig");
 
 	UObject_SaveConfig_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -801,7 +801,7 @@ void UObject::SaveConfig()
 
 struct FString UObject::GetAttributeModiferDescriptor(const struct FName& AttributeName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAttributeModiferDescriptor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAttributeModiferDescriptor");
 
 	UObject_GetAttributeModiferDescriptor_Params params;
 	params.AttributeName = AttributeName;
@@ -809,7 +809,7 @@ struct FString UObject::GetAttributeModiferDescriptor(const struct FName& Attrib
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -825,7 +825,7 @@ struct FString UObject::GetAttributeModiferDescriptor(const struct FName& Attrib
 
 float UObject::GetAttributeValueByName(const struct FName& AttributeName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAttributeValueByName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAttributeValueByName");
 
 	UObject_GetAttributeValueByName_Params params;
 	params.AttributeName = AttributeName;
@@ -833,7 +833,7 @@ float UObject::GetAttributeValueByName(const struct FName& AttributeName)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -851,7 +851,7 @@ float UObject::GetAttributeValueByName(const struct FName& AttributeName)
 
 bool UObject::RemoveModifier(class UAttributeModifier* mod, const struct FName& AttributeName, bool bSuppressNotify)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RemoveModifier");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RemoveModifier");
 
 	UObject_RemoveModifier_Params params;
 	params.mod = mod;
@@ -861,7 +861,7 @@ bool UObject::RemoveModifier(class UAttributeModifier* mod, const struct FName& 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -879,7 +879,7 @@ bool UObject::RemoveModifier(class UAttributeModifier* mod, const struct FName& 
 
 bool UObject::AddModifier(class UAttributeModifier* mod, const struct FName& AttributeName, bool bSuppressNotify)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddModifier");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddModifier");
 
 	UObject_AddModifier_Params params;
 	params.mod = mod;
@@ -889,7 +889,7 @@ bool UObject::AddModifier(class UAttributeModifier* mod, const struct FName& Att
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -910,9 +910,9 @@ class UObject* UObject::FindObject(const struct FString& ObjectName, class UClas
 	if (!fn)
 		for (size_t i = 0; i < UObject::GObjects()->Count; ++i)
 		{
-			UObject* Object = UObject::GObjects()->Data[i];
+			UObject* Object = UObject::GObjects()->Get(i);
 			if (!strcmp(Object->GetFullName().c_str(), "Function Core.Object.FindObject"))
-				fn = (UFunction *)Object;
+				fn = (UFunction*)Object;
 		}
 
 	if (!fn)
@@ -927,7 +927,7 @@ class UObject* UObject::FindObject(const struct FString& ObjectName, class UClas
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 	fn->FunctionFlags = flags;
 
 	return params.ReturnValue;
@@ -944,7 +944,7 @@ class UObject* UObject::FindObject(const struct FString& ObjectName, class UClas
 
 class UObject* UObject::DynamicLoadObject(const struct FString& ObjectName, class UClass* ObjectClass, bool MayFail)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DynamicLoadObject");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DynamicLoadObject");
 
 	UObject_DynamicLoadObject_Params params;
 	params.ObjectName = ObjectName;
@@ -955,7 +955,7 @@ class UObject* UObject::DynamicLoadObject(const struct FString& ObjectName, clas
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -972,7 +972,7 @@ class UObject* UObject::DynamicLoadObject(const struct FString& ObjectName, clas
 
 struct FName UObject::GetEnum(class UObject* E, int I)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetEnum");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetEnum");
 
 	UObject_GetEnum_Params params;
 	params.E = E;
@@ -982,7 +982,7 @@ struct FName UObject::GetEnum(class UObject* E, int I)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -997,7 +997,7 @@ struct FName UObject::GetEnum(class UObject* E, int I)
 
 void UObject::Disable(const struct FName& ProbeFunc)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Disable");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Disable");
 
 	UObject_Disable_Params params;
 	params.ProbeFunc = ProbeFunc;
@@ -1005,7 +1005,7 @@ void UObject::Disable(const struct FName& ProbeFunc)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1018,7 +1018,7 @@ void UObject::Disable(const struct FName& ProbeFunc)
 
 void UObject::Enable(const struct FName& ProbeFunc)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Enable");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Enable");
 
 	UObject_Enable_Params params;
 	params.ProbeFunc = ProbeFunc;
@@ -1026,7 +1026,7 @@ void UObject::Enable(const struct FName& ProbeFunc)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1037,13 +1037,13 @@ void UObject::Enable(const struct FName& ProbeFunc)
 
 void UObject::ContinuedState()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ContinuedState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ContinuedState");
 
 	UObject_ContinuedState_Params params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1054,13 +1054,13 @@ void UObject::ContinuedState()
 
 void UObject::PausedState()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PausedState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PausedState");
 
 	UObject_PausedState_Params params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1071,13 +1071,13 @@ void UObject::PausedState()
 
 void UObject::PoppedState()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PoppedState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PoppedState");
 
 	UObject_PoppedState_Params params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1088,13 +1088,13 @@ void UObject::PoppedState()
 
 void UObject::PushedState()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PushedState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PushedState");
 
 	UObject_PushedState_Params params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1107,14 +1107,14 @@ void UObject::PushedState()
 
 void UObject::EndState(const struct FName& NextStateName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EndState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EndState");
 
 	UObject_EndState_Params params;
 	params.NextStateName = NextStateName;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1127,14 +1127,14 @@ void UObject::EndState(const struct FName& NextStateName)
 
 void UObject::BeginState(const struct FName& PreviousStateName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.BeginState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.BeginState");
 
 	UObject_BeginState_Params params;
 	params.PreviousStateName = PreviousStateName;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1147,7 +1147,7 @@ void UObject::BeginState(const struct FName& PreviousStateName)
 
 void UObject::BreakPoint(class UObject* SomeObject)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.BreakPoint");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.BreakPoint");
 
 	UObject_BreakPoint_Params params;
 	params.SomeObject = SomeObject;
@@ -1155,7 +1155,7 @@ void UObject::BreakPoint(class UObject* SomeObject)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1166,14 +1166,14 @@ void UObject::BreakPoint(class UObject* SomeObject)
 
 void UObject::PrintScriptStack()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PrintScriptStack");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PrintScriptStack");
 
 	UObject_PrintScriptStack_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1184,14 +1184,14 @@ void UObject::PrintScriptStack()
 
 void UObject::DumpStateStack()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DumpStateStack");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DumpStateStack");
 
 	UObject_DumpStateStack_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1204,7 +1204,7 @@ void UObject::DumpStateStack()
 
 void UObject::PopState(bool bPopAll)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PopState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PopState");
 
 	UObject_PopState_Params params;
 	params.bPopAll = bPopAll;
@@ -1212,7 +1212,7 @@ void UObject::PopState(bool bPopAll)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1226,7 +1226,7 @@ void UObject::PopState(bool bPopAll)
 
 void UObject::PushState(const struct FName& NewState, const struct FName& NewLabel)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PushState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PushState");
 
 	UObject_PushState_Params params;
 	params.NewState = NewState;
@@ -1235,7 +1235,7 @@ void UObject::PushState(const struct FName& NewState, const struct FName& NewLab
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1248,14 +1248,14 @@ void UObject::PushState(const struct FName& NewState, const struct FName& NewLab
 
 struct FName UObject::GetStateName()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetStateName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetStateName");
 
 	UObject_GetStateName_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1272,7 +1272,7 @@ struct FName UObject::GetStateName()
 
 bool UObject::IsChildState(const struct FName& TestState, const struct FName& TestParentState)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsChildState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsChildState");
 
 	UObject_IsChildState_Params params;
 	params.TestState = TestState;
@@ -1281,7 +1281,7 @@ bool UObject::IsChildState(const struct FName& TestState, const struct FName& Te
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1298,7 +1298,7 @@ bool UObject::IsChildState(const struct FName& TestState, const struct FName& Te
 
 bool UObject::IsInState(const struct FName& TestState, bool bTestStateStack)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsInState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsInState");
 
 	UObject_IsInState_Params params;
 	params.TestState = TestState;
@@ -1307,7 +1307,7 @@ bool UObject::IsInState(const struct FName& TestState, bool bTestStateStack)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1325,7 +1325,7 @@ bool UObject::IsInState(const struct FName& TestState, bool bTestStateStack)
 
 void UObject::GotoState(const struct FName& NewState, const struct FName& Label, bool bForceEvents, bool bKeepStack)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GotoState");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GotoState");
 
 	UObject_GotoState_Params params;
 	params.NewState = NewState;
@@ -1336,7 +1336,7 @@ void UObject::GotoState(const struct FName& NewState, const struct FName& Label,
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1349,7 +1349,7 @@ void UObject::GotoState(const struct FName& NewState, const struct FName& Label,
 
 bool UObject::IsUTracing()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsUTracing");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsUTracing");
 
 	UObject_IsUTracing_Params params;
 
@@ -1357,7 +1357,7 @@ bool UObject::IsUTracing()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1372,7 +1372,7 @@ bool UObject::IsUTracing()
 
 void UObject::SetUTracing(bool bShouldUTrace)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SetUTracing");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SetUTracing");
 
 	UObject_SetUTracing_Params params;
 	params.bShouldUTrace = bShouldUTrace;
@@ -1381,7 +1381,7 @@ void UObject::SetUTracing(bool bShouldUTrace)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1394,7 +1394,7 @@ void UObject::SetUTracing(bool bShouldUTrace)
 
 struct FName UObject::GetFuncName()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetFuncName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetFuncName");
 
 	UObject_GetFuncName_Params params;
 
@@ -1402,7 +1402,7 @@ struct FName UObject::GetFuncName()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1418,7 +1418,7 @@ struct FName UObject::GetFuncName()
 
 void UObject::DebugBreak(int UserFlags, unsigned char DebuggerType)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DebugBreak");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DebugBreak");
 
 	UObject_DebugBreak_Params params;
 	params.UserFlags = UserFlags;
@@ -1428,7 +1428,7 @@ void UObject::DebugBreak(int UserFlags, unsigned char DebuggerType)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1441,7 +1441,7 @@ void UObject::DebugBreak(int UserFlags, unsigned char DebuggerType)
 
 struct FString UObject::GetScriptTrace()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetScriptTrace");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetScriptTrace");
 
 	UObject_GetScriptTrace_Params params;
 
@@ -1449,7 +1449,7 @@ struct FString UObject::GetScriptTrace()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1462,7 +1462,7 @@ struct FString UObject::GetScriptTrace()
 
 void UObject::ScriptTrace()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ScriptTrace");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ScriptTrace");
 
 	UObject_ScriptTrace_Params params;
 
@@ -1470,7 +1470,7 @@ void UObject::ScriptTrace()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1484,7 +1484,7 @@ void UObject::ScriptTrace()
 
 struct FString UObject::ParseLocalizedPropertyPath(const struct FString& PathName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ParseLocalizedPropertyPath");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ParseLocalizedPropertyPath");
 
 	UObject_ParseLocalizedPropertyPath_Params params;
 	params.PathName = PathName;
@@ -1492,7 +1492,7 @@ struct FString UObject::ParseLocalizedPropertyPath(const struct FString& PathNam
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1510,7 +1510,7 @@ struct FString UObject::ParseLocalizedPropertyPath(const struct FString& PathNam
 
 struct FString UObject::Localize(const struct FString& SectionName, const struct FString& KeyName, const struct FString& PackageName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Localize");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Localize");
 
 	UObject_Localize_Params params;
 	params.SectionName = SectionName;
@@ -1521,7 +1521,7 @@ struct FString UObject::Localize(const struct FString& SectionName, const struct
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1538,7 +1538,7 @@ struct FString UObject::Localize(const struct FString& SectionName, const struct
 
 void UObject::LogIndentedInternal(const struct FString& S, const struct FName& LogTag, int IndentationLevelChange)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LogIndentedInternal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LogIndentedInternal");
 
 	UObject_LogIndentedInternal_Params params;
 	params.S = S;
@@ -1549,7 +1549,7 @@ void UObject::LogIndentedInternal(const struct FString& S, const struct FName& L
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1562,7 +1562,7 @@ void UObject::LogIndentedInternal(const struct FString& S, const struct FName& L
 
 void UObject::WarnInternal(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.WarnInternal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.WarnInternal");
 
 	UObject_WarnInternal_Params params;
 	params.S = S;
@@ -1571,7 +1571,7 @@ void UObject::WarnInternal(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1585,7 +1585,7 @@ void UObject::WarnInternal(const struct FString& S)
 
 void UObject::LogInternal(const struct FString& S, const struct FName& Tag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LogInternal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LogInternal");
 
 	UObject_LogInternal_Params params;
 	params.S = S;
@@ -1595,7 +1595,7 @@ void UObject::LogInternal(const struct FString& S, const struct FName& Tag)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 }
@@ -1609,7 +1609,7 @@ void UObject::LogInternal(const struct FString& S, const struct FName& Tag)
 
 struct FString UObject::GetStringForNameBasedObjectPath(const struct FNameBasedObjectPath& ObjectPath)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetStringForNameBasedObjectPath");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetStringForNameBasedObjectPath");
 
 	UObject_GetStringForNameBasedObjectPath_Params params;
 	params.ObjectPath = ObjectPath;
@@ -1618,7 +1618,7 @@ struct FString UObject::GetStringForNameBasedObjectPath(const struct FNameBasedO
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -1634,7 +1634,7 @@ struct FString UObject::GetStringForNameBasedObjectPath(const struct FNameBasedO
 
 void UObject::SetNameBasedObjectPath(class UObject* Object, struct FNameBasedObjectPath* ObjectPath)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SetNameBasedObjectPath");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SetNameBasedObjectPath");
 
 	UObject_SetNameBasedObjectPath_Params params;
 	params.Object = Object;
@@ -1643,12 +1643,12 @@ void UObject::SetNameBasedObjectPath(class UObject* Object, struct FNameBasedObj
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (ObjectPath != nullptr)
-		*ObjectPath = params.ObjectPath;
+		* ObjectPath = params.ObjectPath;
 }
 
 
@@ -1661,7 +1661,7 @@ void UObject::SetNameBasedObjectPath(class UObject* Object, struct FNameBasedObj
 
 bool UObject::FlagHasBeenTrueFor(float TimeSeconds, struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagHasBeenTrueFor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagHasBeenTrueFor");
 
 	UObject_FlagHasBeenTrueFor_Params params;
 	params.TimeSeconds = TimeSeconds;
@@ -1669,12 +1669,12 @@ bool UObject::FlagHasBeenTrueFor(float TimeSeconds, struct FFlag* theFlag)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1688,19 +1688,19 @@ bool UObject::FlagHasBeenTrueFor(float TimeSeconds, struct FFlag* theFlag)
 
 float UObject::FlagTimeRemaining(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagTimeRemaining");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagTimeRemaining");
 
 	UObject_FlagTimeRemaining_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1714,19 +1714,19 @@ float UObject::FlagTimeRemaining(struct FFlag* theFlag)
 
 float UObject::FlagTimeSinceRaised(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagTimeSinceRaised");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagTimeSinceRaised");
 
 	UObject_FlagTimeSinceRaised_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1741,7 +1741,7 @@ float UObject::FlagTimeSinceRaised(struct FFlag* theFlag)
 
 void UObject::FlagSetValue(bool bNewValue, bool bForceTimeStamp, struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagSetValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagSetValue");
 
 	UObject_FlagSetValue_Params params;
 	params.bNewValue = bNewValue;
@@ -1750,12 +1750,12 @@ void UObject::FlagSetValue(bool bNewValue, bool bForceTimeStamp, struct FFlag* t
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 }
 
 
@@ -1767,19 +1767,19 @@ void UObject::FlagSetValue(bool bNewValue, bool bForceTimeStamp, struct FFlag* t
 
 bool UObject::FlagIsLowered(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagIsLowered");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagIsLowered");
 
 	UObject_FlagIsLowered_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1793,19 +1793,19 @@ bool UObject::FlagIsLowered(struct FFlag* theFlag)
 
 bool UObject::FlagIsRaised(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagIsRaised");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagIsRaised");
 
 	UObject_FlagIsRaised_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1819,19 +1819,19 @@ bool UObject::FlagIsRaised(struct FFlag* theFlag)
 
 bool UObject::FlagIsFalse(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagIsFalse");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagIsFalse");
 
 	UObject_FlagIsFalse_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1845,19 +1845,19 @@ bool UObject::FlagIsFalse(struct FFlag* theFlag)
 
 bool UObject::FlagIsTrue(struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagIsTrue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagIsTrue");
 
 	UObject_FlagIsTrue_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 
 	return params.ReturnValue;
 }
@@ -1871,7 +1871,7 @@ bool UObject::FlagIsTrue(struct FFlag* theFlag)
 
 void UObject::FlagSetTrueTimed(float Duration, struct FFlag* theFlag)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FlagSetTrueTimed");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FlagSetTrueTimed");
 
 	UObject_FlagSetTrueTimed_Params params;
 	params.Duration = Duration;
@@ -1879,12 +1879,12 @@ void UObject::FlagSetTrueTimed(float Duration, struct FFlag* theFlag)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theFlag != nullptr)
-		*theFlag = params.theFlag;
+		* theFlag = params.theFlag;
 }
 
 
@@ -1896,19 +1896,19 @@ void UObject::FlagSetTrueTimed(float Duration, struct FFlag* theFlag)
 
 float UObject::SmartVectTimeRemaining(struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectTimeRemaining");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectTimeRemaining");
 
 	UObject_SmartVectTimeRemaining_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 
 	return params.ReturnValue;
 }
@@ -1922,19 +1922,19 @@ float UObject::SmartVectTimeRemaining(struct FSmartVector* theSV)
 
 float UObject::SmartVectTimeSinceSet(struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectTimeSinceSet");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectTimeSinceSet");
 
 	UObject_SmartVectTimeSinceSet_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 
 	return params.ReturnValue;
 }
@@ -1949,21 +1949,21 @@ float UObject::SmartVectTimeSinceSet(struct FSmartVector* theSV)
 
 bool UObject::SmartVectGetVector(struct FSmartVector* theSV, struct FVector* OutVector)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectGetVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectGetVector");
 
 	UObject_SmartVectGetVector_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 	if (OutVector != nullptr)
-		*OutVector = params.OutVector;
+		* OutVector = params.OutVector;
 
 	return params.ReturnValue;
 }
@@ -1977,19 +1977,19 @@ bool UObject::SmartVectGetVector(struct FSmartVector* theSV, struct FVector* Out
 
 bool UObject::SmartVectIsSet(struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectIsSet");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectIsSet");
 
 	UObject_SmartVectIsSet_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 
 	return params.ReturnValue;
 }
@@ -2004,7 +2004,7 @@ bool UObject::SmartVectIsSet(struct FSmartVector* theSV)
 
 void UObject::SmartVectSetVectorTimed(const struct FVector& InVector, float Duration, struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectSetVectorTimed");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectSetVectorTimed");
 
 	UObject_SmartVectSetVectorTimed_Params params;
 	params.InVector = InVector;
@@ -2013,12 +2013,12 @@ void UObject::SmartVectSetVectorTimed(const struct FVector& InVector, float Dura
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 }
 
 
@@ -2030,19 +2030,19 @@ void UObject::SmartVectSetVectorTimed(const struct FVector& InVector, float Dura
 
 struct FVector UObject::SmartVectValue(struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectValue");
 
 	UObject_SmartVectValue_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 
 	return params.ReturnValue;
 }
@@ -2055,19 +2055,19 @@ struct FVector UObject::SmartVectValue(struct FSmartVector* theSV)
 
 void UObject::SmartVectReset(struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectReset");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectReset");
 
 	UObject_SmartVectReset_Params params;
 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 }
 
 
@@ -2080,7 +2080,7 @@ void UObject::SmartVectReset(struct FSmartVector* theSV)
 
 void UObject::SmartVectSetVector(const struct FVector& InVector, bool bUpdateTime, struct FSmartVector* theSV)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmartVectSetVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmartVectSetVector");
 
 	UObject_SmartVectSetVector_Params params;
 	params.InVector = InVector;
@@ -2089,12 +2089,12 @@ void UObject::SmartVectSetVector(const struct FVector& InVector, bool bUpdateTim
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (theSV != nullptr)
-		*theSV = params.theSV;
+		* theSV = params.theSV;
 }
 
 
@@ -2107,7 +2107,7 @@ void UObject::SmartVectSetVector(const struct FVector& InVector, bool bUpdateTim
 
 struct FLinearColor UObject::Subtract_LinearColorLinearColor(const struct FLinearColor& A, const struct FLinearColor& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_LinearColorLinearColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_LinearColorLinearColor");
 
 	UObject_Subtract_LinearColorLinearColor_Params params;
 	params.A = A;
@@ -2116,7 +2116,7 @@ struct FLinearColor UObject::Subtract_LinearColorLinearColor(const struct FLinea
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2133,7 +2133,7 @@ struct FLinearColor UObject::Subtract_LinearColorLinearColor(const struct FLinea
 
 struct FLinearColor UObject::Multiply_LinearColorFloat(const struct FLinearColor& LC, float Mult)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_LinearColorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_LinearColorFloat");
 
 	UObject_Multiply_LinearColorFloat_Params params;
 	params.LC = LC;
@@ -2142,7 +2142,7 @@ struct FLinearColor UObject::Multiply_LinearColorFloat(const struct FLinearColor
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2158,7 +2158,7 @@ struct FLinearColor UObject::Multiply_LinearColorFloat(const struct FLinearColor
 
 struct FLinearColor UObject::ColorToLinearColor(const struct FColor& OldColor)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ColorToLinearColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ColorToLinearColor");
 
 	UObject_ColorToLinearColor_Params params;
 	params.OldColor = OldColor;
@@ -2166,7 +2166,7 @@ struct FLinearColor UObject::ColorToLinearColor(const struct FColor& OldColor)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2185,7 +2185,7 @@ struct FLinearColor UObject::ColorToLinearColor(const struct FColor& OldColor)
 
 struct FLinearColor UObject::MakeLinearColor(float R, float G, float B, float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MakeLinearColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MakeLinearColor");
 
 	UObject_MakeLinearColor_Params params;
 	params.R = R;
@@ -2196,7 +2196,7 @@ struct FLinearColor UObject::MakeLinearColor(float R, float G, float B, float A)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2212,7 +2212,7 @@ struct FLinearColor UObject::MakeLinearColor(float R, float G, float B, float A)
 
 struct FString UObject::GetHTMLColor(struct FColor* C)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetHTMLColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetHTMLColor");
 
 	UObject_GetHTMLColor_Params params;
 
@@ -2220,12 +2220,12 @@ struct FString UObject::GetHTMLColor(struct FColor* C)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (C != nullptr)
-		*C = params.C;
+		* C = params.C;
 
 	return params.ReturnValue;
 }
@@ -2241,7 +2241,7 @@ struct FString UObject::GetHTMLColor(struct FColor* C)
 
 struct FColor UObject::LerpColor(const struct FColor& A, const struct FColor& B, float Alpha)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LerpColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LerpColor");
 
 	UObject_LerpColor_Params params;
 	params.A = A;
@@ -2251,7 +2251,7 @@ struct FColor UObject::LerpColor(const struct FColor& A, const struct FColor& B,
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2270,7 +2270,7 @@ struct FColor UObject::LerpColor(const struct FColor& A, const struct FColor& B,
 
 struct FColor UObject::MakeColor(unsigned char R, unsigned char G, unsigned char B, unsigned char A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MakeColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MakeColor");
 
 	UObject_MakeColor_Params params;
 	params.R = R;
@@ -2281,7 +2281,7 @@ struct FColor UObject::MakeColor(unsigned char R, unsigned char G, unsigned char
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2298,7 +2298,7 @@ struct FColor UObject::MakeColor(unsigned char R, unsigned char G, unsigned char
 
 struct FColor UObject::Add_ColorColor(const struct FColor& A, const struct FColor& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_ColorColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_ColorColor");
 
 	UObject_Add_ColorColor_Params params;
 	params.A = A;
@@ -2307,7 +2307,7 @@ struct FColor UObject::Add_ColorColor(const struct FColor& A, const struct FColo
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2324,7 +2324,7 @@ struct FColor UObject::Add_ColorColor(const struct FColor& A, const struct FColo
 
 struct FColor UObject::Multiply_ColorFloat(const struct FColor& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_ColorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_ColorFloat");
 
 	UObject_Multiply_ColorFloat_Params params;
 	params.A = A;
@@ -2333,7 +2333,7 @@ struct FColor UObject::Multiply_ColorFloat(const struct FColor& A, float B)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2350,7 +2350,7 @@ struct FColor UObject::Multiply_ColorFloat(const struct FColor& A, float B)
 
 struct FColor UObject::Multiply_FloatColor(float A, const struct FColor& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_FloatColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_FloatColor");
 
 	UObject_Multiply_FloatColor_Params params;
 	params.A = A;
@@ -2359,7 +2359,7 @@ struct FColor UObject::Multiply_FloatColor(float A, const struct FColor& B)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2376,7 +2376,7 @@ struct FColor UObject::Multiply_FloatColor(float A, const struct FColor& B)
 
 struct FColor UObject::Subtract_ColorColor(const struct FColor& A, const struct FColor& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_ColorColor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_ColorColor");
 
 	UObject_Subtract_ColorColor_Params params;
 	params.A = A;
@@ -2385,7 +2385,7 @@ struct FColor UObject::Subtract_ColorColor(const struct FColor& A, const struct 
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2402,7 +2402,7 @@ struct FColor UObject::Subtract_ColorColor(const struct FColor& A, const struct 
 
 struct FVector2D UObject::EvalInterpCurveVector2D(const struct FInterpCurveVector2D& Vector2DCurve, float InVal)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EvalInterpCurveVector2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EvalInterpCurveVector2D");
 
 	UObject_EvalInterpCurveVector2D_Params params;
 	params.Vector2DCurve = Vector2DCurve;
@@ -2411,7 +2411,7 @@ struct FVector2D UObject::EvalInterpCurveVector2D(const struct FInterpCurveVecto
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2428,7 +2428,7 @@ struct FVector2D UObject::EvalInterpCurveVector2D(const struct FInterpCurveVecto
 
 struct FVector UObject::EvalInterpCurveVector(const struct FInterpCurveVector& VectorCurve, float InVal)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EvalInterpCurveVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EvalInterpCurveVector");
 
 	UObject_EvalInterpCurveVector_Params params;
 	params.VectorCurve = VectorCurve;
@@ -2437,7 +2437,7 @@ struct FVector UObject::EvalInterpCurveVector(const struct FInterpCurveVector& V
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2454,7 +2454,7 @@ struct FVector UObject::EvalInterpCurveVector(const struct FInterpCurveVector& V
 
 float UObject::EvalInterpCurveFloat(const struct FInterpCurveFloat& FloatCurve, float InVal)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EvalInterpCurveFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EvalInterpCurveFloat");
 
 	UObject_EvalInterpCurveFloat_Params params;
 	params.FloatCurve = FloatCurve;
@@ -2463,7 +2463,7 @@ float UObject::EvalInterpCurveFloat(const struct FInterpCurveFloat& FloatCurve, 
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2480,7 +2480,7 @@ float UObject::EvalInterpCurveFloat(const struct FInterpCurveFloat& FloatCurve, 
 
 struct FVector2D UObject::vect2d(float InX, float InY)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.vect2d");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.vect2d");
 
 	UObject_vect2d_Params params;
 	params.InX = InX;
@@ -2489,7 +2489,7 @@ struct FVector2D UObject::vect2d(float InX, float InY)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2507,7 +2507,7 @@ struct FVector2D UObject::vect2d(float InX, float InY)
 
 float UObject::GetMappedRangeValue(const struct FVector2D& InputRange, const struct FVector2D& OutputRange, float Value)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetMappedRangeValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetMappedRangeValue");
 
 	UObject_GetMappedRangeValue_Params params;
 	params.InputRange = InputRange;
@@ -2518,7 +2518,7 @@ float UObject::GetMappedRangeValue(const struct FVector2D& InputRange, const str
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2535,7 +2535,7 @@ float UObject::GetMappedRangeValue(const struct FVector2D& InputRange, const str
 
 float UObject::GetRangePctByValue(const struct FVector2D& Range, float Value)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetRangePctByValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetRangePctByValue");
 
 	UObject_GetRangePctByValue_Params params;
 	params.Range = Range;
@@ -2544,7 +2544,7 @@ float UObject::GetRangePctByValue(const struct FVector2D& Range, float Value)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2561,7 +2561,7 @@ float UObject::GetRangePctByValue(const struct FVector2D& Range, float Value)
 
 float UObject::GetRangeValueByPct(const struct FVector2D& Range, float Pct)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetRangeValueByPct");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetRangeValueByPct");
 
 	UObject_GetRangeValueByPct_Params params;
 	params.Range = Range;
@@ -2570,7 +2570,7 @@ float UObject::GetRangeValueByPct(const struct FVector2D& Range, float Pct)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2587,7 +2587,7 @@ float UObject::GetRangeValueByPct(const struct FVector2D& Range, float Pct)
 
 struct FVector2D UObject::SubtractEqual_Vector2DVector2D(const struct FVector2D& B, struct FVector2D* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_Vector2DVector2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_Vector2DVector2D");
 
 	UObject_SubtractEqual_Vector2DVector2D_Params params;
 	params.B = B;
@@ -2596,12 +2596,12 @@ struct FVector2D UObject::SubtractEqual_Vector2DVector2D(const struct FVector2D&
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -2616,7 +2616,7 @@ struct FVector2D UObject::SubtractEqual_Vector2DVector2D(const struct FVector2D&
 
 struct FVector2D UObject::AddEqual_Vector2DVector2D(const struct FVector2D& B, struct FVector2D* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_Vector2DVector2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_Vector2DVector2D");
 
 	UObject_AddEqual_Vector2DVector2D_Params params;
 	params.B = B;
@@ -2625,12 +2625,12 @@ struct FVector2D UObject::AddEqual_Vector2DVector2D(const struct FVector2D& B, s
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -2645,7 +2645,7 @@ struct FVector2D UObject::AddEqual_Vector2DVector2D(const struct FVector2D& B, s
 
 struct FVector2D UObject::DivideEqual_Vector2DFloat(float B, struct FVector2D* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_Vector2DFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_Vector2DFloat");
 
 	UObject_DivideEqual_Vector2DFloat_Params params;
 	params.B = B;
@@ -2654,12 +2654,12 @@ struct FVector2D UObject::DivideEqual_Vector2DFloat(float B, struct FVector2D* A
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -2674,7 +2674,7 @@ struct FVector2D UObject::DivideEqual_Vector2DFloat(float B, struct FVector2D* A
 
 struct FVector2D UObject::MultiplyEqual_Vector2DFloat(float B, struct FVector2D* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_Vector2DFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_Vector2DFloat");
 
 	UObject_MultiplyEqual_Vector2DFloat_Params params;
 	params.B = B;
@@ -2683,12 +2683,12 @@ struct FVector2D UObject::MultiplyEqual_Vector2DFloat(float B, struct FVector2D*
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -2703,7 +2703,7 @@ struct FVector2D UObject::MultiplyEqual_Vector2DFloat(float B, struct FVector2D*
 
 struct FVector2D UObject::Divide_Vector2DFloat(const struct FVector2D& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Divide_Vector2DFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Divide_Vector2DFloat");
 
 	UObject_Divide_Vector2DFloat_Params params;
 	params.A = A;
@@ -2713,7 +2713,7 @@ struct FVector2D UObject::Divide_Vector2DFloat(const struct FVector2D& A, float 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2730,7 +2730,7 @@ struct FVector2D UObject::Divide_Vector2DFloat(const struct FVector2D& A, float 
 
 struct FVector2D UObject::Multiply_Vector2DFloat(const struct FVector2D& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_Vector2DFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_Vector2DFloat");
 
 	UObject_Multiply_Vector2DFloat_Params params;
 	params.A = A;
@@ -2740,7 +2740,7 @@ struct FVector2D UObject::Multiply_Vector2DFloat(const struct FVector2D& A, floa
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2757,7 +2757,7 @@ struct FVector2D UObject::Multiply_Vector2DFloat(const struct FVector2D& A, floa
 
 struct FVector2D UObject::Subtract_Vector2DVector2D(const struct FVector2D& A, const struct FVector2D& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_Vector2DVector2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_Vector2DVector2D");
 
 	UObject_Subtract_Vector2DVector2D_Params params;
 	params.A = A;
@@ -2767,7 +2767,7 @@ struct FVector2D UObject::Subtract_Vector2DVector2D(const struct FVector2D& A, c
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2784,7 +2784,7 @@ struct FVector2D UObject::Subtract_Vector2DVector2D(const struct FVector2D& A, c
 
 struct FVector2D UObject::Add_Vector2DVector2D(const struct FVector2D& A, const struct FVector2D& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_Vector2DVector2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_Vector2DVector2D");
 
 	UObject_Add_Vector2DVector2D_Params params;
 	params.A = A;
@@ -2794,7 +2794,7 @@ struct FVector2D UObject::Add_Vector2DVector2D(const struct FVector2D& A, const 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2811,7 +2811,7 @@ struct FVector2D UObject::Add_Vector2DVector2D(const struct FVector2D& A, const 
 
 struct FQuat UObject::Subtract_QuatQuat(const struct FQuat& A, const struct FQuat& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_QuatQuat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_QuatQuat");
 
 	UObject_Subtract_QuatQuat_Params params;
 	params.A = A;
@@ -2821,7 +2821,7 @@ struct FQuat UObject::Subtract_QuatQuat(const struct FQuat& A, const struct FQua
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2838,7 +2838,7 @@ struct FQuat UObject::Subtract_QuatQuat(const struct FQuat& A, const struct FQua
 
 struct FQuat UObject::Add_QuatQuat(const struct FQuat& A, const struct FQuat& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_QuatQuat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_QuatQuat");
 
 	UObject_Add_QuatQuat_Params params;
 	params.A = A;
@@ -2848,7 +2848,7 @@ struct FQuat UObject::Add_QuatQuat(const struct FQuat& A, const struct FQuat& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2867,7 +2867,7 @@ struct FQuat UObject::Add_QuatQuat(const struct FQuat& A, const struct FQuat& B)
 
 struct FQuat UObject::QuatSlerp(const struct FQuat& A, const struct FQuat& B, float Alpha, bool bShortestPath)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatSlerp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatSlerp");
 
 	UObject_QuatSlerp_Params params;
 	params.A = A;
@@ -2879,7 +2879,7 @@ struct FQuat UObject::QuatSlerp(const struct FQuat& A, const struct FQuat& B, fl
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2895,7 +2895,7 @@ struct FQuat UObject::QuatSlerp(const struct FQuat& A, const struct FQuat& B, fl
 
 struct FRotator UObject::QuatToRotator(const struct FQuat& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatToRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatToRotator");
 
 	UObject_QuatToRotator_Params params;
 	params.A = A;
@@ -2904,7 +2904,7 @@ struct FRotator UObject::QuatToRotator(const struct FQuat& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2920,7 +2920,7 @@ struct FRotator UObject::QuatToRotator(const struct FQuat& A)
 
 struct FQuat UObject::QuatFromRotator(const struct FRotator& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatFromRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatFromRotator");
 
 	UObject_QuatFromRotator_Params params;
 	params.A = A;
@@ -2929,7 +2929,7 @@ struct FQuat UObject::QuatFromRotator(const struct FRotator& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2946,7 +2946,7 @@ struct FQuat UObject::QuatFromRotator(const struct FRotator& A)
 
 struct FQuat UObject::QuatFromAxisAndAngle(const struct FVector& Axis, float Angle)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatFromAxisAndAngle");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatFromAxisAndAngle");
 
 	UObject_QuatFromAxisAndAngle_Params params;
 	params.Axis = Axis;
@@ -2956,7 +2956,7 @@ struct FQuat UObject::QuatFromAxisAndAngle(const struct FVector& Axis, float Ang
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -2973,7 +2973,7 @@ struct FQuat UObject::QuatFromAxisAndAngle(const struct FVector& Axis, float Ang
 
 struct FQuat UObject::QuatFindBetween(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatFindBetween");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatFindBetween");
 
 	UObject_QuatFindBetween_Params params;
 	params.A = A;
@@ -2983,7 +2983,7 @@ struct FQuat UObject::QuatFindBetween(const struct FVector& A, const struct FVec
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3000,7 +3000,7 @@ struct FQuat UObject::QuatFindBetween(const struct FVector& A, const struct FVec
 
 struct FVector UObject::QuatRotateVector(const struct FQuat& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatRotateVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatRotateVector");
 
 	UObject_QuatRotateVector_Params params;
 	params.A = A;
@@ -3010,7 +3010,7 @@ struct FVector UObject::QuatRotateVector(const struct FQuat& A, const struct FVe
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3026,7 +3026,7 @@ struct FVector UObject::QuatRotateVector(const struct FQuat& A, const struct FVe
 
 struct FQuat UObject::QuatInvert(const struct FQuat& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatInvert");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatInvert");
 
 	UObject_QuatInvert_Params params;
 	params.A = A;
@@ -3035,7 +3035,7 @@ struct FQuat UObject::QuatInvert(const struct FQuat& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3052,7 +3052,7 @@ struct FQuat UObject::QuatInvert(const struct FQuat& A)
 
 float UObject::QuatDot(const struct FQuat& A, const struct FQuat& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatDot");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatDot");
 
 	UObject_QuatDot_Params params;
 	params.A = A;
@@ -3062,7 +3062,7 @@ float UObject::QuatDot(const struct FQuat& A, const struct FQuat& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3079,7 +3079,7 @@ float UObject::QuatDot(const struct FQuat& A, const struct FQuat& B)
 
 struct FQuat UObject::QuatProduct(const struct FQuat& A, const struct FQuat& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QuatProduct");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QuatProduct");
 
 	UObject_QuatProduct_Params params;
 	params.A = A;
@@ -3089,7 +3089,7 @@ struct FQuat UObject::QuatProduct(const struct FQuat& A, const struct FQuat& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3106,7 +3106,7 @@ struct FQuat UObject::QuatProduct(const struct FQuat& A, const struct FQuat& B)
 
 struct FVector UObject::MatrixGetAxis(const struct FMatrix& TM, unsigned char Axis)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MatrixGetAxis");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MatrixGetAxis");
 
 	UObject_MatrixGetAxis_Params params;
 	params.TM = TM;
@@ -3116,7 +3116,7 @@ struct FVector UObject::MatrixGetAxis(const struct FMatrix& TM, unsigned char Ax
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3132,7 +3132,7 @@ struct FVector UObject::MatrixGetAxis(const struct FMatrix& TM, unsigned char Ax
 
 struct FVector UObject::MatrixGetOrigin(const struct FMatrix& TM)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MatrixGetOrigin");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MatrixGetOrigin");
 
 	UObject_MatrixGetOrigin_Params params;
 	params.TM = TM;
@@ -3141,7 +3141,7 @@ struct FVector UObject::MatrixGetOrigin(const struct FMatrix& TM)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3157,7 +3157,7 @@ struct FVector UObject::MatrixGetOrigin(const struct FMatrix& TM)
 
 struct FRotator UObject::MatrixGetRotator(const struct FMatrix& TM)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MatrixGetRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MatrixGetRotator");
 
 	UObject_MatrixGetRotator_Params params;
 	params.TM = TM;
@@ -3166,7 +3166,7 @@ struct FRotator UObject::MatrixGetRotator(const struct FMatrix& TM)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3182,7 +3182,7 @@ struct FRotator UObject::MatrixGetRotator(const struct FMatrix& TM)
 
 struct FMatrix UObject::MakeRotationMatrix(const struct FRotator& Rotation)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MakeRotationMatrix");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MakeRotationMatrix");
 
 	UObject_MakeRotationMatrix_Params params;
 	params.Rotation = Rotation;
@@ -3191,7 +3191,7 @@ struct FMatrix UObject::MakeRotationMatrix(const struct FRotator& Rotation)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3208,7 +3208,7 @@ struct FMatrix UObject::MakeRotationMatrix(const struct FRotator& Rotation)
 
 struct FMatrix UObject::MakeRotationTranslationMatrix(const struct FVector& Translation, const struct FRotator& Rotation)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MakeRotationTranslationMatrix");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MakeRotationTranslationMatrix");
 
 	UObject_MakeRotationTranslationMatrix_Params params;
 	params.Translation = Translation;
@@ -3218,7 +3218,7 @@ struct FMatrix UObject::MakeRotationTranslationMatrix(const struct FVector& Tran
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3235,7 +3235,7 @@ struct FMatrix UObject::MakeRotationTranslationMatrix(const struct FVector& Tran
 
 struct FVector UObject::InverseTransformNormal(const struct FMatrix& TM, const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.InverseTransformNormal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.InverseTransformNormal");
 
 	UObject_InverseTransformNormal_Params params;
 	params.TM = TM;
@@ -3245,7 +3245,7 @@ struct FVector UObject::InverseTransformNormal(const struct FMatrix& TM, const s
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3262,7 +3262,7 @@ struct FVector UObject::InverseTransformNormal(const struct FMatrix& TM, const s
 
 struct FVector UObject::TransformNormal(const struct FMatrix& TM, const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.TransformNormal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.TransformNormal");
 
 	UObject_TransformNormal_Params params;
 	params.TM = TM;
@@ -3272,7 +3272,7 @@ struct FVector UObject::TransformNormal(const struct FMatrix& TM, const struct F
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3289,7 +3289,7 @@ struct FVector UObject::TransformNormal(const struct FMatrix& TM, const struct F
 
 struct FVector UObject::InverseTransformVector(const struct FMatrix& TM, const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.InverseTransformVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.InverseTransformVector");
 
 	UObject_InverseTransformVector_Params params;
 	params.TM = TM;
@@ -3299,7 +3299,7 @@ struct FVector UObject::InverseTransformVector(const struct FMatrix& TM, const s
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3316,7 +3316,7 @@ struct FVector UObject::InverseTransformVector(const struct FMatrix& TM, const s
 
 struct FVector UObject::TransformVector(const struct FMatrix& TM, const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.TransformVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.TransformVector");
 
 	UObject_TransformVector_Params params;
 	params.TM = TM;
@@ -3326,7 +3326,7 @@ struct FVector UObject::TransformVector(const struct FMatrix& TM, const struct F
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3343,7 +3343,7 @@ struct FVector UObject::TransformVector(const struct FMatrix& TM, const struct F
 
 struct FMatrix UObject::Multiply_MatrixMatrix(const struct FMatrix& A, const struct FMatrix& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_MatrixMatrix");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_MatrixMatrix");
 
 	UObject_Multiply_MatrixMatrix_Params params;
 	params.A = A;
@@ -3353,7 +3353,7 @@ struct FMatrix UObject::Multiply_MatrixMatrix(const struct FMatrix& A, const str
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3370,7 +3370,7 @@ struct FMatrix UObject::Multiply_MatrixMatrix(const struct FMatrix& A, const str
 
 bool UObject::NotEqual_NameName(const struct FName& A, const struct FName& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_NameName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_NameName");
 
 	UObject_NotEqual_NameName_Params params;
 	params.A = A;
@@ -3380,7 +3380,7 @@ bool UObject::NotEqual_NameName(const struct FName& A, const struct FName& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3397,7 +3397,7 @@ bool UObject::NotEqual_NameName(const struct FName& A, const struct FName& B)
 
 bool UObject::EqualEqual_NameName(const struct FName& A, const struct FName& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_NameName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_NameName");
 
 	UObject_EqualEqual_NameName_Params params;
 	params.A = A;
@@ -3407,7 +3407,7 @@ bool UObject::EqualEqual_NameName(const struct FName& A, const struct FName& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3423,7 +3423,7 @@ bool UObject::EqualEqual_NameName(const struct FName& A, const struct FName& B)
 
 FScriptInterface UObject::QueryInterface(class UClass* InterfaceClass)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.QueryInterface");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.QueryInterface");
 
 	struct UObject_QueryInterface_Params params;
 	params.InterfaceClass = InterfaceClass;
@@ -3431,7 +3431,7 @@ FScriptInterface UObject::QueryInterface(class UClass* InterfaceClass)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3447,7 +3447,7 @@ FScriptInterface UObject::QueryInterface(class UClass* InterfaceClass)
 
 bool UObject::IsA(const struct FName& ClassName)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsA");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsA");
 
 	UObject_IsA_Params params;
 	params.ClassName = ClassName;
@@ -3455,7 +3455,7 @@ bool UObject::IsA(const struct FName& ClassName)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3472,7 +3472,7 @@ bool UObject::IsA(const struct FName& ClassName)
 
 bool UObject::ClassIsChildOf(class UClass* TestClass, class UClass* ParentClass)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClassIsChildOf");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClassIsChildOf");
 
 	UObject_ClassIsChildOf_Params params;
 	params.TestClass = TestClass;
@@ -3482,7 +3482,7 @@ bool UObject::ClassIsChildOf(class UClass* TestClass, class UClass* ParentClass)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3499,7 +3499,7 @@ bool UObject::ClassIsChildOf(class UClass* TestClass, class UClass* ParentClass)
 
 bool UObject::NotEqual_InterfaceInterface(const FScriptInterface& A, const FScriptInterface& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_InterfaceInterface");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_InterfaceInterface");
 
 	UObject_NotEqual_InterfaceInterface_Params params;
 	params.A = A;
@@ -3509,7 +3509,7 @@ bool UObject::NotEqual_InterfaceInterface(const FScriptInterface& A, const FScri
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3526,7 +3526,7 @@ bool UObject::NotEqual_InterfaceInterface(const FScriptInterface& A, const FScri
 
 bool UObject::EqualEqual_InterfaceInterface(const FScriptInterface& A, const FScriptInterface& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_InterfaceInterface");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_InterfaceInterface");
 
 	UObject_EqualEqual_InterfaceInterface_Params params;
 	params.A = A;
@@ -3536,7 +3536,7 @@ bool UObject::EqualEqual_InterfaceInterface(const FScriptInterface& A, const FSc
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3553,7 +3553,7 @@ bool UObject::EqualEqual_InterfaceInterface(const FScriptInterface& A, const FSc
 
 bool UObject::NotEqual_ObjectObject(class UObject* A, class UObject* B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_ObjectObject");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_ObjectObject");
 
 	UObject_NotEqual_ObjectObject_Params params;
 	params.A = A;
@@ -3563,7 +3563,7 @@ bool UObject::NotEqual_ObjectObject(class UObject* A, class UObject* B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3580,7 +3580,7 @@ bool UObject::NotEqual_ObjectObject(class UObject* A, class UObject* B)
 
 bool UObject::EqualEqual_ObjectObject(class UObject* A, class UObject* B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_ObjectObject");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_ObjectObject");
 
 	UObject_EqualEqual_ObjectObject_Params params;
 	params.A = A;
@@ -3590,7 +3590,7 @@ bool UObject::EqualEqual_ObjectObject(class UObject* A, class UObject* B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3606,7 +3606,7 @@ bool UObject::EqualEqual_ObjectObject(class UObject* A, class UObject* B)
 
 struct FString UObject::GuidToString(struct FGuid* G)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GuidToString");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GuidToString");
 
 	UObject_GuidToString_Params params;
 
@@ -3614,12 +3614,12 @@ struct FString UObject::GuidToString(struct FGuid* G)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (G != nullptr)
-		*G = params.G;
+		* G = params.G;
 
 	return params.ReturnValue;
 }
@@ -3633,7 +3633,7 @@ struct FString UObject::GuidToString(struct FGuid* G)
 
 struct FString UObject::PathName(class UObject* CheckObject)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.PathName");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.PathName");
 
 	UObject_PathName_Params params;
 	params.CheckObject = CheckObject;
@@ -3642,7 +3642,7 @@ struct FString UObject::PathName(class UObject* CheckObject)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3660,7 +3660,7 @@ struct FString UObject::PathName(class UObject* CheckObject)
 
 TArray<struct FString> UObject::SplitString(const struct FString& Source, const struct FString& Delimiter, bool bCullEmpty)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SplitString");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SplitString");
 
 	UObject_SplitString_Params params;
 	params.Source = Source;
@@ -3670,7 +3670,7 @@ TArray<struct FString> UObject::SplitString(const struct FString& Source, const 
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3688,7 +3688,7 @@ TArray<struct FString> UObject::SplitString(const struct FString& Source, const 
 
 void UObject::ParseStringIntoArray(const struct FString& BaseString, const struct FString& delim, bool bCullEmpty, TArray<struct FString>* Pieces)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ParseStringIntoArray");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ParseStringIntoArray");
 
 	UObject_ParseStringIntoArray_Params params;
 	params.BaseString = BaseString;
@@ -3699,12 +3699,12 @@ void UObject::ParseStringIntoArray(const struct FString& BaseString, const struc
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (Pieces != nullptr)
-		*Pieces = params.Pieces;
+		* Pieces = params.Pieces;
 }
 
 
@@ -3718,7 +3718,7 @@ void UObject::ParseStringIntoArray(const struct FString& BaseString, const struc
 
 void UObject::JoinArray(TArray<struct FString> StringArray, const struct FString& delim, bool bIgnoreBlanks, struct FString* out_Result)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.JoinArray");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.JoinArray");
 
 	UObject_JoinArray_Params params;
 	params.StringArray = StringArray;
@@ -3728,12 +3728,12 @@ void UObject::JoinArray(TArray<struct FString> StringArray, const struct FString
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (out_Result != nullptr)
-		*out_Result = params.out_Result;
+		* out_Result = params.out_Result;
 }
 
 
@@ -3745,7 +3745,7 @@ void UObject::JoinArray(TArray<struct FString> StringArray, const struct FString
 
 struct FString UObject::GetRightMost(const struct FString& Text)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetRightMost");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetRightMost");
 
 	UObject_GetRightMost_Params params;
 	params.Text = Text;
@@ -3753,7 +3753,7 @@ struct FString UObject::GetRightMost(const struct FString& Text)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3771,7 +3771,7 @@ struct FString UObject::GetRightMost(const struct FString& Text)
 
 struct FString UObject::Split(const struct FString& Text, const struct FString& SplitStr, bool bOmitSplitStr)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Split");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Split");
 
 	UObject_Split_Params params;
 	params.Text = Text;
@@ -3781,7 +3781,7 @@ struct FString UObject::Split(const struct FString& Text, const struct FString& 
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3797,7 +3797,7 @@ struct FString UObject::Split(const struct FString& Text, const struct FString& 
 
 int UObject::StringHash(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.StringHash");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.StringHash");
 
 	UObject_StringHash_Params params;
 	params.S = S;
@@ -3806,7 +3806,7 @@ int UObject::StringHash(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3825,7 +3825,7 @@ int UObject::StringHash(const struct FString& S)
 
 struct FString UObject::Repl(const struct FString& Src, const struct FString& Match, const struct FString& With, bool bCaseSensitive)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Repl");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Repl");
 
 	UObject_Repl_Params params;
 	params.Src = Src;
@@ -3837,7 +3837,7 @@ struct FString UObject::Repl(const struct FString& Src, const struct FString& Ma
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3853,7 +3853,7 @@ struct FString UObject::Repl(const struct FString& Src, const struct FString& Ma
 
 int UObject::Asc(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Asc");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Asc");
 
 	UObject_Asc_Params params;
 	params.S = S;
@@ -3862,7 +3862,7 @@ int UObject::Asc(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3878,7 +3878,7 @@ int UObject::Asc(const struct FString& S)
 
 struct FString UObject::Chr(int I)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Chr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Chr");
 
 	UObject_Chr_Params params;
 	params.I = I;
@@ -3887,7 +3887,7 @@ struct FString UObject::Chr(int I)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3903,7 +3903,7 @@ struct FString UObject::Chr(int I)
 
 struct FString UObject::Locs(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Locs");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Locs");
 
 	UObject_Locs_Params params;
 	params.S = S;
@@ -3912,7 +3912,7 @@ struct FString UObject::Locs(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3928,7 +3928,7 @@ struct FString UObject::Locs(const struct FString& S)
 
 struct FString UObject::Caps(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Caps");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Caps");
 
 	UObject_Caps_Params params;
 	params.S = S;
@@ -3937,7 +3937,7 @@ struct FString UObject::Caps(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3954,7 +3954,7 @@ struct FString UObject::Caps(const struct FString& S)
 
 struct FString UObject::Right(const struct FString& S, int I)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Right");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Right");
 
 	UObject_Right_Params params;
 	params.S = S;
@@ -3964,7 +3964,7 @@ struct FString UObject::Right(const struct FString& S, int I)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -3981,7 +3981,7 @@ struct FString UObject::Right(const struct FString& S, int I)
 
 struct FString UObject::Left(const struct FString& S, int I)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Left");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Left");
 
 	UObject_Left_Params params;
 	params.S = S;
@@ -3991,7 +3991,7 @@ struct FString UObject::Left(const struct FString& S, int I)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4009,7 +4009,7 @@ struct FString UObject::Left(const struct FString& S, int I)
 
 struct FString UObject::Mid(const struct FString& S, int I, int J)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Mid");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Mid");
 
 	UObject_Mid_Params params;
 	params.S = S;
@@ -4020,7 +4020,7 @@ struct FString UObject::Mid(const struct FString& S, int I, int J)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4040,7 +4040,7 @@ struct FString UObject::Mid(const struct FString& S, int I, int J)
 
 int UObject::InStr(const struct FString& S, const struct FString& T, bool bSearchFromRight, bool bIgnoreCase, int StartPos)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.InStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.InStr");
 
 	UObject_InStr_Params params;
 	params.S = S;
@@ -4053,7 +4053,7 @@ int UObject::InStr(const struct FString& S, const struct FString& T, bool bSearc
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4069,7 +4069,7 @@ int UObject::InStr(const struct FString& S, const struct FString& T, bool bSearc
 
 int UObject::Len(const struct FString& S)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Len");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Len");
 
 	UObject_Len_Params params;
 	params.S = S;
@@ -4078,7 +4078,7 @@ int UObject::Len(const struct FString& S)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4095,7 +4095,7 @@ int UObject::Len(const struct FString& S)
 
 struct FString UObject::SubtractEqual_StrStr(const struct FString& B, struct FString* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_StrStr");
 
 	UObject_SubtractEqual_StrStr_Params params;
 	params.B = B;
@@ -4104,12 +4104,12 @@ struct FString UObject::SubtractEqual_StrStr(const struct FString& B, struct FSt
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -4124,7 +4124,7 @@ struct FString UObject::SubtractEqual_StrStr(const struct FString& B, struct FSt
 
 struct FString UObject::AtEqual_StrStr(const struct FString& B, struct FString* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AtEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AtEqual_StrStr");
 
 	UObject_AtEqual_StrStr_Params params;
 	params.B = B;
@@ -4133,12 +4133,12 @@ struct FString UObject::AtEqual_StrStr(const struct FString& B, struct FString* 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -4153,7 +4153,7 @@ struct FString UObject::AtEqual_StrStr(const struct FString& B, struct FString* 
 
 struct FString UObject::ConcatEqual_StrStr(const struct FString& B, struct FString* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ConcatEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ConcatEqual_StrStr");
 
 	UObject_ConcatEqual_StrStr_Params params;
 	params.B = B;
@@ -4162,12 +4162,12 @@ struct FString UObject::ConcatEqual_StrStr(const struct FString& B, struct FStri
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -4182,7 +4182,7 @@ struct FString UObject::ConcatEqual_StrStr(const struct FString& B, struct FStri
 
 bool UObject::ComplementEqual_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ComplementEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ComplementEqual_StrStr");
 
 	UObject_ComplementEqual_StrStr_Params params;
 	params.A = A;
@@ -4192,7 +4192,7 @@ bool UObject::ComplementEqual_StrStr(const struct FString& A, const struct FStri
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4209,7 +4209,7 @@ bool UObject::ComplementEqual_StrStr(const struct FString& A, const struct FStri
 
 bool UObject::NotEqual_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_StrStr");
 
 	UObject_NotEqual_StrStr_Params params;
 	params.A = A;
@@ -4219,7 +4219,7 @@ bool UObject::NotEqual_StrStr(const struct FString& A, const struct FString& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4236,7 +4236,7 @@ bool UObject::NotEqual_StrStr(const struct FString& A, const struct FString& B)
 
 bool UObject::EqualEqual_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_StrStr");
 
 	UObject_EqualEqual_StrStr_Params params;
 	params.A = A;
@@ -4246,7 +4246,7 @@ bool UObject::EqualEqual_StrStr(const struct FString& A, const struct FString& B
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4263,7 +4263,7 @@ bool UObject::EqualEqual_StrStr(const struct FString& A, const struct FString& B
 
 bool UObject::GreaterEqual_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterEqual_StrStr");
 
 	UObject_GreaterEqual_StrStr_Params params;
 	params.A = A;
@@ -4273,7 +4273,7 @@ bool UObject::GreaterEqual_StrStr(const struct FString& A, const struct FString&
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4290,7 +4290,7 @@ bool UObject::GreaterEqual_StrStr(const struct FString& A, const struct FString&
 
 bool UObject::LessEqual_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LessEqual_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LessEqual_StrStr");
 
 	UObject_LessEqual_StrStr_Params params;
 	params.A = A;
@@ -4300,7 +4300,7 @@ bool UObject::LessEqual_StrStr(const struct FString& A, const struct FString& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4317,7 +4317,7 @@ bool UObject::LessEqual_StrStr(const struct FString& A, const struct FString& B)
 
 bool UObject::Greater_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Greater_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Greater_StrStr");
 
 	UObject_Greater_StrStr_Params params;
 	params.A = A;
@@ -4327,7 +4327,7 @@ bool UObject::Greater_StrStr(const struct FString& A, const struct FString& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4344,7 +4344,7 @@ bool UObject::Greater_StrStr(const struct FString& A, const struct FString& B)
 
 bool UObject::Less_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Less_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Less_StrStr");
 
 	UObject_Less_StrStr_Params params;
 	params.A = A;
@@ -4354,7 +4354,7 @@ bool UObject::Less_StrStr(const struct FString& A, const struct FString& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4371,7 +4371,7 @@ bool UObject::Less_StrStr(const struct FString& A, const struct FString& B)
 
 struct FString UObject::At_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.At_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.At_StrStr");
 
 	UObject_At_StrStr_Params params;
 	params.A = A;
@@ -4381,7 +4381,7 @@ struct FString UObject::At_StrStr(const struct FString& A, const struct FString&
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4398,7 +4398,7 @@ struct FString UObject::At_StrStr(const struct FString& A, const struct FString&
 
 struct FString UObject::Concat_StrStr(const struct FString& A, const struct FString& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Concat_StrStr");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Concat_StrStr");
 
 	UObject_Concat_StrStr_Params params;
 	params.A = A;
@@ -4408,7 +4408,7 @@ struct FString UObject::Concat_StrStr(const struct FString& A, const struct FStr
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4426,7 +4426,7 @@ struct FString UObject::Concat_StrStr(const struct FString& A, const struct FStr
 
 struct FRotator UObject::MakeRotator(int Pitch, int Yaw, int Roll)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MakeRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MakeRotator");
 
 	UObject_MakeRotator_Params params;
 	params.Pitch = Pitch;
@@ -4436,7 +4436,7 @@ struct FRotator UObject::MakeRotator(int Pitch, int Yaw, int Roll)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4457,7 +4457,7 @@ struct FRotator UObject::MakeRotator(int Pitch, int Yaw, int Roll)
 
 bool UObject::SClampRotAxis(float DeltaTime, int ViewAxis, int MaxLimit, int MinLimit, float InterpolationSpeed, int* out_DeltaViewAxis)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SClampRotAxis");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SClampRotAxis");
 
 	UObject_SClampRotAxis_Params params;
 	params.DeltaTime = DeltaTime;
@@ -4469,12 +4469,12 @@ bool UObject::SClampRotAxis(float DeltaTime, int ViewAxis, int MaxLimit, int Min
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (out_DeltaViewAxis != nullptr)
-		*out_DeltaViewAxis = params.out_DeltaViewAxis;
+		* out_DeltaViewAxis = params.out_DeltaViewAxis;
 
 	return params.ReturnValue;
 }
@@ -4490,7 +4490,7 @@ bool UObject::SClampRotAxis(float DeltaTime, int ViewAxis, int MaxLimit, int Min
 
 int UObject::ClampRotAxisFromRange(int Current, int Min, int Max)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClampRotAxisFromRange");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClampRotAxisFromRange");
 
 	UObject_ClampRotAxisFromRange_Params params;
 	params.Current = Current;
@@ -4500,7 +4500,7 @@ int UObject::ClampRotAxisFromRange(int Current, int Min, int Max)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4518,7 +4518,7 @@ int UObject::ClampRotAxisFromRange(int Current, int Min, int Max)
 
 int UObject::ClampRotAxisFromBase(int Current, int Center, int MaxDelta)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClampRotAxisFromBase");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClampRotAxisFromBase");
 
 	UObject_ClampRotAxisFromBase_Params params;
 	params.Current = Current;
@@ -4528,7 +4528,7 @@ int UObject::ClampRotAxisFromBase(int Current, int Center, int MaxDelta)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4546,7 +4546,7 @@ int UObject::ClampRotAxisFromBase(int Current, int Center, int MaxDelta)
 
 void UObject::ClampRotAxis(int ViewAxis, int MaxLimit, int MinLimit, int* out_DeltaViewAxis)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClampRotAxis");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClampRotAxis");
 
 	UObject_ClampRotAxis_Params params;
 	params.ViewAxis = ViewAxis;
@@ -4556,12 +4556,12 @@ void UObject::ClampRotAxis(int ViewAxis, int MaxLimit, int MinLimit, int* out_De
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (out_DeltaViewAxis != nullptr)
-		*out_DeltaViewAxis = params.out_DeltaViewAxis;
+		* out_DeltaViewAxis = params.out_DeltaViewAxis;
 }
 
 
@@ -4573,7 +4573,7 @@ void UObject::ClampRotAxis(int ViewAxis, int MaxLimit, int MinLimit, int* out_De
 
 float UObject::RSize(const struct FRotator& R)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RSize");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RSize");
 
 	UObject_RSize_Params params;
 	params.R = R;
@@ -4582,7 +4582,7 @@ float UObject::RSize(const struct FRotator& R)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4599,7 +4599,7 @@ float UObject::RSize(const struct FRotator& R)
 
 float UObject::RDiff(const struct FRotator& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RDiff");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RDiff");
 
 	UObject_RDiff_Params params;
 	params.A = A;
@@ -4609,7 +4609,7 @@ float UObject::RDiff(const struct FRotator& A, const struct FRotator& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4625,7 +4625,7 @@ float UObject::RDiff(const struct FRotator& A, const struct FRotator& B)
 
 int UObject::NormalizeRotAxis(int Angle)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NormalizeRotAxis");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NormalizeRotAxis");
 
 	UObject_NormalizeRotAxis_Params params;
 	params.Angle = Angle;
@@ -4634,7 +4634,7 @@ int UObject::NormalizeRotAxis(int Angle)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4654,7 +4654,7 @@ int UObject::NormalizeRotAxis(int Angle)
 
 struct FRotator UObject::RInterpTo(const struct FRotator& Current, const struct FRotator& Target, float DeltaTime, float InterpSpeed, bool bConstantInterpSpeed)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RInterpTo");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RInterpTo");
 
 	UObject_RInterpTo_Params params;
 	params.Current = Current;
@@ -4667,7 +4667,7 @@ struct FRotator UObject::RInterpTo(const struct FRotator& Current, const struct 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4684,7 +4684,7 @@ struct FRotator UObject::RInterpTo(const struct FRotator& Current, const struct 
 
 struct FRotator UObject::RTransform(const struct FRotator& R, const struct FRotator& RBasis)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RTransform");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RTransform");
 
 	UObject_RTransform_Params params;
 	params.R = R;
@@ -4694,7 +4694,7 @@ struct FRotator UObject::RTransform(const struct FRotator& R, const struct FRota
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4713,7 +4713,7 @@ struct FRotator UObject::RTransform(const struct FRotator& R, const struct FRota
 
 struct FRotator UObject::RLerp(const struct FRotator& A, const struct FRotator& B, float Alpha, bool bShortestPath)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RLerp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RLerp");
 
 	UObject_RLerp_Params params;
 	params.A = A;
@@ -4725,7 +4725,7 @@ struct FRotator UObject::RLerp(const struct FRotator& A, const struct FRotator& 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4741,7 +4741,7 @@ struct FRotator UObject::RLerp(const struct FRotator& A, const struct FRotator& 
 
 struct FRotator UObject::Normalize(const struct FRotator& Rot)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Normalize");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Normalize");
 
 	UObject_Normalize_Params params;
 	params.Rot = Rot;
@@ -4750,7 +4750,7 @@ struct FRotator UObject::Normalize(const struct FRotator& Rot)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4768,7 +4768,7 @@ struct FRotator UObject::Normalize(const struct FRotator& Rot)
 
 struct FRotator UObject::OrthoRotation(const struct FVector& X, const struct FVector& Y, const struct FVector& Z)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.OrthoRotation");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.OrthoRotation");
 
 	UObject_OrthoRotation_Params params;
 	params.X = X;
@@ -4779,7 +4779,7 @@ struct FRotator UObject::OrthoRotation(const struct FVector& X, const struct FVe
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4795,7 +4795,7 @@ struct FRotator UObject::OrthoRotation(const struct FVector& X, const struct FVe
 
 struct FRotator UObject::RotRand(bool bRoll)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RotRand");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RotRand");
 
 	UObject_RotRand_Params params;
 	params.bRoll = bRoll;
@@ -4804,7 +4804,7 @@ struct FRotator UObject::RotRand(bool bRoll)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4821,7 +4821,7 @@ struct FRotator UObject::RotRand(bool bRoll)
 
 struct FVector UObject::GetRotatorAxis(const struct FRotator& A, int Axis)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetRotatorAxis");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetRotatorAxis");
 
 	UObject_GetRotatorAxis_Params params;
 	params.A = A;
@@ -4831,7 +4831,7 @@ struct FVector UObject::GetRotatorAxis(const struct FRotator& A, int Axis)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4849,7 +4849,7 @@ struct FVector UObject::GetRotatorAxis(const struct FRotator& A, int Axis)
 
 void UObject::GetUnAxes(const struct FRotator& A, struct FVector* X, struct FVector* Y, struct FVector* Z)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetUnAxes");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetUnAxes");
 
 	UObject_GetUnAxes_Params params;
 	params.A = A;
@@ -4858,16 +4858,16 @@ void UObject::GetUnAxes(const struct FRotator& A, struct FVector* X, struct FVec
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (X != nullptr)
-		*X = params.X;
+		* X = params.X;
 	if (Y != nullptr)
-		*Y = params.Y;
+		* Y = params.Y;
 	if (Z != nullptr)
-		*Z = params.Z;
+		* Z = params.Z;
 }
 
 
@@ -4881,7 +4881,7 @@ void UObject::GetUnAxes(const struct FRotator& A, struct FVector* X, struct FVec
 
 void UObject::GetAxes(const struct FRotator& A, struct FVector* X, struct FVector* Y, struct FVector* Z)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GetAxes");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GetAxes");
 
 	UObject_GetAxes_Params params;
 	params.A = A;
@@ -4890,16 +4890,16 @@ void UObject::GetAxes(const struct FRotator& A, struct FVector* X, struct FVecto
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, nullptr);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (X != nullptr)
-		*X = params.X;
+		* X = params.X;
 	if (Y != nullptr)
-		*Y = params.Y;
+		* Y = params.Y;
 	if (Z != nullptr)
-		*Z = params.Z;
+		* Z = params.Z;
 }
 
 
@@ -4912,7 +4912,7 @@ void UObject::GetAxes(const struct FRotator& A, struct FVector* X, struct FVecto
 
 bool UObject::ClockwiseFrom_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClockwiseFrom_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClockwiseFrom_IntInt");
 
 	UObject_ClockwiseFrom_IntInt_Params params;
 	params.A = A;
@@ -4922,7 +4922,7 @@ bool UObject::ClockwiseFrom_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -4939,7 +4939,7 @@ bool UObject::ClockwiseFrom_IntInt(int A, int B)
 
 struct FRotator UObject::SubtractEqual_RotatorRotator(const struct FRotator& B, struct FRotator* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_RotatorRotator");
 
 	UObject_SubtractEqual_RotatorRotator_Params params;
 	params.B = B;
@@ -4948,12 +4948,12 @@ struct FRotator UObject::SubtractEqual_RotatorRotator(const struct FRotator& B, 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -4968,7 +4968,7 @@ struct FRotator UObject::SubtractEqual_RotatorRotator(const struct FRotator& B, 
 
 struct FRotator UObject::AddEqual_RotatorRotator(const struct FRotator& B, struct FRotator* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_RotatorRotator");
 
 	UObject_AddEqual_RotatorRotator_Params params;
 	params.B = B;
@@ -4977,12 +4977,12 @@ struct FRotator UObject::AddEqual_RotatorRotator(const struct FRotator& B, struc
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -4997,7 +4997,7 @@ struct FRotator UObject::AddEqual_RotatorRotator(const struct FRotator& B, struc
 
 struct FRotator UObject::Subtract_RotatorRotator(const struct FRotator& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_RotatorRotator");
 
 	UObject_Subtract_RotatorRotator_Params params;
 	params.A = A;
@@ -5007,7 +5007,7 @@ struct FRotator UObject::Subtract_RotatorRotator(const struct FRotator& A, const
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5024,7 +5024,7 @@ struct FRotator UObject::Subtract_RotatorRotator(const struct FRotator& A, const
 
 struct FRotator UObject::Add_RotatorRotator(const struct FRotator& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_RotatorRotator");
 
 	UObject_Add_RotatorRotator_Params params;
 	params.A = A;
@@ -5034,7 +5034,7 @@ struct FRotator UObject::Add_RotatorRotator(const struct FRotator& A, const stru
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5051,7 +5051,7 @@ struct FRotator UObject::Add_RotatorRotator(const struct FRotator& A, const stru
 
 struct FRotator UObject::DivideEqual_RotatorFloat(float B, struct FRotator* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_RotatorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_RotatorFloat");
 
 	UObject_DivideEqual_RotatorFloat_Params params;
 	params.B = B;
@@ -5060,12 +5060,12 @@ struct FRotator UObject::DivideEqual_RotatorFloat(float B, struct FRotator* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5080,7 +5080,7 @@ struct FRotator UObject::DivideEqual_RotatorFloat(float B, struct FRotator* A)
 
 struct FRotator UObject::MultiplyEqual_RotatorFloat(float B, struct FRotator* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_RotatorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_RotatorFloat");
 
 	UObject_MultiplyEqual_RotatorFloat_Params params;
 	params.B = B;
@@ -5089,12 +5089,12 @@ struct FRotator UObject::MultiplyEqual_RotatorFloat(float B, struct FRotator* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5109,7 +5109,7 @@ struct FRotator UObject::MultiplyEqual_RotatorFloat(float B, struct FRotator* A)
 
 struct FRotator UObject::Divide_RotatorFloat(const struct FRotator& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Divide_RotatorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Divide_RotatorFloat");
 
 	UObject_Divide_RotatorFloat_Params params;
 	params.A = A;
@@ -5119,7 +5119,7 @@ struct FRotator UObject::Divide_RotatorFloat(const struct FRotator& A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5136,7 +5136,7 @@ struct FRotator UObject::Divide_RotatorFloat(const struct FRotator& A, float B)
 
 struct FRotator UObject::Multiply_FloatRotator(float A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_FloatRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_FloatRotator");
 
 	UObject_Multiply_FloatRotator_Params params;
 	params.A = A;
@@ -5146,7 +5146,7 @@ struct FRotator UObject::Multiply_FloatRotator(float A, const struct FRotator& B
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5163,7 +5163,7 @@ struct FRotator UObject::Multiply_FloatRotator(float A, const struct FRotator& B
 
 struct FRotator UObject::Multiply_RotatorFloat(const struct FRotator& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_RotatorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_RotatorFloat");
 
 	UObject_Multiply_RotatorFloat_Params params;
 	params.A = A;
@@ -5173,7 +5173,7 @@ struct FRotator UObject::Multiply_RotatorFloat(const struct FRotator& A, float B
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5190,7 +5190,7 @@ struct FRotator UObject::Multiply_RotatorFloat(const struct FRotator& A, float B
 
 bool UObject::NotEqual_RotatorRotator(const struct FRotator& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_RotatorRotator");
 
 	UObject_NotEqual_RotatorRotator_Params params;
 	params.A = A;
@@ -5200,7 +5200,7 @@ bool UObject::NotEqual_RotatorRotator(const struct FRotator& A, const struct FRo
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5217,7 +5217,7 @@ bool UObject::NotEqual_RotatorRotator(const struct FRotator& A, const struct FRo
 
 bool UObject::EqualEqual_RotatorRotator(const struct FRotator& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_RotatorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_RotatorRotator");
 
 	UObject_EqualEqual_RotatorRotator_Params params;
 	params.A = A;
@@ -5227,7 +5227,7 @@ bool UObject::EqualEqual_RotatorRotator(const struct FRotator& A, const struct F
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5247,7 +5247,7 @@ bool UObject::EqualEqual_RotatorRotator(const struct FRotator& A, const struct F
 
 bool UObject::InCylinder(const struct FVector& Origin, const struct FRotator& Dir, float Width, const struct FVector& A, bool bIgnoreZ)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.InCylinder");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.InCylinder");
 
 	UObject_InCylinder_Params params;
 	params.Origin = Origin;
@@ -5258,7 +5258,7 @@ bool UObject::InCylinder(const struct FVector& Origin, const struct FRotator& Di
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5275,7 +5275,7 @@ bool UObject::InCylinder(const struct FVector& Origin, const struct FRotator& Di
 
 float UObject::NoZDot(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NoZDot");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NoZDot");
 
 	UObject_NoZDot_Params params;
 	params.A = A;
@@ -5285,7 +5285,7 @@ float UObject::NoZDot(const struct FVector& A, const struct FVector& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5302,7 +5302,7 @@ float UObject::NoZDot(const struct FVector& A, const struct FVector& B)
 
 struct FVector UObject::ClampLength(const struct FVector& V, float MaxLength)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ClampLength");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ClampLength");
 
 	UObject_ClampLength_Params params;
 	params.V = V;
@@ -5312,7 +5312,7 @@ struct FVector UObject::ClampLength(const struct FVector& V, float MaxLength)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5331,7 +5331,7 @@ struct FVector UObject::ClampLength(const struct FVector& V, float MaxLength)
 
 struct FVector UObject::VInterpTo(const struct FVector& Current, const struct FVector& Target, float DeltaTime, float InterpSpeed)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VInterpTo");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VInterpTo");
 
 	UObject_VInterpTo_Params params;
 	params.Current = Current;
@@ -5343,7 +5343,7 @@ struct FVector UObject::VInterpTo(const struct FVector& Current, const struct FV
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5359,7 +5359,7 @@ struct FVector UObject::VInterpTo(const struct FVector& Current, const struct FV
 
 bool UObject::IsZero(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.IsZero");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.IsZero");
 
 	UObject_IsZero_Params params;
 	params.A = A;
@@ -5368,7 +5368,7 @@ bool UObject::IsZero(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5385,7 +5385,7 @@ bool UObject::IsZero(const struct FVector& A)
 
 struct FVector UObject::ProjectOnTo(const struct FVector& X, const struct FVector& Y)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ProjectOnTo");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ProjectOnTo");
 
 	UObject_ProjectOnTo_Params params;
 	params.X = X;
@@ -5395,7 +5395,7 @@ struct FVector UObject::ProjectOnTo(const struct FVector& X, const struct FVecto
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5412,7 +5412,7 @@ struct FVector UObject::ProjectOnTo(const struct FVector& X, const struct FVecto
 
 struct FVector UObject::MirrorVectorByNormal(const struct FVector& InVect, const struct FVector& InNormal)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MirrorVectorByNormal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MirrorVectorByNormal");
 
 	UObject_MirrorVectorByNormal_Params params;
 	params.InVect = InVect;
@@ -5422,7 +5422,7 @@ struct FVector UObject::MirrorVectorByNormal(const struct FVector& InVect, const
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5440,7 +5440,7 @@ struct FVector UObject::MirrorVectorByNormal(const struct FVector& InVect, const
 
 struct FVector UObject::VRandCone2(const struct FVector& Dir, float HorizontalConeHalfAngleRadians, float VerticalConeHalfAngleRadians)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VRandCone2");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VRandCone2");
 
 	UObject_VRandCone2_Params params;
 	params.Dir = Dir;
@@ -5451,7 +5451,7 @@ struct FVector UObject::VRandCone2(const struct FVector& Dir, float HorizontalCo
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5468,7 +5468,7 @@ struct FVector UObject::VRandCone2(const struct FVector& Dir, float HorizontalCo
 
 struct FVector UObject::VRandCone(const struct FVector& Dir, float ConeHalfAngleRadians)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VRandCone");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VRandCone");
 
 	UObject_VRandCone_Params params;
 	params.Dir = Dir;
@@ -5478,7 +5478,7 @@ struct FVector UObject::VRandCone(const struct FVector& Dir, float ConeHalfAngle
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5493,7 +5493,7 @@ struct FVector UObject::VRandCone(const struct FVector& Dir, float ConeHalfAngle
 
 struct FVector UObject::VRand()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VRand");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VRand");
 
 	UObject_VRand_Params params;
 
@@ -5501,7 +5501,7 @@ struct FVector UObject::VRand()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5519,7 +5519,7 @@ struct FVector UObject::VRand()
 
 struct FVector UObject::VLerp(const struct FVector& A, const struct FVector& B, float Alpha)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VLerp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VLerp");
 
 	UObject_VLerp_Params params;
 	params.A = A;
@@ -5530,7 +5530,7 @@ struct FVector UObject::VLerp(const struct FVector& A, const struct FVector& B, 
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5546,7 +5546,7 @@ struct FVector UObject::VLerp(const struct FVector& A, const struct FVector& B, 
 
 struct FVector UObject::Normal(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Normal");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Normal");
 
 	UObject_Normal_Params params;
 	params.A = A;
@@ -5555,7 +5555,7 @@ struct FVector UObject::Normal(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5571,7 +5571,7 @@ struct FVector UObject::Normal(const struct FVector& A)
 
 float UObject::VSizeSq2D(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VSizeSq2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VSizeSq2D");
 
 	UObject_VSizeSq2D_Params params;
 	params.A = A;
@@ -5580,7 +5580,7 @@ float UObject::VSizeSq2D(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5596,7 +5596,7 @@ float UObject::VSizeSq2D(const struct FVector& A)
 
 float UObject::VSizeSq(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VSizeSq");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VSizeSq");
 
 	UObject_VSizeSq_Params params;
 	params.A = A;
@@ -5605,7 +5605,7 @@ float UObject::VSizeSq(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5621,7 +5621,7 @@ float UObject::VSizeSq(const struct FVector& A)
 
 float UObject::VSize2D(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VSize2D");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VSize2D");
 
 	UObject_VSize2D_Params params;
 	params.A = A;
@@ -5630,7 +5630,7 @@ float UObject::VSize2D(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5646,7 +5646,7 @@ float UObject::VSize2D(const struct FVector& A)
 
 float UObject::VSize(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.VSize");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.VSize");
 
 	UObject_VSize_Params params;
 	params.A = A;
@@ -5655,7 +5655,7 @@ float UObject::VSize(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5672,7 +5672,7 @@ float UObject::VSize(const struct FVector& A)
 
 struct FVector UObject::SubtractEqual_VectorVector(const struct FVector& B, struct FVector* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_VectorVector");
 
 	UObject_SubtractEqual_VectorVector_Params params;
 	params.B = B;
@@ -5681,12 +5681,12 @@ struct FVector UObject::SubtractEqual_VectorVector(const struct FVector& B, stru
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5701,7 +5701,7 @@ struct FVector UObject::SubtractEqual_VectorVector(const struct FVector& B, stru
 
 struct FVector UObject::AddEqual_VectorVector(const struct FVector& B, struct FVector* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_VectorVector");
 
 	UObject_AddEqual_VectorVector_Params params;
 	params.B = B;
@@ -5710,12 +5710,12 @@ struct FVector UObject::AddEqual_VectorVector(const struct FVector& B, struct FV
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5730,7 +5730,7 @@ struct FVector UObject::AddEqual_VectorVector(const struct FVector& B, struct FV
 
 struct FVector UObject::DivideEqual_VectorFloat(float B, struct FVector* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_VectorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_VectorFloat");
 
 	UObject_DivideEqual_VectorFloat_Params params;
 	params.B = B;
@@ -5739,12 +5739,12 @@ struct FVector UObject::DivideEqual_VectorFloat(float B, struct FVector* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5759,7 +5759,7 @@ struct FVector UObject::DivideEqual_VectorFloat(float B, struct FVector* A)
 
 struct FVector UObject::MultiplyEqual_VectorVector(const struct FVector& B, struct FVector* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_VectorVector");
 
 	UObject_MultiplyEqual_VectorVector_Params params;
 	params.B = B;
@@ -5768,12 +5768,12 @@ struct FVector UObject::MultiplyEqual_VectorVector(const struct FVector& B, stru
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5788,7 +5788,7 @@ struct FVector UObject::MultiplyEqual_VectorVector(const struct FVector& B, stru
 
 struct FVector UObject::MultiplyEqual_VectorFloat(float B, struct FVector* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_VectorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_VectorFloat");
 
 	UObject_MultiplyEqual_VectorFloat_Params params;
 	params.B = B;
@@ -5797,12 +5797,12 @@ struct FVector UObject::MultiplyEqual_VectorFloat(float B, struct FVector* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -5817,7 +5817,7 @@ struct FVector UObject::MultiplyEqual_VectorFloat(float B, struct FVector* A)
 
 struct FVector UObject::Cross_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Cross_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Cross_VectorVector");
 
 	UObject_Cross_VectorVector_Params params;
 	params.A = A;
@@ -5827,7 +5827,7 @@ struct FVector UObject::Cross_VectorVector(const struct FVector& A, const struct
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5844,7 +5844,7 @@ struct FVector UObject::Cross_VectorVector(const struct FVector& A, const struct
 
 float UObject::Dot_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Dot_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Dot_VectorVector");
 
 	UObject_Dot_VectorVector_Params params;
 	params.A = A;
@@ -5854,7 +5854,7 @@ float UObject::Dot_VectorVector(const struct FVector& A, const struct FVector& B
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5871,7 +5871,7 @@ float UObject::Dot_VectorVector(const struct FVector& A, const struct FVector& B
 
 bool UObject::NotEqual_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_VectorVector");
 
 	UObject_NotEqual_VectorVector_Params params;
 	params.A = A;
@@ -5881,7 +5881,7 @@ bool UObject::NotEqual_VectorVector(const struct FVector& A, const struct FVecto
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5898,7 +5898,7 @@ bool UObject::NotEqual_VectorVector(const struct FVector& A, const struct FVecto
 
 bool UObject::EqualEqual_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_VectorVector");
 
 	UObject_EqualEqual_VectorVector_Params params;
 	params.A = A;
@@ -5908,7 +5908,7 @@ bool UObject::EqualEqual_VectorVector(const struct FVector& A, const struct FVec
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5925,7 +5925,7 @@ bool UObject::EqualEqual_VectorVector(const struct FVector& A, const struct FVec
 
 struct FVector UObject::GreaterGreater_VectorRotator(const struct FVector& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterGreater_VectorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterGreater_VectorRotator");
 
 	UObject_GreaterGreater_VectorRotator_Params params;
 	params.A = A;
@@ -5935,7 +5935,7 @@ struct FVector UObject::GreaterGreater_VectorRotator(const struct FVector& A, co
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5952,7 +5952,7 @@ struct FVector UObject::GreaterGreater_VectorRotator(const struct FVector& A, co
 
 struct FVector UObject::LessLess_VectorRotator(const struct FVector& A, const struct FRotator& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LessLess_VectorRotator");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LessLess_VectorRotator");
 
 	UObject_LessLess_VectorRotator_Params params;
 	params.A = A;
@@ -5962,7 +5962,7 @@ struct FVector UObject::LessLess_VectorRotator(const struct FVector& A, const st
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -5979,7 +5979,7 @@ struct FVector UObject::LessLess_VectorRotator(const struct FVector& A, const st
 
 struct FVector UObject::Subtract_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_VectorVector");
 
 	UObject_Subtract_VectorVector_Params params;
 	params.A = A;
@@ -5989,7 +5989,7 @@ struct FVector UObject::Subtract_VectorVector(const struct FVector& A, const str
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6006,7 +6006,7 @@ struct FVector UObject::Subtract_VectorVector(const struct FVector& A, const str
 
 struct FVector UObject::Add_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_VectorVector");
 
 	UObject_Add_VectorVector_Params params;
 	params.A = A;
@@ -6016,7 +6016,7 @@ struct FVector UObject::Add_VectorVector(const struct FVector& A, const struct F
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6033,7 +6033,7 @@ struct FVector UObject::Add_VectorVector(const struct FVector& A, const struct F
 
 struct FVector UObject::Divide_VectorFloat(const struct FVector& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Divide_VectorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Divide_VectorFloat");
 
 	UObject_Divide_VectorFloat_Params params;
 	params.A = A;
@@ -6043,7 +6043,7 @@ struct FVector UObject::Divide_VectorFloat(const struct FVector& A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6060,7 +6060,7 @@ struct FVector UObject::Divide_VectorFloat(const struct FVector& A, float B)
 
 struct FVector UObject::Multiply_VectorVector(const struct FVector& A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_VectorVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_VectorVector");
 
 	UObject_Multiply_VectorVector_Params params;
 	params.A = A;
@@ -6070,7 +6070,7 @@ struct FVector UObject::Multiply_VectorVector(const struct FVector& A, const str
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6087,7 +6087,7 @@ struct FVector UObject::Multiply_VectorVector(const struct FVector& A, const str
 
 struct FVector UObject::Multiply_FloatVector(float A, const struct FVector& B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_FloatVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_FloatVector");
 
 	UObject_Multiply_FloatVector_Params params;
 	params.A = A;
@@ -6097,7 +6097,7 @@ struct FVector UObject::Multiply_FloatVector(float A, const struct FVector& B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6114,7 +6114,7 @@ struct FVector UObject::Multiply_FloatVector(float A, const struct FVector& B)
 
 struct FVector UObject::Multiply_VectorFloat(const struct FVector& A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_VectorFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_VectorFloat");
 
 	UObject_Multiply_VectorFloat_Params params;
 	params.A = A;
@@ -6124,7 +6124,7 @@ struct FVector UObject::Multiply_VectorFloat(const struct FVector& A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6140,7 +6140,7 @@ struct FVector UObject::Multiply_VectorFloat(const struct FVector& A, float B)
 
 struct FVector UObject::Subtract_PreVector(const struct FVector& A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_PreVector");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_PreVector");
 
 	UObject_Subtract_PreVector_Params params;
 	params.A = A;
@@ -6149,7 +6149,7 @@ struct FVector UObject::Subtract_PreVector(const struct FVector& A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6168,7 +6168,7 @@ struct FVector UObject::Subtract_PreVector(const struct FVector& A)
 
 float UObject::SmoothInterp(float DeltaTime, float InterpSpeed, float deltaDist, float overallDist)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SmoothInterp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SmoothInterp");
 
 	UObject_SmoothInterp_Params params;
 	params.DeltaTime = DeltaTime;
@@ -6180,7 +6180,7 @@ float UObject::SmoothInterp(float DeltaTime, float InterpSpeed, float deltaDist,
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6199,7 +6199,7 @@ float UObject::SmoothInterp(float DeltaTime, float InterpSpeed, float deltaDist,
 
 float UObject::FInterpConstantTo(float Current, float Target, float DeltaTime, float InterpSpeed)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FInterpConstantTo");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FInterpConstantTo");
 
 	UObject_FInterpConstantTo_Params params;
 	params.Current = Current;
@@ -6211,7 +6211,7 @@ float UObject::FInterpConstantTo(float Current, float Target, float DeltaTime, f
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6230,7 +6230,7 @@ float UObject::FInterpConstantTo(float Current, float Target, float DeltaTime, f
 
 float UObject::FInterpTo(float Current, float Target, float DeltaTime, float InterpSpeed)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FInterpTo");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FInterpTo");
 
 	UObject_FInterpTo_Params params;
 	params.Current = Current;
@@ -6242,7 +6242,7 @@ float UObject::FInterpTo(float Current, float Target, float DeltaTime, float Int
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6260,7 +6260,7 @@ float UObject::FInterpTo(float Current, float Target, float DeltaTime, float Int
 
 float UObject::FPctByRange(float Value, float InMin, float InMax)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FPctByRange");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FPctByRange");
 
 	UObject_FPctByRange_Params params;
 	params.Value = Value;
@@ -6270,7 +6270,7 @@ float UObject::FPctByRange(float Value, float InMin, float InMax)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6287,7 +6287,7 @@ float UObject::FPctByRange(float Value, float InMin, float InMax)
 
 float UObject::RandRange(float InMin, float InMax)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.RandRange");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.RandRange");
 
 	UObject_RandRange_Params params;
 	params.InMin = InMin;
@@ -6296,7 +6296,7 @@ float UObject::RandRange(float InMin, float InMax)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6315,7 +6315,7 @@ float UObject::RandRange(float InMin, float InMax)
 
 float UObject::FInterpEaseInOut(float A, float B, float Alpha, float Exp)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FInterpEaseInOut");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FInterpEaseInOut");
 
 	UObject_FInterpEaseInOut_Params params;
 	params.A = A;
@@ -6327,7 +6327,7 @@ float UObject::FInterpEaseInOut(float A, float B, float Alpha, float Exp)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6346,7 +6346,7 @@ float UObject::FInterpEaseInOut(float A, float B, float Alpha, float Exp)
 
 float UObject::FInterpEaseOut(float A, float B, float Alpha, float Exp)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FInterpEaseOut");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FInterpEaseOut");
 
 	UObject_FInterpEaseOut_Params params;
 	params.A = A;
@@ -6357,7 +6357,7 @@ float UObject::FInterpEaseOut(float A, float B, float Alpha, float Exp)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6376,7 +6376,7 @@ float UObject::FInterpEaseOut(float A, float B, float Alpha, float Exp)
 
 float UObject::FInterpEaseIn(float A, float B, float Alpha, float Exp)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FInterpEaseIn");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FInterpEaseIn");
 
 	UObject_FInterpEaseIn_Params params;
 	params.A = A;
@@ -6387,7 +6387,7 @@ float UObject::FInterpEaseIn(float A, float B, float Alpha, float Exp)
 	auto flags = fn->FunctionFlags;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6407,7 +6407,7 @@ float UObject::FInterpEaseIn(float A, float B, float Alpha, float Exp)
 
 float UObject::FCubicInterp(float P0, float T0, float P1, float T1, float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FCubicInterp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FCubicInterp");
 
 	UObject_FCubicInterp_Params params;
 	params.P0 = P0;
@@ -6420,7 +6420,7 @@ float UObject::FCubicInterp(float P0, float T0, float P1, float T1, float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6436,7 +6436,7 @@ float UObject::FCubicInterp(float P0, float T0, float P1, float T1, float A)
 
 int UObject::FCeil(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FCeil");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FCeil");
 
 	UObject_FCeil_Params params;
 	params.A = A;
@@ -6445,7 +6445,7 @@ int UObject::FCeil(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6461,7 +6461,7 @@ int UObject::FCeil(float A)
 
 int UObject::FFloor(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FFloor");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FFloor");
 
 	UObject_FFloor_Params params;
 	params.A = A;
@@ -6470,7 +6470,7 @@ int UObject::FFloor(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6486,7 +6486,7 @@ int UObject::FFloor(float A)
 
 int UObject::Round(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Round");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Round");
 
 	UObject_Round_Params params;
 	params.A = A;
@@ -6495,7 +6495,7 @@ int UObject::Round(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6513,7 +6513,7 @@ int UObject::Round(float A)
 
 float UObject::Lerp(float A, float B, float Alpha)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Lerp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Lerp");
 
 	UObject_Lerp_Params params;
 	params.A = A;
@@ -6524,7 +6524,7 @@ float UObject::Lerp(float A, float B, float Alpha)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6542,7 +6542,7 @@ float UObject::Lerp(float A, float B, float Alpha)
 
 float UObject::FClamp(float V, float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FClamp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FClamp");
 
 	UObject_FClamp_Params params;
 	params.V = V;
@@ -6553,7 +6553,7 @@ float UObject::FClamp(float V, float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6570,7 +6570,7 @@ float UObject::FClamp(float V, float A, float B)
 
 float UObject::FMax(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FMax");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FMax");
 
 	UObject_FMax_Params params;
 	params.A = A;
@@ -6580,7 +6580,7 @@ float UObject::FMax(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6597,7 +6597,7 @@ float UObject::FMax(float A, float B)
 
 float UObject::FMin(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FMin");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FMin");
 
 	UObject_FMin_Params params;
 	params.A = A;
@@ -6607,7 +6607,7 @@ float UObject::FMin(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6622,7 +6622,7 @@ float UObject::FMin(float A, float B)
 
 float UObject::FRand()
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.FRand");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.FRand");
 
 	UObject_FRand_Params params;
 
@@ -6630,7 +6630,7 @@ float UObject::FRand()
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6646,7 +6646,7 @@ float UObject::FRand()
 
 float UObject::Square(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Square");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Square");
 
 	UObject_Square_Params params;
 	params.A = A;
@@ -6655,7 +6655,7 @@ float UObject::Square(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6671,7 +6671,7 @@ float UObject::Square(float A)
 
 float UObject::Sqrt(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Sqrt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Sqrt");
 
 	UObject_Sqrt_Params params;
 	params.A = A;
@@ -6680,7 +6680,7 @@ float UObject::Sqrt(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6696,7 +6696,7 @@ float UObject::Sqrt(float A)
 
 float UObject::Loge(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Loge");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Loge");
 
 	UObject_Loge_Params params;
 	params.A = A;
@@ -6705,7 +6705,7 @@ float UObject::Loge(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6721,7 +6721,7 @@ float UObject::Loge(float A)
 
 float UObject::Exp(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Exp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Exp");
 
 	UObject_Exp_Params params;
 	params.A = A;
@@ -6730,7 +6730,7 @@ float UObject::Exp(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6747,7 +6747,7 @@ float UObject::Exp(float A)
 
 float UObject::Atan2(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Atan2");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Atan2");
 
 	UObject_Atan2_Params params;
 	params.A = A;
@@ -6757,7 +6757,7 @@ float UObject::Atan2(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6773,7 +6773,7 @@ float UObject::Atan2(float A, float B)
 
 float UObject::Atan(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Atan");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Atan");
 
 	UObject_Atan_Params params;
 	params.A = A;
@@ -6782,7 +6782,7 @@ float UObject::Atan(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6798,7 +6798,7 @@ float UObject::Atan(float A)
 
 float UObject::Tan(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Tan");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Tan");
 
 	UObject_Tan_Params params;
 	params.A = A;
@@ -6807,7 +6807,7 @@ float UObject::Tan(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6823,7 +6823,7 @@ float UObject::Tan(float A)
 
 float UObject::Acos(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Acos");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Acos");
 
 	UObject_Acos_Params params;
 	params.A = A;
@@ -6832,7 +6832,7 @@ float UObject::Acos(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6848,7 +6848,7 @@ float UObject::Acos(float A)
 
 float UObject::Cos(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Cos");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Cos");
 
 	UObject_Cos_Params params;
 	params.A = A;
@@ -6857,7 +6857,7 @@ float UObject::Cos(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6873,7 +6873,7 @@ float UObject::Cos(float A)
 
 float UObject::Asin(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Asin");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Asin");
 
 	UObject_Asin_Params params;
 	params.A = A;
@@ -6882,7 +6882,7 @@ float UObject::Asin(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6898,7 +6898,7 @@ float UObject::Asin(float A)
 
 float UObject::Sin(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Sin");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Sin");
 
 	UObject_Sin_Params params;
 	params.A = A;
@@ -6907,7 +6907,7 @@ float UObject::Sin(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6923,7 +6923,7 @@ float UObject::Sin(float A)
 
 float UObject::Abs(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Abs");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Abs");
 
 	UObject_Abs_Params params;
 	params.A = A;
@@ -6932,7 +6932,7 @@ float UObject::Abs(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -6949,7 +6949,7 @@ float UObject::Abs(float A)
 
 float UObject::SubtractEqual_FloatFloat(float B, float* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_FloatFloat");
 
 	UObject_SubtractEqual_FloatFloat_Params params;
 	params.B = B;
@@ -6958,12 +6958,12 @@ float UObject::SubtractEqual_FloatFloat(float B, float* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -6978,7 +6978,7 @@ float UObject::SubtractEqual_FloatFloat(float B, float* A)
 
 float UObject::AddEqual_FloatFloat(float B, float* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_FloatFloat");
 
 	UObject_AddEqual_FloatFloat_Params params;
 	params.B = B;
@@ -6987,12 +6987,12 @@ float UObject::AddEqual_FloatFloat(float B, float* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7007,7 +7007,7 @@ float UObject::AddEqual_FloatFloat(float B, float* A)
 
 float UObject::DivideEqual_FloatFloat(float B, float* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_FloatFloat");
 
 	UObject_DivideEqual_FloatFloat_Params params;
 	params.B = B;
@@ -7016,12 +7016,12 @@ float UObject::DivideEqual_FloatFloat(float B, float* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7036,7 +7036,7 @@ float UObject::DivideEqual_FloatFloat(float B, float* A)
 
 float UObject::MultiplyEqual_FloatFloat(float B, float* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_FloatFloat");
 
 	UObject_MultiplyEqual_FloatFloat_Params params;
 	params.B = B;
@@ -7045,12 +7045,12 @@ float UObject::MultiplyEqual_FloatFloat(float B, float* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7065,7 +7065,7 @@ float UObject::MultiplyEqual_FloatFloat(float B, float* A)
 
 bool UObject::NotEqual_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_FloatFloat");
 
 	UObject_NotEqual_FloatFloat_Params params;
 	params.A = A;
@@ -7075,7 +7075,7 @@ bool UObject::NotEqual_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7092,7 +7092,7 @@ bool UObject::NotEqual_FloatFloat(float A, float B)
 
 bool UObject::ComplementEqual_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ComplementEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ComplementEqual_FloatFloat");
 
 	UObject_ComplementEqual_FloatFloat_Params params;
 	params.A = A;
@@ -7102,7 +7102,7 @@ bool UObject::ComplementEqual_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7119,7 +7119,7 @@ bool UObject::ComplementEqual_FloatFloat(float A, float B)
 
 bool UObject::EqualEqual_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_FloatFloat");
 
 	UObject_EqualEqual_FloatFloat_Params params;
 	params.A = A;
@@ -7129,7 +7129,7 @@ bool UObject::EqualEqual_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7146,7 +7146,7 @@ bool UObject::EqualEqual_FloatFloat(float A, float B)
 
 bool UObject::GreaterEqual_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterEqual_FloatFloat");
 
 	UObject_GreaterEqual_FloatFloat_Params params;
 	params.A = A;
@@ -7156,7 +7156,7 @@ bool UObject::GreaterEqual_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7173,7 +7173,7 @@ bool UObject::GreaterEqual_FloatFloat(float A, float B)
 
 bool UObject::LessEqual_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LessEqual_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LessEqual_FloatFloat");
 
 	UObject_LessEqual_FloatFloat_Params params;
 	params.A = A;
@@ -7183,7 +7183,7 @@ bool UObject::LessEqual_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7200,7 +7200,7 @@ bool UObject::LessEqual_FloatFloat(float A, float B)
 
 bool UObject::Greater_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Greater_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Greater_FloatFloat");
 
 	UObject_Greater_FloatFloat_Params params;
 	params.A = A;
@@ -7210,7 +7210,7 @@ bool UObject::Greater_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7227,7 +7227,7 @@ bool UObject::Greater_FloatFloat(float A, float B)
 
 bool UObject::Less_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Less_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Less_FloatFloat");
 
 	UObject_Less_FloatFloat_Params params;
 	params.A = A;
@@ -7237,7 +7237,7 @@ bool UObject::Less_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7254,7 +7254,7 @@ bool UObject::Less_FloatFloat(float A, float B)
 
 float UObject::Subtract_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_FloatFloat");
 
 	UObject_Subtract_FloatFloat_Params params;
 	params.A = A;
@@ -7264,7 +7264,7 @@ float UObject::Subtract_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7281,7 +7281,7 @@ float UObject::Subtract_FloatFloat(float A, float B)
 
 float UObject::Add_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_FloatFloat");
 
 	UObject_Add_FloatFloat_Params params;
 	params.A = A;
@@ -7291,7 +7291,7 @@ float UObject::Add_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7308,7 +7308,7 @@ float UObject::Add_FloatFloat(float A, float B)
 
 float UObject::Percent_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Percent_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Percent_FloatFloat");
 
 	UObject_Percent_FloatFloat_Params params;
 	params.A = A;
@@ -7318,7 +7318,7 @@ float UObject::Percent_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7335,7 +7335,7 @@ float UObject::Percent_FloatFloat(float A, float B)
 
 float UObject::Divide_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Divide_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Divide_FloatFloat");
 
 	UObject_Divide_FloatFloat_Params params;
 	params.A = A;
@@ -7345,7 +7345,7 @@ float UObject::Divide_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7362,7 +7362,7 @@ float UObject::Divide_FloatFloat(float A, float B)
 
 float UObject::Multiply_FloatFloat(float A, float B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_FloatFloat");
 
 	UObject_Multiply_FloatFloat_Params params;
 	params.A = A;
@@ -7372,7 +7372,7 @@ float UObject::Multiply_FloatFloat(float A, float B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7389,7 +7389,7 @@ float UObject::Multiply_FloatFloat(float A, float B)
 
 float UObject::MultiplyMultiply_FloatFloat(float Base, float Exp)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyMultiply_FloatFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyMultiply_FloatFloat");
 
 	UObject_MultiplyMultiply_FloatFloat_Params params;
 	params.Base = Base;
@@ -7399,7 +7399,7 @@ float UObject::MultiplyMultiply_FloatFloat(float Base, float Exp)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7415,7 +7415,7 @@ float UObject::MultiplyMultiply_FloatFloat(float Base, float Exp)
 
 float UObject::Subtract_PreFloat(float A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_PreFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_PreFloat");
 
 	UObject_Subtract_PreFloat_Params params;
 	params.A = A;
@@ -7424,7 +7424,7 @@ float UObject::Subtract_PreFloat(float A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7440,7 +7440,7 @@ float UObject::Subtract_PreFloat(float A)
 
 struct FString UObject::ToHex(int A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.ToHex");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.ToHex");
 
 	UObject_ToHex_Params params;
 	params.A = A;
@@ -7449,7 +7449,7 @@ struct FString UObject::ToHex(int A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7467,7 +7467,7 @@ struct FString UObject::ToHex(int A)
 
 int UObject::Clamp(int V, int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Clamp");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Clamp");
 
 	UObject_Clamp_Params params;
 	params.V = V;
@@ -7478,7 +7478,7 @@ int UObject::Clamp(int V, int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7495,7 +7495,7 @@ int UObject::Clamp(int V, int A, int B)
 
 int UObject::Max(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Max");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Max");
 
 	UObject_Max_Params params;
 	params.A = A;
@@ -7505,7 +7505,7 @@ int UObject::Max(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7522,7 +7522,7 @@ int UObject::Max(int A, int B)
 
 int UObject::Min(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Min");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Min");
 
 	UObject_Min_Params params;
 	params.A = A;
@@ -7532,7 +7532,7 @@ int UObject::Min(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7548,7 +7548,7 @@ int UObject::Min(int A, int B)
 
 int UObject::Rand(int Max)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Rand");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Rand");
 
 	UObject_Rand_Params params;
 	params.Max = Max;
@@ -7557,7 +7557,7 @@ int UObject::Rand(int Max)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7573,7 +7573,7 @@ int UObject::Rand(int Max)
 
 int UObject::SubtractSubtract_Int(int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractSubtract_Int");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractSubtract_Int");
 
 	UObject_SubtractSubtract_Int_Params params;
 
@@ -7581,12 +7581,12 @@ int UObject::SubtractSubtract_Int(int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7600,7 +7600,7 @@ int UObject::SubtractSubtract_Int(int* A)
 
 int UObject::AddAdd_Int(int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddAdd_Int");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddAdd_Int");
 
 	UObject_AddAdd_Int_Params params;
 
@@ -7608,12 +7608,12 @@ int UObject::AddAdd_Int(int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7627,7 +7627,7 @@ int UObject::AddAdd_Int(int* A)
 
 int UObject::SubtractSubtract_PreInt(int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractSubtract_PreInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractSubtract_PreInt");
 
 	UObject_SubtractSubtract_PreInt_Params params;
 
@@ -7635,12 +7635,12 @@ int UObject::SubtractSubtract_PreInt(int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7654,7 +7654,7 @@ int UObject::SubtractSubtract_PreInt(int* A)
 
 int UObject::AddAdd_PreInt(int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddAdd_PreInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddAdd_PreInt");
 
 	UObject_AddAdd_PreInt_Params params;
 
@@ -7662,12 +7662,12 @@ int UObject::AddAdd_PreInt(int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7682,7 +7682,7 @@ int UObject::AddAdd_PreInt(int* A)
 
 int UObject::SubtractEqual_IntInt(int B, int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_IntInt");
 
 	UObject_SubtractEqual_IntInt_Params params;
 	params.B = B;
@@ -7691,12 +7691,12 @@ int UObject::SubtractEqual_IntInt(int B, int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7711,7 +7711,7 @@ int UObject::SubtractEqual_IntInt(int B, int* A)
 
 int UObject::AddEqual_IntInt(int B, int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_IntInt");
 
 	UObject_AddEqual_IntInt_Params params;
 	params.B = B;
@@ -7720,12 +7720,12 @@ int UObject::AddEqual_IntInt(int B, int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7740,7 +7740,7 @@ int UObject::AddEqual_IntInt(int B, int* A)
 
 int UObject::DivideEqual_IntFloat(float B, int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_IntFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_IntFloat");
 
 	UObject_DivideEqual_IntFloat_Params params;
 	params.B = B;
@@ -7749,12 +7749,12 @@ int UObject::DivideEqual_IntFloat(float B, int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7769,7 +7769,7 @@ int UObject::DivideEqual_IntFloat(float B, int* A)
 
 int UObject::MultiplyEqual_IntFloat(float B, int* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_IntFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_IntFloat");
 
 	UObject_MultiplyEqual_IntFloat_Params params;
 	params.B = B;
@@ -7778,12 +7778,12 @@ int UObject::MultiplyEqual_IntFloat(float B, int* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -7798,7 +7798,7 @@ int UObject::MultiplyEqual_IntFloat(float B, int* A)
 
 int UObject::Or_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Or_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Or_IntInt");
 
 	UObject_Or_IntInt_Params params;
 	params.A = A;
@@ -7808,7 +7808,7 @@ int UObject::Or_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7825,7 +7825,7 @@ int UObject::Or_IntInt(int A, int B)
 
 int UObject::Xor_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Xor_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Xor_IntInt");
 
 	UObject_Xor_IntInt_Params params;
 	params.A = A;
@@ -7835,7 +7835,7 @@ int UObject::Xor_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7852,7 +7852,7 @@ int UObject::Xor_IntInt(int A, int B)
 
 int UObject::And_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.And_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.And_IntInt");
 
 	UObject_And_IntInt_Params params;
 	params.A = A;
@@ -7862,7 +7862,7 @@ int UObject::And_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7879,7 +7879,7 @@ int UObject::And_IntInt(int A, int B)
 
 bool UObject::NotEqual_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_IntInt");
 
 	UObject_NotEqual_IntInt_Params params;
 	params.A = A;
@@ -7889,7 +7889,7 @@ bool UObject::NotEqual_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7906,7 +7906,7 @@ bool UObject::NotEqual_IntInt(int A, int B)
 
 bool UObject::EqualEqual_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_IntInt");
 
 	UObject_EqualEqual_IntInt_Params params;
 	params.A = A;
@@ -7916,7 +7916,7 @@ bool UObject::EqualEqual_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7933,7 +7933,7 @@ bool UObject::EqualEqual_IntInt(int A, int B)
 
 bool UObject::GreaterEqual_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterEqual_IntInt");
 
 	UObject_GreaterEqual_IntInt_Params params;
 	params.A = A;
@@ -7943,7 +7943,7 @@ bool UObject::GreaterEqual_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7960,7 +7960,7 @@ bool UObject::GreaterEqual_IntInt(int A, int B)
 
 bool UObject::LessEqual_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LessEqual_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LessEqual_IntInt");
 
 	UObject_LessEqual_IntInt_Params params;
 	params.A = A;
@@ -7970,7 +7970,7 @@ bool UObject::LessEqual_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -7987,7 +7987,7 @@ bool UObject::LessEqual_IntInt(int A, int B)
 
 bool UObject::Greater_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Greater_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Greater_IntInt");
 
 	UObject_Greater_IntInt_Params params;
 	params.A = A;
@@ -7997,7 +7997,7 @@ bool UObject::Greater_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8014,7 +8014,7 @@ bool UObject::Greater_IntInt(int A, int B)
 
 bool UObject::Less_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Less_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Less_IntInt");
 
 	UObject_Less_IntInt_Params params;
 	params.A = A;
@@ -8024,7 +8024,7 @@ bool UObject::Less_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8041,7 +8041,7 @@ bool UObject::Less_IntInt(int A, int B)
 
 int UObject::GreaterGreaterGreater_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterGreaterGreater_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterGreaterGreater_IntInt");
 
 	UObject_GreaterGreaterGreater_IntInt_Params params;
 	params.A = A;
@@ -8051,7 +8051,7 @@ int UObject::GreaterGreaterGreater_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8068,7 +8068,7 @@ int UObject::GreaterGreaterGreater_IntInt(int A, int B)
 
 int UObject::GreaterGreater_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.GreaterGreater_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.GreaterGreater_IntInt");
 
 	UObject_GreaterGreater_IntInt_Params params;
 	params.A = A;
@@ -8078,7 +8078,7 @@ int UObject::GreaterGreater_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8095,7 +8095,7 @@ int UObject::GreaterGreater_IntInt(int A, int B)
 
 int UObject::LessLess_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.LessLess_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.LessLess_IntInt");
 
 	UObject_LessLess_IntInt_Params params;
 	params.A = A;
@@ -8105,7 +8105,7 @@ int UObject::LessLess_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8122,7 +8122,7 @@ int UObject::LessLess_IntInt(int A, int B)
 
 int UObject::Subtract_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_IntInt");
 
 	UObject_Subtract_IntInt_Params params;
 	params.A = A;
@@ -8132,7 +8132,7 @@ int UObject::Subtract_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8149,7 +8149,7 @@ int UObject::Subtract_IntInt(int A, int B)
 
 int UObject::Add_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Add_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Add_IntInt");
 
 	UObject_Add_IntInt_Params params;
 	params.A = A;
@@ -8159,7 +8159,7 @@ int UObject::Add_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8176,7 +8176,7 @@ int UObject::Add_IntInt(int A, int B)
 
 int UObject::Percent_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Percent_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Percent_IntInt");
 
 	UObject_Percent_IntInt_Params params;
 	params.A = A;
@@ -8186,7 +8186,7 @@ int UObject::Percent_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8203,7 +8203,7 @@ int UObject::Percent_IntInt(int A, int B)
 
 int UObject::Divide_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Divide_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Divide_IntInt");
 
 	UObject_Divide_IntInt_Params params;
 	params.A = A;
@@ -8213,7 +8213,7 @@ int UObject::Divide_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8230,7 +8230,7 @@ int UObject::Divide_IntInt(int A, int B)
 
 int UObject::Multiply_IntInt(int A, int B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Multiply_IntInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Multiply_IntInt");
 
 	UObject_Multiply_IntInt_Params params;
 	params.A = A;
@@ -8240,7 +8240,7 @@ int UObject::Multiply_IntInt(int A, int B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8256,7 +8256,7 @@ int UObject::Multiply_IntInt(int A, int B)
 
 int UObject::Subtract_PreInt(int A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Subtract_PreInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Subtract_PreInt");
 
 	UObject_Subtract_PreInt_Params params;
 	params.A = A;
@@ -8265,7 +8265,7 @@ int UObject::Subtract_PreInt(int A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8281,7 +8281,7 @@ int UObject::Subtract_PreInt(int A)
 
 int UObject::Complement_PreInt(int A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Complement_PreInt");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Complement_PreInt");
 
 	UObject_Complement_PreInt_Params params;
 	params.A = A;
@@ -8290,7 +8290,7 @@ int UObject::Complement_PreInt(int A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8306,7 +8306,7 @@ int UObject::Complement_PreInt(int A)
 
 unsigned char UObject::SubtractSubtract_Byte(unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractSubtract_Byte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractSubtract_Byte");
 
 	UObject_SubtractSubtract_Byte_Params params;
 
@@ -8314,12 +8314,12 @@ unsigned char UObject::SubtractSubtract_Byte(unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8333,7 +8333,7 @@ unsigned char UObject::SubtractSubtract_Byte(unsigned char* A)
 
 unsigned char UObject::AddAdd_Byte(unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddAdd_Byte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddAdd_Byte");
 
 	UObject_AddAdd_Byte_Params params;
 
@@ -8341,12 +8341,12 @@ unsigned char UObject::AddAdd_Byte(unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8360,7 +8360,7 @@ unsigned char UObject::AddAdd_Byte(unsigned char* A)
 
 unsigned char UObject::SubtractSubtract_PreByte(unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractSubtract_PreByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractSubtract_PreByte");
 
 	UObject_SubtractSubtract_PreByte_Params params;
 
@@ -8368,12 +8368,12 @@ unsigned char UObject::SubtractSubtract_PreByte(unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8387,7 +8387,7 @@ unsigned char UObject::SubtractSubtract_PreByte(unsigned char* A)
 
 unsigned char UObject::AddAdd_PreByte(unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddAdd_PreByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddAdd_PreByte");
 
 	UObject_AddAdd_PreByte_Params params;
 
@@ -8395,12 +8395,12 @@ unsigned char UObject::AddAdd_PreByte(unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8415,7 +8415,7 @@ unsigned char UObject::AddAdd_PreByte(unsigned char* A)
 
 unsigned char UObject::SubtractEqual_ByteByte(unsigned char B, unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.SubtractEqual_ByteByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.SubtractEqual_ByteByte");
 
 	UObject_SubtractEqual_ByteByte_Params params;
 	params.B = B;
@@ -8424,12 +8424,12 @@ unsigned char UObject::SubtractEqual_ByteByte(unsigned char B, unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8444,7 +8444,7 @@ unsigned char UObject::SubtractEqual_ByteByte(unsigned char B, unsigned char* A)
 
 unsigned char UObject::AddEqual_ByteByte(unsigned char B, unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AddEqual_ByteByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AddEqual_ByteByte");
 
 	UObject_AddEqual_ByteByte_Params params;
 	params.B = B;
@@ -8453,12 +8453,12 @@ unsigned char UObject::AddEqual_ByteByte(unsigned char B, unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8473,7 +8473,7 @@ unsigned char UObject::AddEqual_ByteByte(unsigned char B, unsigned char* A)
 
 unsigned char UObject::DivideEqual_ByteByte(unsigned char B, unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.DivideEqual_ByteByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.DivideEqual_ByteByte");
 
 	UObject_DivideEqual_ByteByte_Params params;
 	params.B = B;
@@ -8482,12 +8482,12 @@ unsigned char UObject::DivideEqual_ByteByte(unsigned char B, unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8502,7 +8502,7 @@ unsigned char UObject::DivideEqual_ByteByte(unsigned char B, unsigned char* A)
 
 unsigned char UObject::MultiplyEqual_ByteFloat(float B, unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_ByteFloat");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_ByteFloat");
 
 	UObject_MultiplyEqual_ByteFloat_Params params;
 	params.B = B;
@@ -8511,12 +8511,12 @@ unsigned char UObject::MultiplyEqual_ByteFloat(float B, unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8531,7 +8531,7 @@ unsigned char UObject::MultiplyEqual_ByteFloat(float B, unsigned char* A)
 
 unsigned char UObject::MultiplyEqual_ByteByte(unsigned char B, unsigned char* A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.MultiplyEqual_ByteByte");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.MultiplyEqual_ByteByte");
 
 	UObject_MultiplyEqual_ByteByte_Params params;
 	params.B = B;
@@ -8540,12 +8540,12 @@ unsigned char UObject::MultiplyEqual_ByteByte(unsigned char B, unsigned char* A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
 	if (A != nullptr)
-		*A = params.A;
+		* A = params.A;
 
 	return params.ReturnValue;
 }
@@ -8560,7 +8560,7 @@ unsigned char UObject::MultiplyEqual_ByteByte(unsigned char B, unsigned char* A)
 
 bool UObject::OrOr_BoolBool(bool A, bool B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.OrOr_BoolBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.OrOr_BoolBool");
 
 	UObject_OrOr_BoolBool_Params params;
 	params.A = A;
@@ -8570,7 +8570,7 @@ bool UObject::OrOr_BoolBool(bool A, bool B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8587,7 +8587,7 @@ bool UObject::OrOr_BoolBool(bool A, bool B)
 
 bool UObject::XorXor_BoolBool(bool A, bool B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.XorXor_BoolBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.XorXor_BoolBool");
 
 	UObject_XorXor_BoolBool_Params params;
 	params.A = A;
@@ -8597,7 +8597,7 @@ bool UObject::XorXor_BoolBool(bool A, bool B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8614,7 +8614,7 @@ bool UObject::XorXor_BoolBool(bool A, bool B)
 
 bool UObject::AndAnd_BoolBool(bool A, bool B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.AndAnd_BoolBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.AndAnd_BoolBool");
 
 	UObject_AndAnd_BoolBool_Params params;
 	params.A = A;
@@ -8624,7 +8624,7 @@ bool UObject::AndAnd_BoolBool(bool A, bool B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8641,7 +8641,7 @@ bool UObject::AndAnd_BoolBool(bool A, bool B)
 
 bool UObject::NotEqual_BoolBool(bool A, bool B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.NotEqual_BoolBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.NotEqual_BoolBool");
 
 	UObject_NotEqual_BoolBool_Params params;
 	params.A = A;
@@ -8651,7 +8651,7 @@ bool UObject::NotEqual_BoolBool(bool A, bool B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8668,7 +8668,7 @@ bool UObject::NotEqual_BoolBool(bool A, bool B)
 
 bool UObject::EqualEqual_BoolBool(bool A, bool B)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.EqualEqual_BoolBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.EqualEqual_BoolBool");
 
 	UObject_EqualEqual_BoolBool_Params params;
 	params.A = A;
@@ -8678,7 +8678,7 @@ bool UObject::EqualEqual_BoolBool(bool A, bool B)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8694,7 +8694,7 @@ bool UObject::EqualEqual_BoolBool(bool A, bool B)
 
 bool UObject::Not_PreBool(bool A)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Object.Not_PreBool");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Object.Not_PreBool");
 
 	UObject_Not_PreBool_Params params;
 	params.A = A;
@@ -8703,7 +8703,7 @@ bool UObject::Not_PreBool(bool A)
 	fn->FunctionFlags |= 0x400;
 
 	static auto defaultObj = StaticClass()->CreateDefaultObject();
-	UnrealSDK::pProcessEvent(defaultObj, fn, &params, ((char *)&params) + sizeof(params) - sizeof(unsigned long));
+	UnrealSDK::pProcessEvent(defaultObj, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8720,7 +8720,7 @@ bool UObject::Not_PreBool(bool A)
 
 struct FVector UDistributionVector::GetVectorValue(float F, int LastExtreme)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.DistributionVector.GetVectorValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.DistributionVector.GetVectorValue");
 
 	UDistributionVector_GetVectorValue_Params params;
 	params.F = F;
@@ -8729,7 +8729,7 @@ struct FVector UDistributionVector::GetVectorValue(float F, int LastExtreme)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8745,7 +8745,7 @@ struct FVector UDistributionVector::GetVectorValue(float F, int LastExtreme)
 
 float UDistributionFloat::GetFloatValue(float F)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.DistributionFloat.GetFloatValue");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.DistributionFloat.GetFloatValue");
 
 	UDistributionFloat_GetFloatValue_Params params;
 	params.F = F;
@@ -8753,7 +8753,7 @@ float UDistributionFloat::GetFloatValue(float F)
 	auto flags = fn->FunctionFlags;
 	fn->FunctionFlags |= 0x400;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8769,14 +8769,14 @@ float UDistributionFloat::GetFloatValue(float F)
 
 int UCommandlet::Main(const struct FString Params)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.Commandlet.Main");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.Commandlet.Main");
 
 	UCommandlet_Main_Params params;
 	params.Params = Params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 
@@ -8792,14 +8792,14 @@ int UCommandlet::Main(const struct FString Params)
 
 int UHelpCommandlet::Main(const struct FString Params)
 {
-	static auto fn = (UFunction *)UObject::Find("Function", "Core.HelpCommandlet.Main");
+	static auto fn = (UFunction*)UObject::Find("Function", "Core.HelpCommandlet.Main");
 
 	UHelpCommandlet_Main_Params params;
 	params.Params = Params;
 
 	auto flags = fn->FunctionFlags;
 
-	UnrealSDK::pProcessEvent(this, fn, &params, &params.ReturnValue);
+	UnrealSDK::pProcessEvent(this, fn, &params);
 
 	fn->FunctionFlags = flags;
 

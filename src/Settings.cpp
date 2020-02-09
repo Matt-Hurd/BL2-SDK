@@ -7,7 +7,6 @@ namespace Settings
 {
 	std::wstring gBinPath;
 	bool gDeveloperMode;
-	bool gDisableAntiDebug;
 
 	void Initialize(wchar_t* BinPath/*LauncherStruct* args*/)
 	{
@@ -20,7 +19,6 @@ namespace Settings
 
 		gBinPath = BinPath; //args->BinPath;
 		gDeveloperMode = true; //args->DeveloperMode;
-		gDisableAntiDebug = true; // args->DisableAntiDebug;
 	}
 
 	std::wstring GetLogFilePath()
@@ -54,10 +52,5 @@ namespace Settings
 	bool DeveloperModeEnabled()
 	{
 		return gDeveloperMode;
-	}
-
-	bool DisableAntiDebug()
-	{
-		return gDisableAntiDebug;
 	}
 }

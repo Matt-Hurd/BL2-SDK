@@ -1,4 +1,3 @@
-#define WIN32_LEAN_AND_MEAN
 #include "stdafx.h"
 #include <Windows.h>
 #include <string>
@@ -22,70 +21,6 @@ namespace Util
 		if (gIsInit)
 			return;
 		gIsInit = true;
-	}
-
-	struct EnumWindowsCallbackArgs
-	{
-		EnumWindowsCallbackArgs(DWORD p) : pid(p)
-		{
-		}
-
-		const DWORD pid;
-		std::vector<HWND> handles;
-	};
-
-	static BOOL CALLBACK EnumWindowsCallback(HWND hnd, LPARAM lParam)
-	{
-		EnumWindowsCallbackArgs* args = (EnumWindowsCallbackArgs *)lParam;
-		DWORD windowPID;
-		(void)GetWindowThreadProcessId(hnd, &windowPID);
-		if (windowPID == args->pid)
-		{
-			args->handles.push_back(hnd);
-		}
-		return TRUE;
-	}
-
-	HWND getToplevelWindows()
-	{
-		if (gTopWnd)
-			return gTopWnd;
-		EnumWindowsCallbackArgs args(GetCurrentProcessId());
-		if (EnumWindows(&EnumWindowsCallback, (LPARAM)&args) == FALSE)
-		{
-			return nullptr;
-		}
-		return gTopWnd = args.handles[0];
-	}
-
-	DWORD GetMainThreadId(DWORD DwPid)
-	{
-		LPVOID lpTid;
-		_asm
-		{
-			mov eax, fs:[18h]
-			add eax, 36
-			mov[lpTid], eax
-		}
-		HANDLE hProcess = OpenProcess(PROCESS_VM_READ, FALSE, DwPid);
-		if (hProcess == nullptr)
-			return NULL;
-		DWORD dwTid;
-		if (ReadProcessMemory(hProcess, lpTid, &dwTid, sizeof(dwTid), nullptr) == FALSE)
-		{
-			CloseHandle(hProcess);
-			return NULL;
-		}
-		CloseHandle(hProcess);
-		return dwTid;
-	}
-
-	HANDLE GetMainThreadHandle(const DWORD DwPid, const DWORD DwDesiredAccess)
-	{
-		const DWORD dwTid = GetMainThreadId(DwPid);
-		if (dwTid == FALSE)
-			return nullptr;
-		return OpenThread(DwDesiredAccess, FALSE, dwTid);
 	}
 
 	std::string FormatInternal(const char* Fmt, const va_list Args)

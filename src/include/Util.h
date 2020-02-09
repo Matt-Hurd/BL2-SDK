@@ -23,9 +23,6 @@ namespace Util
 	const char* ServerPath();
 	const char* LogPath();
 	const char* LayoutPath();
-	HWND getToplevelWindows();
-	DWORD GetMainThreadId(DWORD DwPid);
-	HANDLE GetMainThreadHandle(DWORD DwPid, DWORD DwDesiredAccess);
 
 	int WaitForModules(std::int32_t Timeout, const std::initializer_list<std::wstring>& Modules);
 }

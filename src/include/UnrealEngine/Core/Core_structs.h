@@ -259,7 +259,7 @@ struct FTAlphaBlend
 // 0x0004
 struct FPointer
 {
-	int												Dummy;													// 0x0000 (0x0004) [0x0000000000001002]			  ( CPF_Const | CPF_Native )
+	void*											Dummy;													// 0x0000 (0x0004) [0x0000000000001002]			  ( CPF_Const | CPF_Native )
 };
 
 // ScriptStruct Core.Object.Array_Mirror

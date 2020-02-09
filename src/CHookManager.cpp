@@ -126,7 +126,8 @@ bool CHookManager::ProcessHooks(UObject* Caller, FFrame& Stack, void* const Resu
 		//	}
 		//}
 		//LogOutParams(Stack);
-		memset(Frame, 0, Function->ParamsSize);
+		if (Frame != 0)
+			memset(Frame, 0, Function->ParamsSize);
 		free(Frame);
 		return ret;
 	}

@@ -16,7 +16,7 @@ void Export_pystes_gamedefines(py::module &m)
 		;
 	py::class_< FNameEntry >(m, "FNameEntry")
 		.def(py::init<>())
-		.def_readonly("Name", &FNameEntry::Name)
+		.def_readonly("Name", &FNameEntry::AnsiName)
 		;
 	py::class_< FOutputDevice >(m, "FOutputDevice")
 		.def(py::init<>())

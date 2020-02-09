@@ -7,7 +7,6 @@
 
 struct LauncherStruct
 {
-	bool DisableAntiDebug;
 	bool LogAllCalls;
 	bool DisableCrashRpt;
 	bool DeveloperMode;
@@ -22,7 +21,6 @@ namespace Settings
 	std::wstring GetTextureFile(const std::wstring& Filename);
 	std::wstring GetPythonFile(const std::wstring& Filename);
 	bool DeveloperModeEnabled();
-	bool DisableAntiDebug();
 }
 
 #endif
