@@ -119,17 +119,17 @@ struct FString* FHelper::GetStrProperty(UProperty* Prop)
 
 class UObject* FHelper::GetObjectProperty(UProperty* Prop)
 {
-	return reinterpret_cast<UObject **>(GetPropertyAddress(Prop))[0];
+	return reinterpret_cast<UObject**>(GetPropertyAddress(Prop))[0];
 }
 
 class UComponent* FHelper::GetComponentProperty(UProperty* Prop)
 {
-	return reinterpret_cast<UComponent **>(GetPropertyAddress(Prop))[0];
+	return reinterpret_cast<UComponent**>(GetPropertyAddress(Prop))[0];
 }
 
 class UClass* FHelper::GetClassProperty(UProperty* Prop)
 {
-	return reinterpret_cast<UClass **>(GetPropertyAddress(Prop))[0];
+	return reinterpret_cast<UClass**>(GetPropertyAddress(Prop))[0];
 }
 
 struct FName* FHelper::GetNameProperty(UProperty* Prop)
@@ -170,13 +170,13 @@ bool FHelper::GetBoolProperty(UBoolProperty* Prop)
 py::object FHelper::GetArrayProperty(UArrayProperty* Prop)
 {
 	const auto array = reinterpret_cast<TArray<char>*>(GetPropertyAddress(Prop));
-	return pybind11::cast(FArray{ array, Prop->GetInner()});
+	return pybind11::cast(FArray{array, Prop->GetInner()});
 }
 
 pybind11::object FHelper::GetProperty(UProperty* Prop)
 {
 	Logging::LogD("FHelper::GetProperty '%s' (offset 0x%x) (Prop at 0x%p) on 0x%p\n", Prop->GetFullName().c_str(),
-	              Prop->Offset_Internal, Prop, this);
+				  Prop->Offset_Internal, Prop, this);
 	if (!strcmp(Prop->Class->GetName(), "StructProperty"))
 		return pybind11::cast(GetStructProperty(static_cast<UStructProperty*>(Prop)));
 	if (!strcmp(Prop->Class->GetName(), "StrProperty"))
@@ -204,7 +204,7 @@ pybind11::object FHelper::GetProperty(UProperty* Prop)
 	if (!strcmp(Prop->Class->GetName(), "ArrayProperty"))
 		return GetArrayProperty(static_cast<UArrayProperty*>(Prop));
 	throw std::exception(Util::Format("FHelper::GetProperty got unexpected property type '%s'",
-	                                  Prop->GetFullName().c_str()).c_str());
+									  Prop->GetFullName().c_str()).c_str());
 }
 
 void FHelper::SetProperty(class UStructProperty* Prop, const py::object& Val)
@@ -239,35 +239,37 @@ void FHelper::SetProperty(class UStrProperty* Prop, const py::object& Val)
 {
 	if (!py::isinstance<py::str>(Val))
 		throw std::exception(Util::Format("FHelper::SetProperty: Got unexpected type, expected string!\n").c_str());
-	memcpy(GetPropertyAddress(Prop), &FString(Val.cast<std::wstring>().c_str()), sizeof(FString));
+	auto setString = FString(Val.cast<std::wstring>().c_str());
+	memcpy(GetPropertyAddress(Prop), &setString, sizeof(FString));
 }
 
 void FHelper::SetProperty(class UObjectProperty* Prop, const py::object& Val)
 {
 	if (!py::isinstance<UObject>(Val) && !py::isinstance<py::none>(Val))
 		throw std::exception(Util::Format("FHelper::SetProperty: Got unexpected type, expected UObject!\n").c_str());
-	reinterpret_cast<UObject **>(GetPropertyAddress(Prop))[0] = Val.cast<UObject*>();
+	reinterpret_cast<UObject**>(GetPropertyAddress(Prop))[0] = Val.cast<UObject*>();
 }
 
 void FHelper::SetProperty(class UComponentProperty* Prop, const py::object& Val)
 {
 	if (!py::isinstance<UComponent>(Val) && !py::isinstance<py::none>(Val))
 		throw std::exception(Util::Format("FHelper::SetProperty: Got unexpected type, expected UComponent!\n").c_str());
-	reinterpret_cast<UComponent * *>(GetPropertyAddress(Prop))[0] = Val.cast<UComponent*>();
+	reinterpret_cast<UComponent**>(GetPropertyAddress(Prop))[0] = Val.cast<UComponent*>();
 }
 
 void FHelper::SetProperty(class UClassProperty* Prop, const py::object& Val)
 {
 	if (!py::isinstance<UClass>(Val) && !py::isinstance<py::none>(Val))
 		throw std::exception(Util::Format("FHelper::SetProperty: Got unexpected type, expected UClass!\n").c_str());
-	reinterpret_cast<UClass * *>(GetPropertyAddress(Prop))[0] = Val.cast<UClass*>();
+	reinterpret_cast<UClass**>(GetPropertyAddress(Prop))[0] = Val.cast<UClass*>();
 }
 
 void FHelper::SetProperty(class UNameProperty* Prop, const py::object& Val)
 {
 	if (!py::isinstance<py::str>(Val))
 		throw std::exception(Util::Format("FHelper::SetProperty: Got unexpected type, expected string!\n").c_str());
-	memcpy(GetPropertyAddress(Prop), &FName(Val.cast<std::string>().c_str()), sizeof(FName));
+	auto name = FName(Val.cast<std::string>().c_str());
+	memcpy(GetPropertyAddress(Prop), &name, sizeof(FName));
 }
 
 void FHelper::SetProperty(class UInterfaceProperty* Prop, const py::object& Val)
@@ -289,8 +291,9 @@ void FHelper::SetProperty(class UDelegateProperty* Prop, const py::object& Val)
 	if (!py::isinstance<FScriptDelegate>(Val))
 		throw std::exception(
 			Util::Format("FHelper::SetProperty: Got unexpected type, expected FScriptDelegate!\n").c_str());
-	memcpy(GetPropertyAddress(Prop), &FScriptDelegate(Val.cast<FScriptDelegate>()),
-	       sizeof(FScriptDelegate));
+	auto script = FScriptDelegate(Val.cast<FScriptDelegate>());
+	memcpy(GetPropertyAddress(Prop), &script,
+		   sizeof(FScriptDelegate));
 }
 
 void FHelper::SetProperty(class UFloatProperty* Prop, const py::object& Val)
@@ -317,7 +320,7 @@ void FHelper::SetProperty(class UBoolProperty* Prop, const py::object& Val)
 	try
 	{
 		Logging::LogD("SetBoolProperty %d, mask: 0x%x, base: 0x%x, offset: 0x%x\n", Val.cast<bool>(), Prop->GetMask(),
-		              this, Prop->Offset_Internal);
+					  this, Prop->Offset_Internal);
 		if (Val.cast<bool>())
 			reinterpret_cast<unsigned int*>(GetPropertyAddress(Prop))[0] |= Prop->GetMask();
 		else
@@ -337,8 +340,8 @@ void FHelper::SetProperty(class UArrayProperty* Prop, const py::object& Val)
 	const auto currentArray = reinterpret_cast<TArray<char>*>(GetPropertyAddress(Prop));
 	if (s.size() > currentArray->Count)
 	{
-		char *data = static_cast<char*>(static_cast<tMalloc>(UnrealSDK::pGMalloc[0][0][1])(UnrealSDK::pGMalloc[0],
-		                                                                           Prop->GetInner()->ElementSize * s.size(), 8));
+		char* data = static_cast<char*>(static_cast<tMalloc>(UnrealSDK::pGMalloc[0][0][1])(UnrealSDK::pGMalloc[0],
+																						   Prop->GetInner()->ElementSize * s.size(), 8));
 		memset(data, 0, Prop->GetInner()->ElementSize * s.size());
 		currentArray->Data = data;
 		currentArray->Max = s.size();
@@ -383,7 +386,7 @@ void FHelper::SetProperty(class UProperty* Prop, const py::object& val)
 		SetProperty(static_cast<UArrayProperty*>(Prop), val);
 	else
 		throw std::exception(Util::Format("FHelper::SetProperty got unexpected property type '%s'",
-		                                  Prop->GetFullName().c_str()).c_str());
+										  Prop->GetFullName().c_str()).c_str());
 }
 
 TArray<UObject*>* UObject::GObjects()
@@ -531,7 +534,7 @@ void UObject::DumpObject()
 		{
 			if (child->IsA(FindClass("Property")))
 				Logging::LogF(" %s=%s\n", child->GetName(),
-				              py::cast<std::string>(repr(GetProperty(child->GetName()))).c_str());
+							  py::cast<std::string>(repr(GetProperty(child->GetName()))).c_str());
 		}
 		thisField = thisField->SuperField;
 	}
@@ -621,7 +624,7 @@ void FFrame::SkipFunction()
 	memset(params, 0, 1000);
 	for (UProperty* Property = (UProperty*)Node->Children; Code[0] != 0x16; Property = (UProperty*)Property->Next)
 		UnrealSDK::pFrameStep(this, this->Object,
-		                   (void*)((Property->PropertyFlags & 0x100) ? nullptr : params + Property->Offset_Internal));
+							  (void*)((Property->PropertyFlags & 0x100) ? nullptr : params + Property->Offset_Internal));
 
 	Code++;
 	memset(params, 0, 1000);
@@ -653,14 +656,18 @@ void FStruct::SetProperty(std::string& PropName, py::object value) const
 	((FHelper*)((char*)base))->SetProperty(prop, std::move(value));
 }
 
-py::str FStruct::Repr() const {
+py::str FStruct::Repr() const
+{
 	std::ostringstream output;
 	output << "{";
 
 	const UStruct* thisField = structType;
-	while (thisField) {
-		for (UField* Child = thisField->Children; Child != nullptr; Child = Child->Next) {
-			if (Child != thisField->Children) {
+	while (thisField)
+	{
+		for (UField* Child = thisField->Children; Child != nullptr; Child = Child->Next)
+		{
+			if (Child != thisField->Children)
+			{
 				output << ", ";
 			}
 			output << Child->GetName() << ": " << py::repr(GetProperty(Child->GetName()));
@@ -711,15 +718,23 @@ py::object FArray::Next()
 	return GetItem(IterCounter++);
 }
 
-py::str FArray::Repr() {
+py::str FArray::Repr()
+{
 	std::ostringstream output;
 	output << "[";
-	for (unsigned int i = 0; i < arr->Count; i++) {
-		if (i > 0) {
+	for (unsigned int i = 0; i < arr->Count; i++)
+	{
+		if (i > 0)
+		{
 			output << ", ";
 		}
 		output << py::repr(GetItem(i));
 	}
 	output << "]";
 	return output.str();
+}
+
+int FArray::len()
+{
+	return arr->Count;
 }

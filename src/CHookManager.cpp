@@ -3,7 +3,7 @@
 #include "CHookManager.h"
 
 void CHookManager::Register(const std::string& FuncName, const std::string& HookName,
-                            const std::function<bool(UObject*, UFunction*, FStruct*)>& FuncHook)
+							const std::function<bool(UObject*, UFunction*, FStruct*)>& FuncHook)
 {
 	char funcNameChar[255];
 	strcpy(funcNameChar, FuncName.c_str());
@@ -22,7 +22,7 @@ void CHookManager::Register(const std::string& FuncName, const std::string& Hook
 	}
 
 	Logging::LogD("[HookManager] (%s) Hook \"%s\" added as hook for \"%s\"\n", this->debugName.c_str(),
-	              hookPair.first.c_str(), FuncName.c_str());
+				  hookPair.first.c_str(), FuncName.c_str());
 }
 
 bool CHookManager::Remove(const std::string& FuncName, const std::string& HookName)
@@ -31,7 +31,7 @@ bool CHookManager::Remove(const std::string& FuncName, const std::string& HookNa
 	if (iHooks == hooks.end() || iHooks->second.find(HookName) == iHooks->second.end())
 	{
 		Logging::LogD("[HookManager] (%s) ERROR: Failed to remove hook \"%s\" for \"%s\"\n", this->debugName.c_str(),
-		              HookName.c_str(), FuncName.c_str());
+					  HookName.c_str(), FuncName.c_str());
 		return false;
 	}
 
@@ -40,7 +40,7 @@ bool CHookManager::Remove(const std::string& FuncName, const std::string& HookNa
 }
 
 bool CHookManager::ProcessHooks(const std::string& FuncName, const UObject* Caller, const UFunction* Func,
-                                const FStruct* Params)
+								const FStruct* Params)
 {
 	auto iHooks = hooks.find(FuncName);
 
@@ -49,18 +49,18 @@ bool CHookManager::ProcessHooks(const std::string& FuncName, const UObject* Call
 		tHookMap matchedHooks = iHooks->second;
 
 		for (auto& hook : matchedHooks)
-			if (!hook.second(const_cast<UObject *>(Caller), const_cast<UFunction *>(Func), const_cast<FStruct *>(Params)))
+			if (!hook.second(const_cast<UObject*>(Caller), const_cast<UFunction*>(Func), const_cast<FStruct*>(Params)))
 				return false;
 	}
 
-	iHooks = hooks.find(const_cast<UObject *>(Caller)->GetObjectName() + "." + const_cast<UFunction *>(Func)->GetName());
+	iHooks = hooks.find(const_cast<UObject*>(Caller)->GetObjectName() + "." + const_cast<UFunction*>(Func)->GetName());
 
 	if (iHooks != hooks.end())
 	{
 		tHookMap matchedHooks = iHooks->second;
 
 		for (auto& hook : matchedHooks)
-			if (!hook.second(const_cast<UObject *>(Caller), const_cast<UFunction *>(Func), const_cast<FStruct *>(Params)))
+			if (!hook.second(const_cast<UObject*>(Caller), const_cast<UFunction*>(Func), const_cast<FStruct*>(Params)))
 				return false;
 	}
 	return true;
@@ -84,9 +84,9 @@ bool CHookManager::ProcessHooks(UObject* Caller, FFrame& Stack, void* const Resu
 	if (iHooks != hooks.end() || hooks.find(Caller->GetObjectName() + "." + Function->GetName()) != hooks.end())
 	{
 		UProperty* ReturnParm;
-		char* Frame = static_cast<char *>(calloc(1, Function->ParamsSize));
-		for (auto* Property = static_cast<UProperty *>(Function->Children); Stack.Code[0] != 0x16; Property = static_cast<UProperty*>(Property->
-			     Next))
+		char* Frame = static_cast<char*>(calloc(1, Function->ParamsSize));
+		for (auto* Property = static_cast<UProperty*>(Function->Children); Stack.Code[0] != 0x16; Property = static_cast<UProperty*>(Property->
+																																	 Next))
 		{
 			const bool bIsReturnParam = ((Property->PropertyFlags & 0x400) != 0);
 			if (bIsReturnParam)
@@ -96,7 +96,8 @@ bool CHookManager::ProcessHooks(UObject* Caller, FFrame& Stack, void* const Resu
 			}
 			UnrealSDK::pFrameStep(&Stack, Stack.Object, Frame + Property->Offset_Internal);
 		}
-		const bool ret = ProcessHooks(Function->GetObjectName(), Caller, Function, &FStruct{Function, (void *)Frame});
+		auto Params = FStruct{Function, (void*)Frame};
+		const bool ret = ProcessHooks(Function->GetObjectName(), Caller, Function, &Params);
 		//if (!ret) {
 		//	if (ReturnParm)
 		//	{

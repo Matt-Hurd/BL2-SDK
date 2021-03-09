@@ -178,41 +178,42 @@
 # ========================================================================================= #
 */
 
-struct FHelper {
-	struct FStruct GetStructProperty(class UStructProperty *Prop);
-	struct FString* GetStrProperty(class UProperty *Prop);
-	class UObject* GetObjectProperty(class UProperty *Prop);
-	class UComponent* GetComponentProperty(class UProperty *Prop);
-	class UClass* GetClassProperty(class UProperty *Prop);
-	struct FName* GetNameProperty(class UProperty *Prop);
-	int GetIntProperty(class UProperty * Prop);
-	struct FScriptInterface* GetInterfaceProperty(class UProperty *Prop);
-	float GetFloatProperty(class UProperty *Prop);
-	struct FScriptDelegate* GetDelegateProperty(class UProperty *Prop);
-	unsigned char GetByteProperty(class UProperty * Prop);
-	bool GetBoolProperty(class UBoolProperty *Prop);
+struct FHelper
+{
+	struct FStruct GetStructProperty(class UStructProperty* Prop);
+	struct FString* GetStrProperty(class UProperty* Prop);
+	class UObject* GetObjectProperty(class UProperty* Prop);
+	class UComponent* GetComponentProperty(class UProperty* Prop);
+	class UClass* GetClassProperty(class UProperty* Prop);
+	struct FName* GetNameProperty(class UProperty* Prop);
+	int GetIntProperty(class UProperty* Prop);
+	struct FScriptInterface* GetInterfaceProperty(class UProperty* Prop);
+	float GetFloatProperty(class UProperty* Prop);
+	struct FScriptDelegate* GetDelegateProperty(class UProperty* Prop);
+	unsigned char GetByteProperty(class UProperty* Prop);
+	bool GetBoolProperty(class UBoolProperty* Prop);
 	void* GetPropertyAddress(class UProperty* Prop);
-	py::object GetArrayProperty(class UArrayProperty *Prop);
-	pybind11::object GetProperty(class UProperty * Prop);
+	py::object GetArrayProperty(class UArrayProperty* Prop);
+	pybind11::object GetProperty(class UProperty* Prop);
 
-	void SetProperty(class UStructProperty *Prop, const py::object& Val);
-	void SetProperty(class UStrProperty *Prop, const py::object& Val);
-	void SetProperty(class UObjectProperty *Prop, const py::object& Val);
-	void SetProperty(class UComponentProperty *Prop, const py::object& Val);
-	void SetProperty(class UClassProperty *Prop, const py::object& Val);
-	void SetProperty(class UNameProperty *Prop, const py::object& Val);
-	void SetProperty(class UInterfaceProperty *Prop, const py::object& Val);
-	void SetProperty(class UDelegateProperty *Prop, const py::object& Val);
-	void SetProperty(class UFloatProperty *Prop, const py::object& Val);
-	void SetProperty(class UIntProperty *Prop, const py::object& Val);
-	void SetProperty(class UByteProperty *Prop, const py::object& Val);
-	void SetProperty(class UBoolProperty *boolProp, const py::object& Val);
-	void SetProperty(class UArrayProperty *Prop, const py::object& Val);
-	void SetProperty(class UProperty *Prop, const py::object& val);
+	void SetProperty(class UStructProperty* Prop, const py::object& Val);
+	void SetProperty(class UStrProperty* Prop, const py::object& Val);
+	void SetProperty(class UObjectProperty* Prop, const py::object& Val);
+	void SetProperty(class UComponentProperty* Prop, const py::object& Val);
+	void SetProperty(class UClassProperty* Prop, const py::object& Val);
+	void SetProperty(class UNameProperty* Prop, const py::object& Val);
+	void SetProperty(class UInterfaceProperty* Prop, const py::object& Val);
+	void SetProperty(class UDelegateProperty* Prop, const py::object& Val);
+	void SetProperty(class UFloatProperty* Prop, const py::object& Val);
+	void SetProperty(class UIntProperty* Prop, const py::object& Val);
+	void SetProperty(class UByteProperty* Prop, const py::object& Val);
+	void SetProperty(class UBoolProperty* boolProp, const py::object& Val);
+	void SetProperty(class UArrayProperty* Prop, const py::object& Val);
+	void SetProperty(class UProperty* Prop, const py::object& val);
 };
 
 // 0x003C
-class UObject : FHelper
+class UObject: FHelper
 {
 public:
 	//struct FPointer                                    VfTableObject;                                    		// 0x0000 (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
@@ -220,18 +221,18 @@ public:
 	struct FQWord                                      ObjectFlags;                                      		// 0x0008 (0x0008) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
 	struct FPointer                                    HashOuterNext;                                    		// 0x0010 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
 	struct FPointer                                    StateFrame;                                       		// 0x0014 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
-	class UObject*                                     Linker;                                           		// 0x0018 (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
+	class UObject* Linker;                                           		// 0x0018 (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
 	struct FPointer                                    LinkerIndex;                                      		// 0x001C (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
 	int                                                ObjectInternalInteger;                            		// 0x0020 (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
 	int                                                NetIndex;                                         		// 0x0024 (0x0004) [0x0000000000821002]              ( CPF_Const | CPF_Native | CPF_EditConst | CPF_NoExport )
-	class UObject*                                     Outer;                                            		// 0x0028 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
+	class UObject* Outer;                                            		// 0x0028 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
 	struct FName                                       Name;                                             		// 0x002C (0x0008) [0x0000000000021003]              ( CPF_Edit | CPF_Const | CPF_Native | CPF_EditConst )
-	class UClass*                                      Class;                                            		// 0x0034 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
-	class UObject*                                     ObjectArchetype;                                  		// 0x0038 (0x0004) [0x0000000000021003]              ( CPF_Edit | CPF_Const | CPF_Native | CPF_EditConst )
+	class UClass* Class;                                            		// 0x0034 (0x0004) [0x0000000000021002]              ( CPF_Const | CPF_Native | CPF_EditConst )
+	class UObject* ObjectArchetype;                                  		// 0x0038 (0x0004) [0x0000000000021003]              ( CPF_Edit | CPF_Const | CPF_Native | CPF_EditConst )
 
 public:
 	static TArray< UObject* >* GObjects();
-	const char *GetName() const;
+	const char* GetName() const;
 	std::string GetNameCpp() const;
 	std::string GetFullName();
 	std::string GetObjectName();
@@ -600,7 +601,7 @@ public:
 	virtual void VirtualFunction16() {};																			// 0x00F90510 (0x40)
 	virtual void VirtualFunction17() {};																			// 0x00C6EB60 (0x44)
 	virtual void VirtualFunction18() {};																			// 0x009CBC30 (0x48)
-	virtual void PostEditChangeProperty(FPropertyChangedEvent *PropertyChangedEvent) {};							// 0x00AEAFA0 (0x4C)
+	virtual void PostEditChangeProperty(FPropertyChangedEvent* PropertyChangedEvent) {};							// 0x00AEAFA0 (0x4C)
 	virtual void VirtualFunction20() {};																			// 0x00A28430 (0x50)
 	virtual void VirtualFunction21() {};																			// 0x00601380 (0x54)
 	virtual void VirtualFunction22() {};																			// 0x0048AE50 (0x58)
@@ -840,21 +841,21 @@ public:
 };
 
 // 0x0024 (0x0060 - 0x003C)
-class UTextBuffer : public UObject
+class UTextBuffer: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x24];                            		// 0x003C (0x0024) MISSED OFFSET
 };
 
 // 0x0004 (0x0040 - 0x003C)
-class USubsystem : public UObject
+class USubsystem: public UObject
 {
 public:
 	struct FPointer                                    VfTable_FExec;                                    		// 0x003C (0x0004) [0x0000000000801002]              ( CPF_Const | CPF_Native | CPF_NoExport )
 };
 
 // 0x0104 (0x0144 - 0x0040)
-class USystem : public USubsystem
+class USystem: public USubsystem
 {
 public:
 	int                                                StaleCacheDays;                                   		// 0x0040 (0x0004) [0x0000000000004000]              ( CPF_Config )
@@ -885,42 +886,42 @@ public:
 };
 
 // 0x0084 (0x00C0 - 0x003C)
-class UPackageMap : public UObject
+class UPackageMap: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x84];                            		// 0x003C (0x0084) MISSED OFFSET
 };
 
 // 0x000C (0x0048 - 0x003C)
-class UObjectSerializer : public UObject
+class UObjectSerializer: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0xC];                             		// 0x003C (0x000C) MISSED OFFSET
 };
 
 // 0x0004 (0x0040 - 0x003C)
-class UObjectRedirector : public UObject
+class UObjectRedirector: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x4];                             		// 0x003C (0x0004) MISSED OFFSET
 };
 
 // 0x003C (0x0078 - 0x003C)
-class UMetaData : public UObject
+class UMetaData: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x3C];                            		// 0x003C (0x003C) MISSED OFFSET
 };
 
 // 0x0534 (0x0570 - 0x003C)
-class ULinker : public UObject
+class ULinker: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x534];                           		// 0x003C (0x0534) MISSED OFFSET
 };
 
 // 0x00A8 (0x0618 - 0x0570)
-class ULinkerSave : public ULinker
+class ULinkerSave: public ULinker
 {
 public:
 	unsigned char                                      UnknownData00[0xA8];                            		// 0x0570 (0x00A8) MISSED OFFSET
@@ -936,19 +937,20 @@ public:
 */
 
 // 0x0000 (0x003C - 0x003C)
-class UInterface : public UObject {
+class UInterface: public UObject
+{
 
 };
 
 // 0x0004 (0x0040 - 0x003C)
-class UField : public UObject
+class UField: public UObject
 {
 public:
-	class UField*                                      Next;                                             		// NOT AUTO-GENERATED PROPERTY
+	class UField* Next;                                             		// NOT AUTO-GENERATED PROPERTY
 };
 
 // 0x0040 (0x0080 - 0x0040)
-class UProperty : public UField
+class UProperty: public UField
 {
 public:
 	int					ArrayDim;
@@ -956,23 +958,23 @@ public:
 	unsigned int		PropertyFlags;
 	unsigned char		UnknownData00[0x14];
 	int					Offset_Internal;
-	UProperty*			PropertyLinkNext;
+	UProperty* PropertyLinkNext;
 	unsigned char		UnknownData01[0x18];
 };
 
 // 0x004C (0x008C - 0x0040)
-class UStruct : public UField
+class UStruct: public UField
 {
 public:
 	unsigned char			UnknownData00[0x8];
-	class UStruct*			SuperField;
-	class UField*			Children;
+	class UStruct* SuperField;
+	class UField* Children;
 	unsigned short			PropertySize;
 	char					UnknownData01[0x3A];
 
 	UObject* FindChildByName(FName InName) const
 	{
-		const UStruct *thisField = this;
+		const UStruct* thisField = this;
 		while (thisField)
 		{
 			for (UField* Child = thisField->Children; Child != NULL; Child = Child->Next)
@@ -986,13 +988,13 @@ public:
 };
 
 // 0x001C (0x00A8 - 0x008C)
-class UScriptStruct : public UStruct
+class UScriptStruct: public UStruct
 {
 public:
 	unsigned char                                      UnknownData00[0x1C];                            		// 0x008C (0x001C) MISSED OFFSET
 };
 
-class UFunction : public UStruct
+class UFunction: public UStruct
 {
 public:
 	unsigned long		FunctionFlags;
@@ -1003,158 +1005,163 @@ public:
 	unsigned char		NumParams;
 	unsigned short		ParamsSize;
 	unsigned long		ReturnValueOffset;
-	void*				Func;
+	void* Func;
 };
 
 // 0x0004 (0x0084 - 0x0080)
-class UStructProperty : public UProperty
+class UStructProperty: public UProperty
 {
 public:
 	UScriptStruct* Struct_DONOTUSE;
-	UScriptStruct *GetStruct() {
+	UScriptStruct* GetStruct()
+	{
 		if (UnrealSDK::EngineVersion <= 8631)
-			return ((UScriptStruct **)(((char *)this) + 0x74))[0];
+			return ((UScriptStruct**)(((char*)this) + 0x74))[0];
 		else
-			return ((UScriptStruct **)(((char *)this) + 0x80))[0];
+			return ((UScriptStruct**)(((char*)this) + 0x80))[0];
 	}
 };
 
 // 0x0000 (0x0080 - 0x0080)
-class UStrProperty : public UProperty {};
+class UStrProperty: public UProperty {};
 
 // 0x0004 (0x0084 - 0x0080)
-class UObjectProperty : public UProperty
+class UObjectProperty: public UProperty
 {
 public:
 	UObject* Object_DONOTUSE;
-	UObject *GetObject() {
+	UObject* GetObject()
+	{
 		if (UnrealSDK::EngineVersion <= 8631)
-			return ((UObject **)(((char *)this) + 0x74))[0];
+			return ((UObject**)(((char*)this) + 0x74))[0];
 		else
-			return ((UObject **)(((char *)this) + 0x80))[0];
+			return ((UObject**)(((char*)this) + 0x80))[0];
 	}
 };
 
 // 0x0000 (0x0084 - 0x0084)
-class UComponentProperty : public UObjectProperty {};
+class UComponentProperty: public UObjectProperty {};
 
 // 0x0004 (0x0088 - 0x0084)
-class UClassProperty : public UObjectProperty
+class UClassProperty: public UObjectProperty
 {
 public:
 	UClass* MetaClass;
 };
 
 // 0x0000 (0x0080 - 0x0080)
-class UNameProperty : public UProperty {};
+class UNameProperty: public UProperty {};
 
 // 0x0008 (0x0088 - 0x0080)
-class UMapProperty : public UProperty
+class UMapProperty: public UProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                             		// 0x0080 (0x0008) MISSED OFFSET
 };
 
 // 0x0000 (0x0080 - 0x0080)
-class UIntProperty : public UProperty {};
+class UIntProperty: public UProperty {};
 
 // 0x0008 (0x0088 - 0x0080)
-class UIntAttributeProperty : public UIntProperty
+class UIntAttributeProperty: public UIntProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                             		// 0x0080 (0x0008) MISSED OFFSET
 };
 
 // 0x0004 (0x0084 - 0x0080)
-class UInterfaceProperty : public UProperty
+class UInterfaceProperty: public UProperty
 {
 public:
-	UClass *InterfaceClass_DONOTUSE;
-	UClass *GetInterfaceClass() {
+	UClass* InterfaceClass_DONOTUSE;
+	UClass* GetInterfaceClass()
+	{
 		if (UnrealSDK::EngineVersion <= 8631)
-			return ((UClass **)(((char *)this) + 0x74))[0];
+			return ((UClass**)(((char*)this) + 0x74))[0];
 		else
-			return ((UClass **)(((char *)this) + 0x80))[0];
+			return ((UClass**)(((char*)this) + 0x80))[0];
 	}
 };
 
 // 0x0000 (0x0080 - 0x0080)
-class UFloatProperty : public UProperty {};
+class UFloatProperty: public UProperty {};
 
 // 0x0008 (0x0088 - 0x0080)
-class UFloatAttributeProperty : public UFloatProperty
+class UFloatAttributeProperty: public UFloatProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                             		// 0x0080 (0x0008) MISSED OFFSET
 };
 
 // 0x0008 (0x0088 - 0x0080)
-class UDelegateProperty : public UProperty
+class UDelegateProperty: public UProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                             		// 0x0080 (0x0008) MISSED OFFSET
 };
 
 // 0x0004 (0x0084 - 0x0080)
-class UByteProperty : public UProperty
+class UByteProperty: public UProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x4];                             		// 0x0080 (0x0004) MISSED OFFSET
 };
 
 // 0x0008 (0x008C - 0x0084)
-class UByteAttributeProperty : public UByteProperty
+class UByteAttributeProperty: public UByteProperty
 {
 public:
 	unsigned char                                      UnknownData00[0x8];                             		// 0x0084 (0x0008) MISSED OFFSET
 };
 
 // 0x0004 (0x0084 - 0x0080)
-class UBoolProperty : public UProperty
+class UBoolProperty: public UProperty
 {
 public:
 	unsigned int Mask_DONOTUSE;
-	unsigned int GetMask() {
+	unsigned int GetMask()
+	{
 		if (UnrealSDK::EngineVersion <= 8631)
-			return ((unsigned int *)(((char *)this) + 0x74))[0];
+			return ((unsigned int*)(((char*)this) + 0x74))[0];
 		else
-			return ((unsigned int *)(((char *)this) + 0x80))[0];
+			return ((unsigned int*)(((char*)this) + 0x80))[0];
 	}
 };
 
 // 0x0004 (0x0084 - 0x0080)
-class UArrayProperty : public UProperty
+class UArrayProperty: public UProperty
 {
 public:
-	UProperty *Inner_DONOTUSE;
-	UProperty *GetInner() {
+	UProperty* Inner_DONOTUSE;
+	UProperty* GetInner()
+	{
 		if (UnrealSDK::EngineVersion <= 8631)
-			return ((UProperty **)(((char *)this) + 0x74))[0];
+			return ((UProperty**)(((char*)this) + 0x74))[0];
 		else
-			return ((UProperty **)(((char *)this) + 0x80))[0];
+			return ((UProperty**)(((char*)this) + 0x80))[0];
 	}
 };
 
 // 0x000C (0x004C - 0x0040)
-class UEnum : public UField
+class UEnum: public UField
 {
 public:
 	unsigned char                                      UnknownData00[0xC];                             		// 0x0040 (0x000C) MISSED OFFSET
 };
 
 // 0x000C (0x004C - 0x0040)
-class UConst : public UField
+class UConst: public UField
 {
 public:
 	unsigned char                                      UnknownData00[0xC];                             		// 0x0040 (0x000C) MISSED OFFSET
 };
 
 // 0x0034 (0x0070 - 0x003C)
-class UFactory : public UObject
+class UFactory: public UObject
 {
 public:
-	class UClass*                                      SupportedClass;                                   		// 0x003C (0x0004) [0x0000000000000000]
-	class UClass*                                      ContextClass;                                     		// 0x0040 (0x0004) [0x0000000000000000]
+	class UClass* SupportedClass;                                   		// 0x003C (0x0004) [0x0000000000000000]
+	class UClass* ContextClass;                                     		// 0x0040 (0x0004) [0x0000000000000000]
 	struct FString                                     Description;                                      		// 0x0044 (0x000C) [0x0000000000400000]              ( CPF_NeedCtorLink )
 	TArray< struct FString >                           Formats;                                          		// 0x0050 (0x000C) [0x0000000000400000]              ( CPF_NeedCtorLink )
 	unsigned long                                      bCreateNew : 1;                                   		// 0x005C (0x0004) [0x0000000000000000] [0x00000001]
@@ -1166,10 +1173,10 @@ public:
 };
 
 // 0x0000 (0x0070 - 0x0070)
-class UTextBufferFactory : public UFactory {};
+class UTextBufferFactory: public UFactory {};
 
 // 0x0028 (0x0064 - 0x003C)
-class UExporter : public UObject
+class UExporter: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0x4];                             		// 0x003C (0x0004) MISSED OFFSET
@@ -1179,15 +1186,15 @@ public:
 };
 
 // 0x000C (0x0048 - 0x003C)
-class UComponent : public UObject
+class UComponent: public UObject
 {
 public:
-	class UClass*                                      TemplateOwnerClass;                               		// 0x003C (0x0004) [0x0000000000001002]              ( CPF_Const | CPF_Native )
+	class UClass* TemplateOwnerClass;                               		// 0x003C (0x0004) [0x0000000000001002]              ( CPF_Const | CPF_Native )
 	struct FName                                       TemplateName;                                     		// 0x0040 (0x0008) [0x0000000000001002]              ( CPF_Const | CPF_Native )
 };
 
 // 0x0008 (0x0050 - 0x0048)
-class UDistributionVector : public UComponent
+class UDistributionVector: public UComponent
 {
 public:
 	struct FPointer                                    VfTable_FCurveEdInterface;                        		// 0x0048 (0x0004) [0x0000000000801002]              ( CPF_Const | CPF_Native | CPF_NoExport )
@@ -1199,7 +1206,7 @@ public:
 };
 
 // 0x0008 (0x0050 - 0x0048)
-class UDistributionFloat : public UComponent
+class UDistributionFloat: public UComponent
 {
 public:
 	struct FPointer                                    VfTable_FCurveEdInterface;                        		// 0x0048 (0x0004) [0x0000000000801002]              ( CPF_Const | CPF_Native | CPF_NoExport )
@@ -1211,7 +1218,7 @@ public:
 };
 
 // 0x0040 (0x007C - 0x003C)
-class UCommandlet : public UObject
+class UCommandlet: public UObject
 {
 public:
 	struct FString                                     HelpDescription;                                  		// 0x003C (0x000C) [0x0000000000408002]              ( CPF_Const | CPF_Localized | CPF_NeedCtorLink )
@@ -1230,14 +1237,14 @@ public:
 };
 
 // 0x0000 (0x007C - 0x007C)
-class UHelpCommandlet : public UCommandlet
+class UHelpCommandlet: public UCommandlet
 {
 public:
 	int Main(struct FString Params);
 };
 
 // 0x0008 (0x0044 - 0x003C)
-class UAttributeModifier : public UObject
+class UAttributeModifier: public UObject
 {
 public:
 	unsigned char                                      Type;                                             		// 0x003C (0x0001) [0x0000000000000000]
@@ -1245,21 +1252,21 @@ public:
 };
 
 // 0x0044 (0x00D0 - 0x008C)
-class UState : public UStruct
+class UState: public UStruct
 {
 public:
 	unsigned char                                      UnknownData00[0x44];                            		// 0x008C (0x0044) MISSED OFFSET
 };
 
 // 0x00A8 (0x00E4 - 0x003C)
-class UPackage : public UObject
+class UPackage: public UObject
 {
 public:
 	unsigned char                                      UnknownData00[0xA8];                            		// 0x003C (0x00A8) MISSED OFFSET
 };
 
 // 0x0100 (0x01D0 - 0x00D0)
-class UClass : public UState
+class UClass: public UState
 {
 public:
 	unsigned long		bCooked : 1;
@@ -1267,7 +1274,7 @@ public:
 	unsigned long		ClassCastFlags;
 	FName				ClassConfigName;
 	FPointer			ClassConstructor;
-	UObject				*ClassDefaultObject;
+	UObject* ClassDefaultObject;
 	unsigned int		ClassFlags;
 	unsigned char       UnknownData00[0xD8];                           		// 0x00D0 (0x0100) MISSED OFFSET
 
@@ -1285,8 +1292,8 @@ public:
 
 struct FFunction
 {
-	UObject *obj;
-	UFunction *func;
+	UObject* obj;
+	UFunction* func;
 
 private:
 	FHelper* GenerateParams(const py::args& args, const py::kwargs& kwargs, FHelper* params);
@@ -1298,12 +1305,12 @@ public:
 
 struct FOutParmRec
 {
-	UProperty		*Property;
-	unsigned char	*PropAddr;
-	FOutParmRec		*NextOutParm;
+	UProperty* Property;
+	unsigned char* PropAddr;
+	FOutParmRec* NextOutParm;
 };
 
-struct FFrame : public FOutputDevice
+struct FFrame: public FOutputDevice
 {
 	class UFunction* Node;
 	class UObject* Object;
@@ -1319,8 +1326,8 @@ public:
 
 struct FStruct
 {
-	UStruct		*structType;
-	void		*base;
+	UStruct* structType;
+	void* base;
 	FStruct(UStruct* s, void* b);
 
 	pybind11::object GetProperty(const std::string& PropName) const;
@@ -1328,9 +1335,10 @@ struct FStruct
 	py::str Repr() const;
 };
 
-struct FArray {
-	TArray <char> *arr;
-	UProperty *type;
+struct FArray
+{
+	TArray <char>* arr;
+	UProperty* type;
 	unsigned int IterCounter;
 
 	FArray(TArray <char>* array, UProperty* s);
@@ -1341,6 +1349,7 @@ struct FArray {
 	FArray* Iter();
 	py::object Next();
 	py::str Repr();
+	int len();
 };
 
 typedef void* (__thiscall* tMalloc)(void***, unsigned long, unsigned long);

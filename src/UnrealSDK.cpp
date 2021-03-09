@@ -47,7 +47,7 @@ namespace UnrealSDK
 
 	std::map<std::string, std::string> ObjectMap = {};
 
-	std::map<std::string, UClass *> ClassMap = {};
+	std::map<std::string, UClass*> ClassMap = {};
 
 	void __stdcall hkProcessEvent(UFunction* Function, void* Params, void* Result)
 	{
@@ -68,11 +68,12 @@ namespace UnrealSDK
 			std::string callerName = caller->GetFullName();
 
 			Logging::LogF("===== ProcessEvent called =====\npCaller Name = %s\npFunction Name = %s\n",
-			              callerName.c_str(), functionName.c_str());
+						  callerName.c_str(), functionName.c_str());
 		}
 
+		auto fParams = FStruct{Function, Params};
 		if (gHookManager->HasHook(caller, Function) && !gHookManager->ProcessHooks(
-			functionName, caller, Function, &FStruct{Function, Params}))
+			functionName, caller, Function, &fParams))
 		{
 			// The engine hook manager told us not to pass this function to the engine
 			return;
@@ -84,7 +85,7 @@ namespace UnrealSDK
 	void LogOutParams(FFrame* Stack)
 	{
 		Logging::LogF("Logging stack, %s, %s\n", Stack->Object->GetFullName().c_str(),
-		              Stack->Node->GetFullName().c_str());
+					  Stack->Node->GetFullName().c_str());
 		Logging::LogF("0x%p\n", Stack->Node);
 		Logging::LogF("0x%p\n", Stack->Object);
 		Logging::LogF("0x%p\n", Stack->Code);
@@ -112,7 +113,7 @@ namespace UnrealSDK
 			if (functionName != "Function Engine.Console.OutputText" && functionName !=
 				"Function Engine.Console.OutputTextLine")
 				Logging::LogF("===== CallFunction called =====\npCaller Name = %s\npFunction Name = %s\n",
-				              callerName.c_str(), functionName.c_str());
+							  callerName.c_str(), functionName.c_str());
 		}
 
 		unsigned char* code = Stack.Code;
@@ -141,11 +142,13 @@ namespace UnrealSDK
 		TCHAR szExePath[2048];
 
 		// For some god forsaken reason, GetModuleFileName can sometimes just fail ??? 
-		if (GetModuleFileName(NULL, szExePath, 2048) == 0) {
+		if (GetModuleFileName(NULL, szExePath, 2048) == 0)
+		{
 			Logging::LogF("WINAPI Error when finding exe name commands: %d\n", GetLastError());
 			// Maybe we can try using another form of getting the module exe???
 			// https://stackoverflow.com/questions/6924195/get-dll-path-at-runtime
-			if (GetModuleFileName(GetModuleHandle(NULL), szExePath, 2048) == 0) {
+			if (GetModuleFileName(GetModuleHandle(NULL), szExePath, 2048) == 0)
+			{
 				Logging::LogF("WINAPI Error #2 when finding exe name commands: %d\n", GetLastError());
 				return;
 			}
@@ -202,7 +205,7 @@ namespace UnrealSDK
 			}
 			else
 			{
-				static_cast<unsigned char *>(SetCommand)[5] = 0xFF;
+				static_cast<unsigned char*>(SetCommand)[5] = 0xFF;
 			}
 		}
 		catch (std::exception e)
@@ -228,22 +231,22 @@ namespace UnrealSDK
 		if (status == PYTHON_MODULE_ERROR && !Settings::DeveloperModeEnabled())
 		{
 			Util::Popup(L"Python Module Error",
-			            L"A core Python module failed to load correctly, and the SDK cannot continue to run.\n\nThis may indicate that the game has been patched and the SDK needs updating.");
+						L"A core Python module failed to load correctly, and the SDK cannot continue to run.\n\nThis may indicate that the game has been patched and the SDK needs updating.");
 		}
 		else if (status == PYTHON_MODULE_ERROR && Settings::DeveloperModeEnabled())
 		{
 			Util::Popup(L"Python Module Error",
-			            L"An error occurred while loading the Python modules.\n\nPlease check your console for the exact error. Once you've fixed the error, press F11 to reload the Python state.");
+						L"An error occurred while loading the Python modules.\n\nPlease check your console for the exact error. Once you've fixed the error, press F11 to reload the Python state.");
 		}
 	}
 
 	bool getCanvasPostRender(UObject* Caller, UFunction* Function, FStruct* Params)
 	{
 		// Set console key to Tilde if not already set
-		gameConsole = static_cast<UConsole *>(UObject::Find(ObjectMap["ConsoleObjectType"].c_str(), ObjectMap["ConsoleObjectName"].c_str())
-		);
-		if (gameConsole == nullptr && gEngine && static_cast<UEngine *>(gEngine)->GameViewport)
-			gameConsole = static_cast<UEngine *>(gEngine)->GameViewport->ViewportConsole;
+		gameConsole = static_cast<UConsole*>(UObject::Find(ObjectMap["ConsoleObjectType"].c_str(), ObjectMap["ConsoleObjectName"].c_str())
+											 );
+		if (gameConsole == nullptr && gEngine && static_cast<UEngine*>(gEngine)->GameViewport)
+			gameConsole = static_cast<UEngine*>(gEngine)->GameViewport->ViewportConsole;
 		if (gameConsole && (gameConsole->ConsoleKey == FName("None") || gameConsole->ConsoleKey == FName("Undefine")))
 			gameConsole->ConsoleKey = FName("Tilde");
 
@@ -274,7 +277,7 @@ namespace UnrealSDK
 				continue;
 
 			if (!strcmp(Object->Class->GetName(), "Class"))
-				ClassMap[Object->GetName()] = static_cast<UClass *>(Object);
+				ClassMap[Object->GetName()] = static_cast<UClass*>(Object);
 
 			if (!strcmp(Object->GetFullName().c_str(), ObjectMap["EngineFullName"].c_str()))
 				gEngine = Object;
@@ -338,19 +341,19 @@ namespace UnrealSDK
 	}
 
 	UObject* ConstructObject(UClass* Class, UObject* Outer, const FName Name, const unsigned int SetFlags,
-	                         unsigned int InternalSetFlags, UObject* Template, FOutputDevice* Error,
-	                         void* InstanceGraph, int AssumeTemplateIsArchetype)
+							 unsigned int InternalSetFlags, UObject* Template, FOutputDevice* Error,
+							 void* InstanceGraph, int AssumeTemplateIsArchetype)
 	{
 		if (!Error)
 		{
 			Error = new FOutputDevice();
-			Error->VfTable = (void *)calloc(2, sizeof(void *));
-			((void **)Error->VfTable)[1] = (void *)&Logging::LogW;
+			Error->VfTable = (void*)calloc(2, sizeof(void*));
+			((void**)Error->VfTable)[1] = (void*)&Logging::LogW;
 		}
 		if (!Class)
 			return nullptr;
 		return pStaticConstructObject(Class, Outer, Name, SetFlags | 0b1, InternalSetFlags, Template, Error,
-		                              InstanceGraph, AssumeTemplateIsArchetype);
+									  InstanceGraph, AssumeTemplateIsArchetype);
 	};
 
 	UObject* GetEngine()
@@ -361,7 +364,7 @@ namespace UnrealSDK
 	}
 
 	void RegisterHook(const std::string& FuncName, const std::string& HookName,
-	                  const std::function<bool(UObject*, UFunction*, FStruct*)>& FuncHook)
+					  const std::function<bool(UObject*, UFunction*, FStruct*)>& FuncHook)
 	{
 		gHookManager->Register(FuncName, HookName, FuncHook);
 	}
