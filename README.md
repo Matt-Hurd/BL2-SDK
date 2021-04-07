@@ -1,5 +1,14 @@
 # UnrealEngine PythonSDK
-An UnrealEngine Plugin enabling using Python to write plugins that interact directly with UE objects
+An UnrealEngine Plugin that enables using Python to write plugins that interact directly with UE objects.
+
+It is used to write mods for [compatible games](#list-of-compatible-games), and comes with a number of [builtin mods](#builtin-mods).
+
+## General information
+* Website: https://bl-sdk.github.io
+* Mods list: https://bl-sdk.github.io/mods/
+* Source code: https://github.com/bl-sdk/PythonSDK
+* Issue tracker: https://github.com/bl-sdk/PythonSDK/issues
+* Discord: https://discord.gg/VJXtHvh
 
 ## List of compatible games
 * Borderlands 2 (1.8.7)
@@ -7,7 +16,7 @@ An UnrealEngine Plugin enabling using Python to write plugins that interact dire
 
 ## Installation
 
-1. [Download the latest version of `PythonSDK.zip`.](https://github.com/Matt-Hurd/BL2-SDK/releases) Ensure you download `PythonSDK.zip` from that page:
+1. [Download the latest version of `PythonSDK.zip`](https://github.com/Matt-Hurd/BL2-SDK/releases):
 
 ![PythonSDK Download Page](https://i.imgur.com/tBlidGi.png)
 
@@ -21,7 +30,7 @@ An UnrealEngine Plugin enabling using Python to write plugins that interact dire
 
 4. In the game's files, navigate to the `Binaries`, then the `Win32` folder. This folder should contain the `.exe` for your game (i.e. `Borderlands2.exe` or `BorderlandsPreSequel.exe`).
 
-5. Copy the 4 items from `PythonSDK.zip` **exactly as they** are to the `Win32` folder. Note that `pythonXX.zip` should *not* be un-zipped:
+5. Copy the 4 items from `PythonSDK.zip` **exactly as they are** to the `Win32` folder. Note that `pythonXX.zip` should *not* be un-zipped:
 
 ![Win32 Folder Contents](https://i.imgur.com/hIvNi7w.png)
 
@@ -29,7 +38,7 @@ An UnrealEngine Plugin enabling using Python to write plugins that interact dire
 
 7. You are done, and may launch the game (if it is running, relaunch it now). You should see a "Mods" menu in the main menu!
 
-8. If the SDK fails to run with the files correctly in place as described above, you may need to [download and install Mircosoft Visual C++ Redistributable](https://aka.ms/vs/16/release/vc_redist.x86.exe).
+8. If the SDK fails to run with the files correctly in place as described above, you may need to download and install [Microsoft Visual C++ Redistributable](https://aka.ms/vs/16/release/vc_redist.x86.exe).
 
 ### Linux (SteamPlay/Proton and Wine)
 
@@ -43,24 +52,25 @@ Or, for TPS:
 
 Note that using `WINEDLLOVERRIDES` for `ddraw` isn't supported by the Wine developers, so if you experience problems with the game while using this method, please don't ask the WineHQ team for assistance.
 
-## Usage
-
-`py <python code>` runs arbitrary python code.  
-`pyexec <python file>` runs arbitrary python files from `binaries/Win32/Mods/`.
-
-
-### Installing Mods
-
-Mods live in the `Borderlands 2\Binaries\Win32\Mods` folder. Each mod should be place in it's own subfolder, and contain an `__init__.py`. Example: `Win32\Mods\SkillRandomizer\__init__.py`   
-
-
 ## Borderlands Ingame Mod Manager
 
-On the main menu, `Downloadable Content` is replace with `Mods`  
+On the main menu, `Downloadable Content` is replaced with `Mods`  
 ![Mods](https://i.imgur.com/HOHcwYh.jpg)  
 
 Mods can be enabled and disabled by selecting them and pressing `Enter`  
 ![ModManager](https://i.imgur.com/8ZaUsDP.png)
 
-## Contact Us
-https://discord.gg/VJXtHvh
+### Builtin Mods
+* [Backpack Manager](/Mods/BackpackManager): Customize the size of your character's backpack on the fly!
+* [Borderlands 2 Map Reloader](/Mods/Quickload): Quickly farm items and save quit at a button press!
+* [Borderlands Easy Read Only](/Mods/ReadOnly): Toggle Read Only on a button press
+* [Cross Class Skill Randomizer](/Mods/SkillRandomizer): Randomize all the skills!
+
+### Installing New Mods
+
+Mods live in the `Borderlands 2\Binaries\Win32\Mods` folder. Each mod should be place in it's own subfolder, and contain an `__init__.py`. Example: `Win32\Mods\SkillRandomizer\__init__.py`
+
+## Console Commands
+
+* `py <python code>` runs arbitrary python code.  
+* `pyexec <python file>` runs arbitrary python files from `binaries/Win32/Mods/`.
